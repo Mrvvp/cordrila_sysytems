@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "861858508386",
+    "project_id": "cordrila",
+    "storage_bucket": "cordrila.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:861858508386:android:91ff45b105819458692b3b",
+        "android_client_info": {
+          "package_name": "com.example.cordrila_sysytems"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4tJRzflin1O6UMabgoXdhEzf4WhAkHCo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
