@@ -405,7 +405,7 @@ class _ShoppingPageState extends State<ShoppingPage> {
                                       'Morning (before 12 PM)',
                                       style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: 12,
+                                          fontSize: 11,
                                           fontWeight: FontWeight.bold),
                                     ),
                                   ),
@@ -469,7 +469,7 @@ class _ShoppingPageState extends State<ShoppingPage> {
                                       'Evening (after 12 PM)',
                                       style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: 12,
+                                          fontSize: 11,
                                           fontWeight: FontWeight.bold),
                                     ),
                                   ),

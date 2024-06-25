@@ -444,7 +444,7 @@ class _AdminFreshPageState extends State<AdminFreshPage>
 
   String _extractDate(Timestamp timestamp) {
     final dateTime = timestamp.toDate();
-    return DateFormat('dd-MM-yyyy').format(dateTime);
+    return DateFormat('yyyy-MM-dd hh:mm a').format(dateTime);
   }
 
   Future<void> _downloadDailyData(BuildContext context) async {

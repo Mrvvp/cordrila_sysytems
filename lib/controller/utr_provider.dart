@@ -54,11 +54,11 @@ class UtrpageProvider with ChangeNotifier {
     {'name': 'PNKP', 'latitude': 9.963107, 'longitude': 76.295558, 'radius': 0.25},
     {'name': 'PNKV', 'latitude': 9.99489, 'longitude': 76.32606, 'radius': 0.25},
     {'name': 'PNKQ', 'latitude': 11.29278, 'longitude': 75.8177, 'radius': 0.25},
-    {'name': 'KALA', 'latitude': 10.064555, 'longitude': 76.322242, 'radius': 5},
+    {'name': 'KALA', 'latitude': 10.064555, 'longitude': 76.322242, 'radius': 0.25},
     {'name': 'PNTN', 'latitude': 9.38518, 'longitude': 76.587229, 'radius': 0.25},
     {'name': 'PNKG', 'latitude': 9.584526, 'longitude': 76.547472, 'radius': 0.25},
     {'name': 'PNKO', 'latitude': 8.879023, 'longitude': 76.609582, 'radius': 0.25},
-    {'name': 'JMVH', 'latitude': 10.081877, 'longitude': 76.283371, 'radius': 0.25},
+    {'name': 'KALA1', 'latitude': 10.081877, 'longitude': 76.283371, 'radius': 0.25},
   ];
 
   // Initialize provider with loading data and initial state
@@ -72,7 +72,8 @@ class UtrpageProvider with ChangeNotifier {
     try {
       await _getUpdatedLocation();
       await _loadAttendanceState();
-      updateTimestamp();
+       updateTimestamp();
+      await  getLocationName();
     } catch (e) {
       print('Error in loadData: $e');
     } finally {

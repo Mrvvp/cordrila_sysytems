@@ -24,7 +24,7 @@ class ShoppingPageProvider with ChangeNotifier {
   Timestamp get timestamp => _timestamp;
   final TextEditingController timedateController = TextEditingController();
 
-  FreshPageProvider() {
+  ShoppingPageProvider() {
     initializeData();
   }
 
@@ -141,23 +141,13 @@ class ShoppingPageProvider with ChangeNotifier {
   bool _alertShown = false;
 
   final List<Map<String, dynamic>> predefinedLocations = [
-    {'name':'PNTK', 'latitude': 8.538520, 'longitude': 77.023149, 'radius': 0.25},
-    {'name':'PNTM','latitude': 8.51913, 'longitude': 76.94493, 'radius': 0.25},
-    {'name':'PNTS','latitude': 8.534636, 'longitude': 76.942233, 'radius': 0.25},
-    {'name':'PNTT','latitude': 8.498862, 'longitude': 76.943550, 'radius': 0.25},
-    {'name':'PNTU','latitude': 8.533248, 'longitude': 76.962852, 'radius': 0.25},
-    {'name':'PNTV','latitude': 8.525702, 'longitude': 76.991817, 'radius': 0.25},
-    {'name':'PNK1','latitude': 10.001869, 'longitude': 76.279236, 'radius': 0.25},
-    {'name':'PNKA','latitude': 10.112935, 'longitude': 76.354550, 'radius': 0.25},
-    {'name':'PNKE','latitude': 10.03485, 'longitude': 76.33369, 'radius': 0.25},
-    {'name':'PNKP','latitude': 9.963107, 'longitude': 76.295558, 'radius': 0.25},
-    {'name':'PNKV','latitude': 9.99489, 'longitude': 76.32606, 'radius': 0.25},
-    {'name':'PNKQ','latitude': 11.29278, 'longitude': 75.81770, 'radius': 0.25},
+    {'name': 'ALWD', 'latitude': 10.13449, 'longitude': 76.35766, 'radius': 0.1},
+    {'name': 'COKD', 'latitude': 10.00755, 'longitude': 76.35964, 'radius': 0.1},
+    {'name': 'TVCY', 'latitude': 8.489644, 'longitude': 76.930294, 'radius': 0.1},
+    {'name': 'TRVM', 'latitude': 9.32715, 'longitude': 76.72961, 'radius': 0.1},
+    {'name': 'TRVY', 'latitude': 9.40751, 'longitude': 76.79594, 'radius': 0.1},
     {'name':'KALA','latitude': 10.064555, 'longitude': 76.322242, 'radius':0.25},
-    {'name':'PNTN','latitude': 9.385180, 'longitude': 76.587229, 'radius': 0.25},
-    {'name':'PNKG','latitude': 9.584526, 'longitude': 76.547472, 'radius': 0.25},
-    {'name':'PNKO','latitude': 8.879023, 'longitude': 76.609582 , 'radius': 0.25},
-    {'name':'JMVH','latitude': 10.081877, 'longitude': 76.283371 , 'radius': 0.25},
+    {'name':'KALA1','latitude': 10.081877, 'longitude': 76.283371 , 'radius': 0.25},
 
        
   ];

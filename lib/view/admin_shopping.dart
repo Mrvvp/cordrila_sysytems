@@ -234,16 +234,17 @@ class _AdminShoppingPageState extends State<AdminShoppingPage>
           style: const TextStyle(
               fontSize: 15, color: Colors.black, fontWeight: FontWeight.bold),
         ),
-        Text(
-          'Date: ${_extractDate(data['Date'])}',
-          style: const TextStyle(fontSize: 15, color: Colors.grey),
-        ),
+       
         Text(
           '${data['Name']}',
           style: const TextStyle(fontSize: 15, color: Colors.grey),
         ),
         Text(
           'Location:${data['Location']}',
+          style: const TextStyle(fontSize: 15, color: Colors.grey),
+        ),
+         Text(
+          'Date: ${_extractDate(data['Date'])}',
           style: const TextStyle(fontSize: 15, color: Colors.grey),
         ),
       ];
@@ -474,7 +475,7 @@ class _AdminShoppingPageState extends State<AdminShoppingPage>
 
   String _extractDate(Timestamp timestamp) {
     final dateTime = timestamp.toDate();
-    return DateFormat('dd-MM-yyyy').format(dateTime);
+    return DateFormat('yyyy-MM-dd hh:mm a').format(dateTime);
   }
 
   Future<void> _downloadDailyData(BuildContext context) async {
@@ -526,22 +527,21 @@ class _AdminShoppingPageState extends State<AdminShoppingPage>
     }
   }
 
-Future<void> _downloadCSV(
+  Future<void> _downloadCSV(
       BuildContext context, List<List<dynamic>> rows, String fileName) async {
     try {
-       test();
+      test();
 
       // Define CSV headings
       List<dynamic> headings = [
         'ID',
         'Name',
-        'Date',
         'Location',
+        'Date',
         'shift',
         'shipment',
         'pickup',
         'mfn'
-        
       ];
 
       // Add headings as the first row in the CSV
@@ -553,8 +553,8 @@ Future<void> _downloadCSV(
       const String downloadDirectory = '/storage/emulated/0/Download';
       // Define the file path
       final String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
-    final String uniqueFileName = '$fileName $timestamp.csv';
-    final String filePath = '$downloadDirectory/$uniqueFileName';
+      final String uniqueFileName = '$fileName $timestamp.csv';
+      final String filePath = '$downloadDirectory/$uniqueFileName';
 
       // Write the CSV file
       final File file = File(filePath);
@@ -571,7 +571,6 @@ Future<void> _downloadCSV(
       _showAlertDialog(context, 'Error', 'Error downloading CSV');
     }
   }
-
 
   Future<void> _downloadAllData(BuildContext context) async {
     try {
@@ -767,23 +766,23 @@ Future<void> _downloadCSV(
       },
     );
   }
-    void test() async {
-  final plugin = DeviceInfoPlugin();
-  final android = await plugin.androidInfo;
 
-  final storageStatus = android.version.sdkInt < 34
-      ? await Permission.storage.request()
-      : PermissionStatus.granted;
+  void test() async {
+    final plugin = DeviceInfoPlugin();
+    final android = await plugin.androidInfo;
 
-  if (storageStatus == PermissionStatus.granted) {
-    print("granted");
-  }
-  if (storageStatus == PermissionStatus.denied) {
-    print("denied");
-  }
-  if (storageStatus == PermissionStatus.permanentlyDenied) {
-    openAppSettings();
-  }
+    final storageStatus = android.version.sdkInt < 34
+        ? await Permission.storage.request()
+        : PermissionStatus.granted;
 
-}
+    if (storageStatus == PermissionStatus.granted) {
+      print("granted");
+    }
+    if (storageStatus == PermissionStatus.denied) {
+      print("denied");
+    }
+    if (storageStatus == PermissionStatus.permanentlyDenied) {
+      openAppSettings();
+    }
+  }
 }

@@ -16,7 +16,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    var update = widget.remoteConfig.getBool("Updatev1");
+    var update = widget.remoteConfig.getBool("Updatev2");
     return Scaffold(
       backgroundColor: Colors.grey[500],
       body: update

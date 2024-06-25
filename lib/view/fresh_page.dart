@@ -342,7 +342,7 @@ class _FreshPageState extends State<FreshPage > {
                             const SizedBox(
                               height: 10,
                             ),
-                            Row(
+                       Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 SizedBox(
@@ -405,7 +405,7 @@ class _FreshPageState extends State<FreshPage > {
                                       '7 AM - 10 AM',
                                       style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: 12,
+                                          fontSize: 11,
                                           fontWeight: FontWeight.bold),
                                     ),
                                   ),
@@ -457,7 +457,7 @@ class _FreshPageState extends State<FreshPage > {
                                                         freshStateProvider
                                                             .disableSelectedTimeSlot();
                                                         Navigator.of(context)
-                                                            .pop(); 
+                                                            .pop();
                                                       },
                                                     ),
                                                   ],
@@ -469,14 +469,14 @@ class _FreshPageState extends State<FreshPage > {
                                       '10 AM - 1 PM',
                                       style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: 12,
+                                          fontSize: 11,
                                           fontWeight: FontWeight.bold),
                                     ),
                                   ),
                                 ),
                               ],
                             ),
-                            Row(
+                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 SizedBox(
@@ -490,7 +490,7 @@ class _FreshPageState extends State<FreshPage > {
                                       backgroundColor: freshStateProvider
                                               .disabledTimeSlots
                                               .contains(
-                                                  '1 PM - 4 PM')
+                                                 '1 PM - 4 PM')
                                           ? Colors.grey
                                           : Colors.blue,
                                       elevation: 5,
@@ -521,7 +521,7 @@ class _FreshPageState extends State<FreshPage > {
                                                       onPressed: () {
                                                         freshStateProvider
                                                             .setSelectedTimeSlot(
-                                                                '1 PM - 4 PM');
+                                                               '1 PM - 4 PM');
                                                         freshStateProvider
                                                             .markAttendance();
                                                         freshStateProvider
@@ -536,10 +536,10 @@ class _FreshPageState extends State<FreshPage > {
                                             );
                                           },
                                     child: Text(
-                                      '1 PM - 4 PM',
+                                     '1 PM - 4 PM',
                                       style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: 12,
+                                          fontSize: 11,
                                           fontWeight: FontWeight.bold),
                                     ),
                                   ),
@@ -585,13 +585,13 @@ class _FreshPageState extends State<FreshPage > {
                                                       onPressed: () {
                                                         freshStateProvider
                                                             .setSelectedTimeSlot(
-                                                                '4 PM - 7 PM');
+                                                               '4 PM - 7 PM');
                                                         freshStateProvider
                                                             .markAttendance();
-                                                      freshStateProvider
+                                                        freshStateProvider
                                                             .disableSelectedTimeSlot();
                                                         Navigator.of(context)
-                                                            .pop(); 
+                                                            .pop();
                                                       },
                                                     ),
                                                   ],
@@ -603,14 +603,14 @@ class _FreshPageState extends State<FreshPage > {
                                       '4 PM - 7 PM',
                                       style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: 12,
+                                          fontSize: 11,
                                           fontWeight: FontWeight.bold),
                                     ),
                                   ),
                                 ),
                               ],
                             ),
-                            SizedBox(
+                              SizedBox(
                                   width:
                                       MediaQuery.of(context).size.width * 0.45,
                                   child: ElevatedButton(
@@ -651,13 +651,13 @@ class _FreshPageState extends State<FreshPage > {
                                                       onPressed: () {
                                                         freshStateProvider
                                                             .setSelectedTimeSlot(
-                                                                '7 PM - 10 PM');
+                                                               '7 PM - 10 PM');
                                                         freshStateProvider
                                                             .markAttendance();
-                                                      freshStateProvider
+                                                        freshStateProvider
                                                             .disableSelectedTimeSlot();
                                                         Navigator.of(context)
-                                                            .pop(); 
+                                                            .pop();
                                                       },
                                                     ),
                                                   ],
@@ -669,7 +669,7 @@ class _FreshPageState extends State<FreshPage > {
                                       '7 PM - 10 PM',
                                       style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: 12,
+                                          fontSize: 11,
                                           fontWeight: FontWeight.bold),
                                     ),
                                   ),
@@ -798,93 +798,70 @@ class _FreshPageState extends State<FreshPage > {
                               width: MediaQuery.of(context).size.width,
                               height: 60,
                               child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  backgroundColor: Colors.blue.shade700,
-                                  elevation: 5,
-                                ),
-                               onPressed:freshStateProvider.isWithinPredefinedLocation() &&
-                               freshStateProvider.selectedTimeSlot != null
-                                    ? () {
-                                        if (_ordersController.text.isEmpty ||
-                                            _bagsController.text.isEmpty ||
-                                            _mopController.text.isEmpty) {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            const SnackBar(
-                                              content: Text(
-                                                  'Please fill in all fields'),
-                                            ),
-                                          );
-                                        } else if (freshStateProvider
-                                                .selectedTimeSlot ==
-                                            null) {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            const SnackBar(
-                                              content: Text(
-                                                  'Please select your shift'),
-                                            ),
-                                          );
-                                        } else {
-                                          // Show confirmation dialog
-                                          showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return AlertDialog(
-                                                title: Text(
-                                                    'Confirm Attendance Marking'),
-                                                content: Text(
-                                                    'Are you sure you want to mark attendance?'),
-                                                actions: <Widget>[
-                                                  TextButton(
-                                                    child: Text('Cancel'),
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                  ),
-                                                  TextButton(
-                                                    child: Text('Confirm'),
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop(); // Close dialog
+  style: ElevatedButton.styleFrom(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10),
+    ),
+    backgroundColor: Colors.blue.shade700,
+    elevation: 5,
+  ),
+  onPressed: freshStateProvider.isWithinPredefinedLocation() && freshStateProvider.selectedTimeSlot != null
+      ? () {
+          if (_ordersController.text.isEmpty ||
+              _bagsController.text.isEmpty ||
+              _mopController.text.isEmpty) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Please fill in all fields'),
+              ),
+            );
+          } else {
+            // Show confirmation dialog
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text('Confirm Attendance Marking'),
+                  content: Text('Are you sure you want to mark attendance?'),
+                  actions: <Widget>[
+                    TextButton(
+                      child: Text('Cancel'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    TextButton(
+                      child: Text('Confirm'),
+                      onPressed: () {
+                        Navigator.of(context).pop(); // Close dialog
 
-                                                      // Proceed with marking attendance and adding data
-                                                      addDetails();
-                                                      _clearShoppingFields();
-                                                     freshStateProvider
-                                                          .disableSelectedTimeSlot();
+                        // Proceed with marking attendance and adding data
+                        addDetails();
+                        _clearShoppingFields();
+                        freshStateProvider.disableSelectedTimeSlot();
 
-                                                      String employeeId =
-                                                          _idController.text;
-                                                      Navigator.of(context)
-                                                          .push(
-                                                        CupertinoPageRoute(
-                                                          builder: (context) =>
-                                                              AttendencePage(
-                                                            employeeId:
-                                                                employeeId,
-                                                          ),
-                                                        ),
-                                                      );
-                                                    },
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          );
-                                        }
-                                      }
-                                    : null,
-                                child: const Text(
-                                  'Mark Attendance',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 17),
-                                ),
-                              ),
+                        String employeeId = _idController.text;
+                        Navigator.of(context).push(
+                          CupertinoPageRoute(
+                            builder: (context) => AttendencePage(
+                              employeeId: employeeId,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          }
+        }
+      : null,
+  child: const Text(
+    'Mark Attendance',
+    style: TextStyle(color: Colors.white, fontSize: 17),
+  ),
+),
                             ),
                           ],
                         ),

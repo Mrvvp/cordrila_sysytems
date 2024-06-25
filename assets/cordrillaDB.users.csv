@@ -1,0 +1,473 @@
+Emp/IC Code,Employee Name,Business Title,Category,Station Code,Location,Mail ID,DOB,PAN CARD,Mobile Number,Password
+CORA18118A0005,Anasmon K A,Driver,OTR,ALWD,Shopping,alwdroute10@gmail.com,30-05-1990,CNJPA9159G,8129434314,LastMile##123
+CORA18118A0006,Anil Paul,Driver,OTR,ALWD,Shopping,alwdroute4@gmail.com,18-12-1992,EFZPP1893A,9746779059,LastMile##123
+CORA18118A0011,Dijo Dominic,Driver,OTR,ALWD,Shopping,alwdroute57@gmail.com,15-10-1989,BYNPD9560Q,9947436009,LastMile##123
+CORA18118A0015,Jishnu T R,Driver,OTR,ALWD,Shopping,alwdroute59@gmail.com,17-11-1997,BMDPJ4819G,9074549404,LastMile##123
+CORA18118A0016,Joffin Devassy,Driver,OTR,ALWD,Shopping,alwdroute7@gmail.com,31-01-1985,BVOPJ9675C,9847990719,LastMile##123
+CORA18118A0018,Josy Mathew,Supervisor,UTR,PNKE,UTR,josyvakkathil@gmail.com,02-04-1980,ENBPM4980B,9895630620,LastMile##123
+CORA18118A0020,Lalkrishna G,Driver,OTR,ALWD,Shopping,alwdroute9@gmail.com,27-01-1996,AVJPL9366Q,9605950349,LastMile##123
+CORA18118A0021,Lijumon P O,Dispatcher,UTR,ALWD,UTR,lijumonpoalwd1@gmail.com,26-10-1974,AFXPL7334Q,9388482851,LastMile##123
+CORA18118A0022,Linto A P,Driver,OTR,ALWD,Shopping,alwdroute112@gmail.com,17-05-1985,DKTPP2374G,9562425162,LastMile##123
+CORA18118A0031,Prasad N C,Driver,OTR,ALWD,Shopping,alwdroute14@gmail.com,13-12-1983,EBFPP2444M,9074457671,LastMile##123
+CORA18118A0032,Praveen K P,Driver,OTR,ALWD,Shopping,alwdroute15@gmail.com,21-12-1982,BRDPP5615B,9633060016,LastMile##123
+CORA18118A0033,Rijo Pj,Driver,OTR,ALWD,Shopping,alwdroute11@gmail.com,12-05-1987,AVOPJ7195E,9947450762,LastMile##123
+CORA18118A0034,Sachin T V,Driver,OTR,COKD,Shopping,alwdroute48@gmail.com,22-05-1996,BSQPV5809M,7736897285,LastMile##123
+CORA18118A0035,Sayooj Mohan,Driver,OTR,ALWD,Shopping,alwdroute119@gmail.com,21-02-1999,FLIPM8965A,9539399177,LastMile##123
+CORA18118A0037,Shameer C K,Driver,OTR,ALWD,Shopping,alwdroute5@gmail.com,30-08-1978,KVQPS4412B,9847409395,LastMile##123
+CORA18118A0038,Sooraj P P,Driver,OTR,ALWD,Shopping,alwdroute108@gmail.com,20-05-1989,HAHPS8364D,9633693231,LastMile##123
+CORA18118A0039,Subin Suresh,Supervisor,UTR,COKD,UTR,alwdroute79@gmail.com,13-11-1991,MWBPS4501H,7736530242,LastMile##123
+CORA18118A0042,Vishnu Velayudhan,Driver,OTR,ALWD,Shopping,alwdroute73@gmail.com,21-01-1992,BVFPV8659D,9072757678,LastMile##123
+CORA18118A0043,Sandheep C S,Supervisor,UTR,COKD,UTR,sandheepalwd1@gmail.com,19-01-1997,MLNPS0035H,9645414543,LastMile##123
+CORA18118A0044,Sharuk M A,Supervisor,UTR,COKD,UTR,sharuknazar013@gmail.com,13-05-1993,HCNPS0445F,9020230607,LastMile##123
+CORA18118A0048,Sooraj Hassan,Team Lead,UTR,KALA,UTR,soorajhalwd@gmail.com,19-01-2000,BEHPH8582N,7034537283,LastMile##123
+CORA18118A0056,Antony T D,Sorter,UTR,ALWD,UTR,antony.alwd@gmail.com,22-07-1998,GXOPD7889F,9526501429,LastMile##123
+CORA18118A0057,Jisha George,Dispatcher,UTR,ALWD,UTR,jishamanoj730@gmail.com,14-02-1984,BGAPJ6224Q,8547976970,LastMile##123
+CORA18118A0061,Akhil E P,Driver,OTR,COKD,Shopping,cokdassociate61@gmail.com,31-10-1997,DRLPA6163F,6238152922,LastMile##123
+CORA18118A0065,Antony Varghese,Driver,OTR,COKD,Shopping,cokdassociate19@gmail.com,06-12-1991,ANVPV9682M,9544624961,LastMile##123
+CORA18118A0069,Gils J Edathattel,Driver,OTR,COKD,Shopping,cokdassociate174@gmail.com,15-05-1985,CCXPG1838H,9846399181,LastMile##123
+CORA18118A0072,Hafees H,Driver,OTR,COKD,Shopping,cokdinfo3@gmail.com,03-01-1999,AYYPH8633E,7012499714,LastMile##123
+CORA18118A0074,Haseeb Ibrahim,Driver,OTR,COKD,Shopping,cokdassociate125@gmail.com,18-04-1996,AGCPI3669P,8943799116,LastMile##123
+CORA18118A0077,Mahesh Babu K,Driver,OTR,COKD,Shopping,cokdassociate21@gmail.com,02-03-1985,DNAPK9811D,7012278908,LastMile##123
+CORA18118A0084,Muhammed Swalih,Driver,OTR,COKD,Shopping,cokdassociate72@gmail.com,20-11-1996,HXZPS0730Q,9745445456,LastMile##123
+CORA18118A0086,Nashid C N,Driver,OTR,COKD,Shopping,cokdassociate51@gmail.com,02-07-1994,BBOPN0829A,8593961523,LastMile##123
+CORA18118A0092,Prasanth T R,Driver,OTR,COKD,Shopping,cokdassociate50@gmail.com,05-05-1986,ATCPR4980K,9947317631,LastMile##123
+CORA18118A0093,Prasanth V P,Driver,OTR,COKD,Shopping,cokdassociate20@gmail.com,14-07-1991,DEYPP8787L,8848614360,LastMile##123
+CORA18118A0095,Rama Chandran,Driver,OTR,COKD,Shopping,cokdassociate6@gmail.com,28-05-1987,CXUPM0122L,7012977831,LastMile##123
+CORA18118A0097,Roshan Xavier,Driver,OTR,COKD,Shopping,cokdassociate16@gmail.com,17-09-1988,EFYPR4680Q,9072113847,LastMile##123
+CORA18118A0099,Salahudheen Sakeer,Driver,OTR,COKD,Shopping,salacokd@gmail.com,31-05-1999,KMYPS4719C,9747075174,LastMile##123
+CORA18118A0100,Santhosh K C,Driver,OTR,COKD,Shopping,cokdassociate28@gmail.com,05-05-1975,CHDPC9038C,8075198329,LastMile##123
+CORA18118A0104,Shameer Abdul,Driver,OTR,COKD,Shopping,cokdassociate13@gmail.com,12-12-1988,JOLPS9396F,0,LastMile##123
+CORA18118A0106,Sheffin A S,Driver,OTR,COKD,Shopping,cokdassociate133@gmail.com,26-11-1993,JKSPS4513R,7034360493,LastMile##123
+CORA18118A0118,Satish Krishnan Nair,Driver,OTR,COKD,Shopping,cokdassociate168@gmail.com,23-07-1988,APTPN3395K,0,LastMile##123
+CORA18118A0119,Noufal Ka,Driver,OTR,COKD,Shopping,cokdassociate149@gmail.com,30-05-1983,CSNPA0274P,9567844257,LastMile##123
+CORA18118A0123,Sreekanth P ,Dispatcher,UTR,KALA,Fresh,sreekanth12@gmail.com,05-06-1979,DCJPP1064H,8921691131,LastMile##123
+CORA18118A0131,Tomy T S,Driver,OTR,COKD,Shopping,cokdassociate31@gmail.com,24-05-1968,BOIPT7819B,9846474565,LastMile##123
+CORA18118A0133,Libin C K,Supervisor,UTR,ALWD,UTR,libinckalwd@gmail.com,07-08-1999,CHPPC7441H,8138997195,LastMile##123
+CORA18118A0147,Binu K A,Driver,OTR,ALWD,Shopping,alwdroute89@gmail.com,28-04-1980,DJIPA4373N,6282707700,LastMile##123
+CORA18118A0151,Manojkumar A K,Driver,OTR,COKD,Shopping,cokdassociate10@gmail.com,08-05-1990,DOBPK9936M,7909197347,LastMile##123
+CORA18118A0152,Athul Raj K S,Team Lead,UTR,ALWD,UTR,athulsk2710alwd@gmail.com,02-12-1999,KKQPK8153Q,9567184602,LastMile##123
+CORA18118A0160,Sarath Sasi,Driver,OTR,COKD,Shopping,sarathsasicokd@gmail.com,30-06-1999,MERPS7664K,9048396226,LastMile##123
+CORA18118A0165,Rajesh R,Supervisor,UTR,TVCY,UTR,rajeeshrtvcy@gmail.com,01-01-1980,CPLPR0708C,9567850788,LastMile##123
+CORA18118A0167,Jini V J,Driver,OTR,COKD,Shopping,jinivjcokd21@gmail.com,14-10-1985,B2DPJ21782,9048854625,LastMile##123
+CORA18118A0190,Arun A,Driver,OTR,TRVM,Shopping,aruna.trvmroute21@gmail.com,04-04-1997,BZLPA3133P,9747835969,LastMile##123
+CORA18118A0221,Shiju P Jose,Driver,OTR,TRVY,Shopping,shijups.trvyroute20@gmail.com,30-05-1977,CHQPJO428J,9961742018,LastMile##123
+CORA18118A0251,Justin Thomas,Driver,OTR,TRVY,Shopping,justint.trvyroute27@gmail.com,04-06-1995,CAPPT7523J,8943210742,LastMile##123
+CORA18118A0280,Anoop Nair,Driver,OTR,TRVY,Shopping,anoopv.trvyroute35@gmail.com,02-09-1987,AMYPN2584N,8547905225,LastMile##123
+CORA18118A0302,Anil S,Driver,OTR,TVCY,Shopping,aniltvcy@gmail.com,23-04-1968,FJJPS7408R,0,LastMile##123
+CORA18118A0308,Manikuttan S,Driver,OTR,TVCY,Shopping,manikuttantvcy@gmail.com,01-02-1987,OPNPS9358M,8848471029,LastMile##123
+CORA18118A0312,Radhin R,Driver,OTR,TVCY,Shopping,radhintvcy@gmail.com,02-03-1992,CPLPR1022K,6235092202,LastMile##123
+CORA18118A0313,Rahul Raj Rj,Driver,OTR,TVCY,Shopping,rahultvcy@gmail.com,14-02-1997,CFBPJ9042R,9074037976,LastMile##123
+CORA18118A0314,Rajeev R,Driver,OTR,TVCY,Shopping,rajeevtvcy@gmail.com,30-01-1997,NMSPS1828F,8075082178,LastMile##123
+CORA18118A0317,Renjith R,Driver,OTR,TVCY,Shopping,renjithtvcy@gmail.com,30-05-1987,DYSPR8862L,8921030687,LastMile##123
+CORA18118A0318,Roshan Antony,Driver,OTR,TVCY,Shopping,roshantvcy@gmail.com,08-11-1985,MFHPS1927Q,9074037975,LastMile##123
+CORA18118A0321,Shaji Mk,Driver,OTR,TVCY,Shopping,skumartvcy@gmail.com,02-03-1969,GVPPS3477D,9895426050,LastMile##123
+CORA18118A0324,Sreejith V Nair,Driver,OTR,TVCY,Shopping,sreejithvtvcy@gmail.com,18-05-1988,GHPPS3774H,8848640080,LastMile##123
+CORA18118A0326,Suraj S,Driver,OTR,TVCY,Shopping,surajtvcy@gmail.com,10-05-1980,GOGPS0875K,6238814088,LastMile##123
+CORA18118A0344,Sujith K,Driver,OTR,TVCY,Shopping, sujithtvcy@gmail.com,21-07-1982,AFWPV0092E,0,LastMile##123
+CORA18118A0345,Vishnu O K,Driver,OTR,TVCY,Shopping,vishnuoktvcy@gmail.com,07-08-1996,HRHPK3457E,7907622379,LastMile##123
+CORA18118A0346,Riyas Muhammed Nassar,Driver,OTR,TVCY,Shopping,riyasamzntvcy@gmail.com,17-05-1984,BRVPN3907N,9567263401,LastMile##123
+CORA18118A0350,Aneesh Ck,Dispatcher,UTR,ALWD,UTR,aneeshckalwd@gmail.com,20-01-1987,BPKPA6779N,8943483774,LastMile##123
+CORA18118A0362,Ananthu Nandakumar,Driver,OTR,TRVY,Shopping,anandhu.trvyroute28@gmail.com,07-05-1997,CNQPN0788M,8590529491,LastMile##123
+CORA18118A0368,Gamasin S,Driver,OTR,TVCY,Shopping,gamasintvcy@gmail.com,10-05-1980,CHHPG3939C,0,LastMile##123
+CORA18118A0371,Vineesh B,Driver,OTR,TRVM,Shopping,vineshkrishnantrvm@gmail.com,15-05-1981,AJEPV4098A,7012003359,LastMile##123
+CORA18118A0374,Rahul Raj,Driver,OTR,TRVY,Shopping,rahulrsjtrvy@gmail.com,25-11-1989,AVZPR4644P,7155651143,LastMile##123
+CORA18118A0380,Muhammed Masjood A,Driver,OTR,TVCY,Shopping,mmasjoodatvcy@gmail.com,30-05-1985,DEDPM1841D,9895077176,LastMile##123
+CORA18118A0382,Vishnu S,Driver,OTR,TVCY,Shopping,vishnutvcy97@gmail.com,05-08-1997,OLCPS6300C,7356730011,LastMile##123
+CORA18118A0425,Al Milad M,Driver,OTR,TVCY,Shopping,almiladtvcy@gmail.com,21-11-1997,FEFPM3287D,7356287177,LastMile##123
+CORA18118A0427,Anu Gireesh,Driver,OTR,TVCY,Shopping,anugireeshtvcy@gmail.com,19-07-1988,CBWPG1829E,7012849113,LastMile##123
+CORA18118A0431,Gopakumar M S,Driver,OTR,TVCY,Shopping,gopakumarmstvcy@gmail.com,17-05-1977,LFDPS1883N,0,LastMile##123
+CORA18118A0440,Sumesh A D,Driver,OTR,TVCY,Shopping,adsumeshtvcy21@gmail.com,22-04-1992,CMDPD3517J,9074791585,LastMile##123
+CORA18118A0441,Syam Sankar V S,Driver,OTR,TVCY,Shopping,syamsankartvcy@gmail.com,14-11-1989,HDIPS7006C,0,LastMile##123
+CORA18118A0446,Najuma S,Dispatcher,UTR,TVCY,UTR,najumanaji06@gmail.com,15-05-1991,ILNPS2714H,6238579480,LastMile##123
+CORA18118A0455,Joel Raju,Dispatcher,UTR,COKD,UTR,joelpaulraju@gmail.com,13-11-1996,EXVPR7954A,6238901933,LastMile##123
+CORA18118A0461,Anshad,Driver,OTR,TVCY,Shopping,anshad.anshad19@gmail.com,20-07-1994,DAXPA2614C,9633251293,LastMile##123
+CORA18118A0462,Faisal Rasheed,Driver,OTR,COKD,Shopping,faisal999rasheedcokd@gmail.com,06-10-1996,DRJPR8323A,8891127310,LastMile##123
+CORA18118A0465,Hakim A R,Driver,OTR,ALWD,Shopping,hakimalwd@gmail.com,27-03-1988,AGJPH0510P,9846207683,LastMile##123
+CORA18118A0466,Akshay Subash,Sorter,UTR,COKD,UTR,akshayalwd@gmail.com,16-10-2000,EHMPA2185M,9061751827,LastMile##123
+CORA18118A0467,Vivek Dinesh,Driver,OTR,ALWD,Shopping,vivekdineshalwd@gmail.com,17-12-2000,FQJPD7981M,7034913715,LastMile##123
+CORA18118A0472,Yazar Arafath,Driver,OTR,TVCY,Shopping,yazar.arafath@yahoo.com,16-12-1990,AWGPY3117Q,8606191313,LastMile##123
+CORA18118A0477,Nandhu Mohanan,Driver,OTR,TRVM,Shopping,nandhutrvm@gmail.com,16-05-1998,FXCPM2618J,8113953506,LastMile##123
+CORA18118A0486,Sajan A S,Driver,OTR,ALWD,Shopping,sajanalwd@gmail.com,18-05-1976,BODPS3272L,7025313386,LastMile##123
+CORA18118A0491,Mini Saji,House Keeper,UTR,TRVY,UTR,minitrvy@gmail.com,01-01-1980,GUXPM9530A,9645318778,LastMile##123
+CORA18118A0496,Arun Muraleedharan,Driver,OTR,TRVM,Shopping,arunmtrvm@gmail.com,12-08-1999,FWDPM3213D,8921742465,LastMile##123
+CORA18118A0498,Lalitha Mv,Driver,OTR,TRVM,Shopping,lalithatrvm@gmail.com,28-05-1974,BHSPV8478B,9495265448,LastMile##123
+CORA18118A0499,Sunitha T K,Driver,OTR,TRVM,Shopping,sunithatrvm@gmail.com,20-04-1973,JNSPS8673D,9562454332,LastMile##123
+CORA18118A0503,Sasikala L R,Driver,OTR,TRVM,Shopping,sasikalatrvm@gmail.com,31-05-1978,CCZPR7431R,9400817863,LastMile##123
+CORA18118A0504,Sujitha S,Driver,OTR,TRVM,Shopping,sujithatrvm@gmail.com,20-02-1987,CNWPB6567L,9744845838,LastMile##123
+CORA18118A0517,Vishnu J,Driver,OTR,TRVM,Shopping,vishnujtrvm@gmail.com,30-05-1993,BEEPJ7810Q,9895218606,LastMile##123
+CORA18118A0518,Fakrudheen T V,Driver,OTR,TVCY,Shopping,fakrudheenbeemapally@gmail.com,15-03-1992,BXUPT0293A,0,LastMile##123
+CORA18118A0525,Vishal Kumar,Driver,OTR,TRVM,Shopping,vishaltrvm@gmail.com,09-01-1993,LONPK1978R,8848262887,LastMile##123
+CORA18118A0526,Athul F,Supervisor,UTR,TRVY,UTR,athulftrvy@gmail.com,20-04-1993,BKTPA8630E,9645839492,LastMile##123
+CORA18118A0527,Yadu Krishnan Kv,Driver,OTR,TRVY,Shopping,yadutrvy@gmail.com,09-11-1998,LRDPK4807N,9061375273,LastMile##123
+CORA18118A0528,Shibu S,Driver,OTR,TVCY,Shopping,shibustvcy@gmail.com,01-01-1979,ELHPS4349E,9847210298,LastMile##123
+CORA18118A0535,Binoy Benny,Driver,OTR,ALWD,Shopping,bennybinoy35@gmail.com,08-01-2000,EMVPB0369E,7012937216,LastMile##123
+CORA18118A0553,Suresh B Kumar,Supervisor,UTR,COKD,UTR,cordrilatm@gmail.com,29-11-1992,EXEPS7242P,9841518478,LastMile##123
+CORA18118A0557,Anandhu Muraleedharan,Driver,OTR,TRVM,Shopping,anandhumtrvm@gmail.com,27-10-1996,ETGPM2557F,8075190735,LastMile##123
+CORA18118A0558,Anuraj Mt,Driver,OTR,TRVY,Shopping,anurajtrvy@gmail.com,11-11-1994,BWCPT2315L,9656713871,LastMile##123
+CORA18118A0559,Tharish Haneefa,Driver,OTR,PNKA,Fresh,tharishmore@gmail.com,26-01-1988,AYTPH0660C,9645849358,LastMile##123
+CORA18118A0575,Jayamani B,Driver,OTR,TRVM,Shopping,jayatrvm@gmail.com,06-05-1970,CMFPB1421B,9446439072,LastMile##123
+CORA18118A0577,Ajul Mohammed Ma,Driver,OTR,COKD,Shopping,ajulmohammed4@gmail.com,24-09-1994,DSBPA5317N,9544364601,LastMile##123
+CORA18118A0580,Rohith V Saju,Driver,OTR,COKD,Shopping,rohith6280@gmail.com,14-07-1994,GYTPS9713M,9074346442,LastMile##123
+CORA18118A0592,Cinto Dominic,Dispatcher,UTR,TVCY,UTR,cintodominiccora@gmail.com,05-10-2001,HXWPD2331F,7034893044,LastMile##123
+CORA18118A0609,Ajith Pramod,Driver,OTR,TRVY,Shopping,ajithpramodtrvm@gmail.com,21-09-1998,FUIPP6405F,8606048542,LastMile##123
+CORA18118A0633,Maijo Augustine,Driver,OTR,PNKP,Fresh,maijomaijoaugustin@gmail.com,01-05-2001,ENPPA2539L,7593039746,LastMile##123
+CORA18118A0635,Aswin B,Driver,OTR,PNK1,Fresh,aswinbmore@gmail.com,10-06-1999,EBLPB6782E,7736313127,LastMile##123
+CORA18118A0637,Tinto Johnson,Driver,OTR,PNKV,Fresh,tintomore111@gmail.com,05-07-1996,COIPJ7395M,8593974093,LastMile##123
+CORA18118A0640,Gragil V G,Driver,OTR,PNKE,Fresh,gragilmore@gmail.com,01-01-1996,DXIPG7023R,7736434857,LastMile##123
+CORA18118A0643,Nisamudheen A,Driver,OTR,PNKV,Fresh,nisamudheenmore@gmail.com,24-10-1993,BYZPA5635F,8330056989,LastMile##123
+CORA18118A0644,Jubil P,Driver,OTR,PNKE,Fresh,jubilpmore@gmail.com,29-06-1990,EGYPP6472B,7902254526,LastMile##123
+CORA18118A0647,Aneesh N A,Driver,OTR,PNKV,Fresh,aneeshnamore@gmail.com,11-04-1984,ANNPA1799E,6238924382,LastMile##123
+CORA18118A0651,Shivin Xavier,Driver,OTR,PNKE,Fresh,shivinmore997@gmail.com,15-12-1997,AAHPX9107C,8136935519,LastMile##123
+CORA18118A0653,Sudheesh Kumar,Driver,OTR,PNK1,Fresh,sudheesh8405@gmail.com,23-05-1999,KKLPS2977F,9895583974,LastMile##123
+CORA18118A0655,Ambily Suresh,Driver,OTR,ALWD,Shopping,ambilyalwd@gmail.com,19-09-1977,HZWPS2395A,9048004595,LastMile##123
+CORA18118A0670,Janaki,House Keeper,UTR,COKD,UTR,janaki456@gmail.com,10-04-1963,BOAPJ7031M,9747940164,LastMile##123
+CORA18118A0672,Ajith Kumar Ts,Sorter,UTR,TRVM,UTR,ajithkumartstrvm@gmail.com,01-11-2022,PZUPS3282N,7306582254,LastMile##123
+CORA18118A0673,Divya Joseph,HR,UTR,PNKE,UTR,mathew.divya1@gmail.com,13-03-1983,CFKPJ8603P,9544923504,LastMile##123
+CORA18118A0681,Sabeer N,Sorter,UTR,TVCY,UTR,smuhammad455@gmail.com,07-05-1989,CCCPN6827L,8089933350,LastMile##123
+CORA18118A0689,Sahil N S,Driver,OTR,PNKP,Fresh,nssahilmore@gmail.com,02-07-1996,NKVPS2338B,7034420516,LastMile##123
+CORA18118A0690,Prasanth K S,Driver,OTR,PNKV,Fresh,prasanthkscokd@gmail.com,26-07-1992,LVCPS0764B,9526125658,LastMile##123
+CORA18118A0691,Akash Sabu,Driver,OTR,PNK1,Fresh,akashsabumore@gmail.com,11-03-1998,KJHPS7845M,9847388905,LastMile##123
+CORA18118A0692,Anas P K,Driver,OTR,PNKE,Fresh,anaspkmore@gmail.com,24-12-1988,EPKPK9485L,9605460204,LastMile##123
+CORA18118A0707,Shebin Chacko,Driver,OTR,TRVY,Shopping,shebintrvy@gmail.com,25-01-2001,CVGPC7251Q,7306487680,LastMile##123
+CORA18118A0712,Sreeraj Sivan,Sorter,UTR,ALWD,UTR,sreerajsivan46@gmail.com,10-12-1999,MRLPS7105N,7736030452,LastMile##123
+CORA18118A0717,Michael Antony,Sorter,UTR,COKD,UTR,michaelantony5657@gmail.com,21-06-1997,DXXPA1482D,6238076931,LastMile##123
+CORA18118A0724,Tharunjith Thampi,Driver,OTR,ALWD,Shopping,tharunalwd@gmail.com,21-01-1992,BSHPT3745D,9946121172,LastMile##123
+CORA18118A0728,Nijilkrishna M S,Sorter,UTR,ALWD,UTR,nijilkrishna12@gmail.com,24-11-2000,OZUPS7004D,8330016185,LastMile##123
+CORA18118A0729,Muhammed Farhan T S,Sorter,UTR,ALWD,UTR,muhammedfarhan771@gmail.com,20-03-2001,NYNPS1017M,7034989476,LastMile##123
+CORA18118A0731,Kelvin K Wilson,Team Lead,UTR,TRVM,UTR,kelvintrvm@gmail.com,06-02-1998,AHEPW3461G,8129408436,LastMile##123
+CORA18118A0742,Hyderali Km,Driver,OTR,ALWD,Shopping,hyderalikmm@gmail.com,04-02-1970,AMSPH8080M,9847030052,LastMile##123
+CORA18118A0743,Muhammed Shafi Pm,Driver,OTR,COKD,Shopping,shaficokd@gamil.com,22-10-1996,FAQPM9843C,7736863141,LastMile##123
+CORA18118A0747,Najeeb Cm,Driver,OTR,COKD,Shopping,najeebcm4u@gmail.com,02-05-1974,AEGPN3562C,9846012121,LastMile##123
+CORA18118A0749,Adarsh Mohan,Driver,OTR,COKD,Shopping,adarshmohan8898@gmail.com,08-08-1998,HZVPM0021C,7356203745,LastMile##123
+CORA18118A0755,Jim Daniel,Team Lead,UTR,COKD,UTR,jimdaniel1998@gmail.com,16-09-1998,HLZPD1911A,9544263622,LastMile##123
+CORA18118A0758,Eldhose Ck,Driver,OTR,COKD,Shopping,eldhock59@gmail.com,18-03-1995,ACMPE9748B,8086390353,LastMile##123
+CORA18118A0760,Komalam,House Keeper,UTR,TRVM,UTR,komalamtrvm@gmail.com,01-01-1965,FWKPK1918J,7306632337,LastMile##123
+CORA18118A0763,Staphyn Martin,Driver,OTR,ALWD,Shopping,staphynmartin@gmail.com,01-02-1998,EDXPM8637R,8921148820,LastMile##123
+CORA18118A0769,Nabil K N,Driver,OTR,COKD,Shopping,nabilkncokd@gmail.com,14-08-2002,CHMPN8042G,9633688048,LastMile##123
+CORA18118A0771,Joel Jude,Sorter,UTR,COKD,UTR,joeljude2410@gmail.com,24-10-2004,CRIPJ6236N,7907149761,LastMile##123
+CORA18118A0774,Kishor E P,Driver,OTR,PNKA,Fresh,kishorepmore@gmail.com,01-04-1975,AYUPK8743J,8129526986,LastMile##123
+CORA18118A0775,Jerin K.J,Driver,OTR,PNK1,Fresh,jerinkjmore@gmail.com,15-10-1994,BKBPJ4821J,0,LastMile##123
+CORA18118A0780,Noufal M S,Driver,OTR,ALWD,Shopping,noufal molathan333@gmail.com,03-04-1982,CZUPS1616R,9847806908,LastMile##123
+CORA18118A0791,Yesudas Mobatt,Sorter,UTR,COKD,UTR,yesudasmobattujames@gmail.com,24-03-1998,BRWPJ9939F,7736271558,LastMile##123
+CORA18118A0796,Rojin Km,Team Lead,UTR,COKD,UTR,rojinkm666@gmail.com,15-10-1998,HUMTP4592R,8606256979,LastMile##123
+CORA18118A0797,Anas Muhammed A S,Dispatcher,UTR,ALWD,UTR,anasmuhammedcr7lover@gmail.com,18-02-2002,RDPPS1070F,7034109169,LastMile##123
+CORA18118A0798,Syamkumar K S,Driver,OTR,PNK1,Fresh,syamksmore@gmail.com,18-11-1995,HGDPS4852N,9656241724,LastMile##123
+CORA18118A0800,Renjith,Driver,OTR,PNKA,Fresh,0,19-04-1986,BKFPC7601B,9072065304,LastMile##123
+CORA18118A0801,Nandhu Prasannakumar,Driver,OTR,TRVM,Shopping,nandhuptrvm@gmail.com,13-03-1998,HDEPP6060D,7025634852,LastMile##123
+CORA18118A0802,Sijin Chacko,Dispatcher,UTR,TRVY,UTR,sijinchacko500@gmail.com,19-08-2000,CDHPC9328K,7902514875,LastMile##123
+CORA18118A0807,Mohammed K D,Driver,OTR,COKD,Shopping,saheerzid007@gmail.com,11-01-1997,ESWPD0812B,7594008909,LastMile##123
+CORA18118A0808,Nizar H,Driver,OTR,COKD,Shopping,nisarkhcokd@gmail.com,11-02-1976,BEZPN5547M,8129429940,LastMile##123
+CORA18118A0810,Ranjith K,Driver,OTR,COKD,Shopping,ranjithmalu1993@gmail.com,22-05-1992,FMAPK4088K,7012957369,LastMile##123
+CORA18118A0812,Abdul Manaf K U,Driver,OTR,ALWD,Shopping,manafmanu994@gmail.com,31-05-1996,COPPA4545B,6238740169,LastMile##123
+CORA18118A0813,Nikhil K N,Driver,OTR,COKD,Shopping,nikhilnizar98@gmail.com,28-02-1998,BRBPN9405R,9562202332,LastMile##123
+CORA18118A0819,Samuel Manu,Driver,OTR,PNKP,Fresh,smanumore@gmail.com,21-11-1996,HEBPM8848L,8848811953,LastMile##123
+CORA18118A0820,Ibad V T,Driver,OTR,PNKV,Fresh,ibadvtmore@gmail.com,01-10-2001,CDOPT2383L,7306553170,LastMile##123
+CORA18118A0821,Sulthan Ibrahim Badhusha K A,Driver,OTR,PNKV,Fresh,badhushamore@gmail.com,06-08-2000,LTAPS4060C,8891601807,LastMile##123
+CORA18118A0834,Thouseef Muhammed,Driver,OTR,PNKE,Fresh,thouseefcokd@gmail.com,17-04-2003,0,0,LastMile##123
+CORA18118A0835,Suhail S S,Driver,OTR,COKD,Shopping,suhailcokd317@gmail.com,25-01-1996,0,0,LastMile##123
+CORA18118A0836,Arya A C,Dispatcher,UTR,ALWD,UTR,acarya432@gamil.com,01-06-1998,0,0,LastMile##123
+CORA18118A0837,Aibi Aslija Ps,Dispatcher,UTR,ALWD,UTR,aibiaslijaps@gmail.com,06-11-2000,0,0,LastMile##123
+CORA18118A0839,Jeena Joshi,Driver,OTR,ALWD,Shopping,jeenasooraj@gmail.com,16-12-1994,0,0,LastMile##123
+CORA18118A0840,Sikkandar V M,Driver,OTR,VIVI,Shopping,yosikku@gmail.com,11-04-1977,0,0,LastMile##123
+CORA18118A0841,Savitha E S,Driver,OTR,ALWD,Shopping,savitharajan007@gmail.com,16-02-1991,0,0,LastMile##123
+CORA18118A0847,Abinand,Driver,OTR,PNKA,Fresh,0,04-11-1998,0,0,LastMile##123
+CORA18118A0848,Shaiju M S,Driver,OTR,TRVM,Shopping,shaijums1trvm@gmail.com,03-11-1992,0,0,LastMile##123
+CORA18118A0849,Sujith S Nair,Dispatcher,UTR,TRVY,UTR,sujithsnairtrvm@gmail.com,11-12-1998,0,0,LastMile##123
+CORA18118A0853,Shijith M,Driver,OTR,COKD,Shopping,shijith756@gmail.com,10-03-1998,GIBPM5814D,6235404215,LastMile##123
+CORA18118A0854,Vibin V,Driver,OTR,COKD,Shopping,vibinvibi077@gmail.com,04-10-1989,0,7902984623,LastMile##123
+CORA18118A0855,Shaji S O E,Driver,OTR,COKD,Shopping,shajioesmail@gmail.com,06-03-1967,BDVPS9977H,9946151557,LastMile##123
+CORA18118A0859,Job Chacko,Team Lead,UTR,COKD,UTR,jobchacko7890@gmail.com,23-04-2001,CYFPC9299G,8606910292,LastMile##123
+CORA18118A0866,Sujith S S,Driver,OTR,ALWD,Shopping,sujithsurendran104@gmail.com,18-01-2000,KZVPS8427P,8157945740,LastMile##123
+CORA18118A0868,Subhash C M,Driver,OTR,ALWD,Shopping,subhashcm159@gmail.com,15-10-1985,BCVPC5630A,8281757817,LastMile##123
+CORA18118A0877,Albin B Wilson,Team Lead,UTR,COKD,UTR,instalbin24@gamil.com ,24-06-2001,0,9497534263,LastMile##123
+CORA18118A0878,Sreehari V U,Dispatcher,UTR,ALWD,UTR,sreeharivu17@gmail.com,18-06-2001,MRLPS7202Q,7736441042,LastMile##123
+CORA18118A0884,Blesson Sam,Driver,OTR,TRVY,Shopping,blessonsam46@gmail.com ,14-03-1999,JAEPS5903R,9656505568,LastMile##123
+CORA18118A0886,Badarudeen M S,Driver,OTR,ALWD,Shopping,badarudeen974@gmail.com,09-03-1974,PURPS4306B,9846983169,LastMile##123
+CORA18118A0889,Shanavas K N,Driver,OTR,ALWD,Shopping,shanujinu1997@gmail.com ,15-06-1989,0,6282331885,LastMile##123
+CORA18118A0890,Vyshak S M,Driver,OTR,ALWD,Shopping,vyshakmuraleedharan5@gmail.com,17-12-1995,BFSPV9806B,8075195748,LastMile##123
+CORA18118A0892,Baiju P O,Driver,OTR,ALWD,Shopping,piptriyabajinpulln@gmal.com,06-05-1969,BALPB5922N,9388482681,LastMile##123
+CORA18118A0896,Niyas R B,Driver,OTR,PNKP,Fresh,niyasrbcokd@gmail.com,08-02-2000,GPVPB1069E,9745535379,LastMile##123
+CORA18118A0897,Sreejith A K,Driver,OTR,COKD,Shopping,sreejithakcokd@gmail.com,07-12-2004,NIJPK9140M,8129681790,LastMile##123
+CORA18118A0902,Abinas V M,Driver,OTR,COKD,Shopping,abinascokd@gmail.com,08-05-1994,ESXPM4839N,9895687347,LastMile##123
+CORA18118A0917,Jobin T,Dispatcher,UTR,TRVM,UTR,jobintrvm@gmail.com,04-10-1998,CCFPT2366F,7025354818,LastMile##123
+CORA18118A0919,Vishak S Nair,Sorter,UTR,TRVM,UTR,vyshaktrvm@gmail.com,06-07-2004,DCTPN5870H,9496601437,LastMile##123
+CORA18118A0921,Vimal Raj A,Supervisor,UTR,COKD,UTR,0,18-10-1994,0,0,LastMile##123
+CORA18118A0922,Sujith Cm,Driver,OTR,PNKE,Fresh,sujithcmmore@gmail.com,22-05-1993,JQLPS2028L,8089355643,LastMile##123
+CORA18118A0924,David Jithin George,Driver,OTR,PNKE,Fresh,davidjithinmore@gmail.com,08-12-1994,BZHPG5072P,9061725174,LastMile##123
+CORA18118A0925,Geevan S.S,Driver,OTR,PNTV,Fresh,geevankumarmore@gmail.com,21-11-1991,EDAPS9116L,8075116562,LastMile##123
+CORA18118A0930,Harish H P,Driver,OTR,PNTU,Fresh,harishhpmore@gmail.com,08-10-2002,BLOPH4484D,8943494525,LastMile##123
+CORA18118A0931,Vinod S,Driver,OTR,PNTT,Fresh,vinods12more@gmail.com,04-03-1975,AIYPV3767H,7907117266,LastMile##123
+CORA18118A0938,Muhammed Rayyan S,Driver,OTR,PNTM,Fresh,muhammedrayyansmore@gmail.com,19-12-2003,FZLPR6086Q,9562418747,LastMile##123
+CORA18118A0940,Neeraj B S Ram,Driver,OTR,PNTM,Fresh,neeraj1more@gmailm.com,15-09-2002,FJXPR9498N,6282341988,LastMile##123
+CORA18118A0947,Anu Mh,Driver,OTR,ALWD,Shopping,ponnunni55@gmail.com,02-11-1980,AOLPH6818Q,9946112688,LastMile##123
+CORA18118A0948,Arunjith K S,Driver,OTR,ALWD,Shopping,arunjithks93@gmail.com,08-03-1993,HLJPS5168E,6282788496,LastMile##123
+CORA18118A0954,Robin Thomas,Driver,OTR,COKD,Shopping,robincokd@gmail.com,23-10-1997,COHPT5686Q,9074393847,LastMile##123
+CORA18118A0956,Akhilesh K M,Team Lead,UTR,COKD,UTR,akhileshkmohanan.am@gmail.com,05-04-1997,CYLPA9858D,6282622351,LastMile##123
+CORA18118A0958,Jacob Couth,Driver,OTR,COKD,Shopping,donalnokia2010@gmail.com,29-09-1984,BABPD4108G,0,LastMile##123
+CORA18118A0964,Anish Murali,Driver,OTR,TRVM,Shopping,anishtrvm@gmail.com,24-11-1992,DCPPM9718H,9961085506,LastMile##123
+CORA18118A0969,Nandhu Raj,Team Lead,UTR,COKD,UTR,nandhurajeev11@gmail.com,11-11-1999,DZDPR3893H,7356294359,LastMile##123
+CORA18118A0971,Rejin Lal Rv,Sorter,UTR,COKD,UTR,rejinlal0922@gmail.com,06-07-1990,DLXPR9862Q,9995129450,LastMile##123
+CORA18118A0985,Ajmal Muhammed A S,Driver,OTR,VIVI,Shopping,ajmalmuhammed2004@gmail.com,01-10-2004,0,8301086941,LastMile##123
+CORA18118A0986,Sabeer K A,Driver,OTR,PNKA,Fresh,sabeerkamorepnk@gmail.com,29-09-1985,HBXPS1105M,9061247286,LastMile##123
+CORA18118A0988,Salman Shamar,Driver,OTR,PNKP,Fresh,salmanshamarmore@gmail.com,28-01-2003,PVGPS1329A,8891383919,LastMile##123
+CORA18118A0990,Rajesh Kumar T,Driver,OTR,PNTT,Fresh,rajesht14666more@gmail.com,31-05-1982,AZWPR3091F,9633530630,LastMile##123
+CORA18118A0995,Abdulla A,Driver,OTR,PNTM,Fresh,abdullamore7025@gmail.com,02-07-2004,EUZPA7347R,7025388105,LastMile##123
+CORA18118A0996,Nazeen N.N,Driver,OTR,PNTV,Fresh,nazeenmore@gmail.com,11-05-1989,AQSPN5852D,9746182413,LastMile##123
+CORA18118A0997,Abhijith R B,Driver,OTR,PNTS,Fresh,abhijithrbmore@gmail.com,03-05-1997,DZMPB6634P,9746723783,LastMile##123
+CORA18118A1000,Sanju Manikandan M C,Driver,OTR,PNTS,Fresh,sanjuser222@gmail.com,22-12-1998,COKPC5213B,7907976671,LastMile##123
+CORA18118A1001,Sanju Kumar S,Driver,OTR,PNTU,Fresh,sanjukumars1more@gmail.com,15-01-1999,OQLPS3218F,8086514996,LastMile##123
+CORA18118A1003,Soorya Narayanan P,Dispatcher,UTR,TVCY,UTR,surya956764@gmail.com,01-07-1999,HJQPP7594Q,7907846822,LastMile##123
+CORA18118A1004,Joewin S,Dispatcher,UTR,TVCY,UTR,joewinsunny97@gmail.com,09-10-2000,MNSPS3217A,9790346085,LastMile##123
+CORA18118A1011,Mohammed Rafi S,Driver,OTR,COKD,Shopping,mraficokd@gmail.com,02-03-1994,0,9567370071,LastMile##123
+CORA18118A1013,Soorya Suresh,Sorter,UTR,ALWD,UTR,ssoorya522@gmail.com,23-08-2002,0,9846489610,LastMile##123
+CORA18118A1014,Sheela Jayan,House Keeper,UTR,ALWD,UTR,0,01-01-1970,0,9961147944,LastMile##123
+CORA18118A1019,Hari Krishnan P,Driver,OTR,TRVY,Shopping,ambadi.hari18@gmail.com,18-03-1999,0,7559067369,LastMile##123
+CORA18118A1020,Blessan T,Driver,OTR,PNTV,Fresh,blessanmore@gmail.com,22-05-2002,0,7356878316,LastMile##123
+CORA18118A1027,Saran Krishna P,Driver,OTR,PNTU,Fresh,saranmore07@gmail.com,07-08-2004,0,8606314467,LastMile##123
+CORA18118A1029,Bibin V,Driver,OTR,PNTK,Fresh,vbibin262@gmail.com,01-05-1997,0,8606231742,LastMile##123
+CORA18118A1033,Karthik M,Driver,OTR,PNTS,Fresh,karthikmore84@gmail.com,14-08-1984,0,9645857363,LastMile##123
+CORA18118A1034,Kiran B,Driver,OTR,PNTK,Fresh,kiransam891@gmail.com,15-11-2002,0,7907952418,LastMile##123
+CORA18118A1035,Nandhu B,Driver,OTR,PNTV,Fresh,nandhu1more@gmail.com,01-08-1998,0,8606118604,LastMile##123
+CORA18118A1036,Sarath Sr,Driver,OTR,PNKP,Fresh,sarathsrpnk@gmail.com,04-05-1994,0,9847990361,LastMile##123
+CORA18118A1044,Muneer Bakkar P,Sorter,UTR,COKD,Fresh,muneerbakkar735@gmail.com,07-10-1999,EMYPM4187G,7356890059,LastMile##123
+CORA18118A1046,Archana Krishnan,Dispatcher,UTR,COKD,UTR,archanakrishnan739@gmail.com,18-11-2001,MVYPK5321H,7994734221,LastMile##123
+CORA18118A1047,Sandeep U,Dispatcher,UTR,COKD,UTR,sachusandeep1997@gmail.com,18-02-1997,APEPU2365K,8281968634,LastMile##123
+CORA18118A1048,Jomon M J,Dispatcher,UTR,ALWD,UTR,jomonjose8129@gmail.com,29-07-2002,CHUPJ9661B,9846519687,LastMile##123
+CORA18118A1049,Prabin Kt,Dispatcher,UTR,TVCY,UTR,prabin9385@gmail.com,10-09-2001,CJLPT1430K,9385324130,LastMile##123
+CORA18118A1050,John Prijin J,Dispatcher,UTR,TVCY,UTR,johnprijin@gmail.com,08-03-1999,BYFPJ3820H,7094758527,LastMile##123
+CORA18118A1051,Jith Krishnan,Dispatcher,UTR,TRVM,UTR,jithkrishnankk@gmail.com,12-10-1986,EUWPK8331L,9895197444,LastMile##123
+CORA18118A1052,Jeffin P Javesh,Driver,OTR,TRVY,Shopping,jeffinpjaveshtrvm@gmail.com ,18-06-1996,CMUPJ2257C,9061938043,LastMile##123
+CORA18118A1054,Adithya S Nair,Dispatcher,UTR,TRVY,UTR,adhifrz1@gmail.com ,14-03-2000,CTGPN8134D,9961902937,LastMile##123
+CORA18118A1056,Jithin  N S,Driver,OTR,PNKA,Fresh,jithinnspnk@gmail.com,08-07-2000,LDPPS9781K,6238652225,LastMile##123
+CORA18118A1061,Syam Krishna Ks,Driver,OTR,COKD,Shopping,skrishnaks7@gmail.com,11-08-1998,KOZPS6223G,8848785288,LastMile##123
+CORA18118A1062,Sanjay Sagar,Driver,OTR,COKD,Shopping,sanjaysagar5612@gmail.com,26-10-2000,MLCPS7738A,6282635870,LastMile##123
+CORA18118A1063,Sakir Pk,Driver,OTR,COKD,Shopping,saakishakir17@gmail.com,26-09-2000,PHBPS6529F,9008710103,LastMile##123
+CORA18118A1065,Anaghesh E K,Driver,OTR,COKD,Shopping,ekanaghesh@gmail.com,20-11-2002,MONPK8663L,8921282501,LastMile##123
+CORA18118A1067,Soorij S M,Sorter,UTR,COKD,UTR, soorij72@gmail.com,05-08-2001,PTRPS5222R,8086569605,LastMile##123
+CORA18118A1069,Aswin K K,Sorter,UTR,ALWD,UTR,aswinkk414@gmail.com,23-09-2002,NNIPK8944K,8590805273,LastMile##123
+CORA18118A1070,Arun Lal L,Driver,OTR,TVCY,Shopping,al9155727@gmail.com,14-03-1996,AWXPL1258J,9074602036,LastMile##123
+CORA18118A1071,Akshay S,Dispatcher,UTR,PNTT,Fresh,akshayspnt@gmail.com,19-01-2001,DUVPA8022C,9207245045,LastMile##123
+CORA18118A1072,Arun A S,Driver,OTR,PNTM,Fresh,arunaspnt@gmail.com,06-10-1999,FMRPA4536B,9207005063,LastMile##123
+CORA18118A1073,Visakh H S Nair,Driver,OTR,PNTU,Fresh,visakhmorepntu@gmail.com,05-11-1999,ONPPS9659H,7356691738,LastMile##123
+CORA18118A1074,Nithish Kumar,Sorter,UTR,TRVM,UTR, nithishkumar51619@gmail.com,28-06-2003,OILPK2866K,9526177948,LastMile##123
+CORA18118A1075,Ananthu Santhosh,Driver,OTR,TRVM,Shopping,ananthusanthoshsanthosh1@gmail.com,11-08-2000,QWOPS6807M,9061190295,LastMile##123
+CORA18118A1077,Santhosh Cabraham,Driver,OTR,TRVM,Shopping,santhoshcapta@gmail.com,02-05-1988,CYEPA1883R,7902924917,LastMile##123
+CORA18118A1078,Sreejith Shaij,Driver,OTR,TRVM,Shopping,sreejith702577@gmail.com,16-10-1997,JZMPS7068N,7025775323,LastMile##123
+CORA18118A1079,Abhishek A B,Driver,OTR,PNTS,Fresh,abhishekabpnt@gmail.com,22-09-2002,HQSPB5799A,7594087638,LastMile##123
+CORA18118A1080,Vishnu Sm,Driver,OTR,COKD,Shopping,vsivan3712@gmail.com,11-04-2000,HWRPM8497K,7994633015,LastMile##123
+CORA18118A1081,Ansil V Zachariah ,Dispatcher,UTR,TRVM,UTR,anzilvz2002@gmail.com,02-04-2002,ADCPZ8509L,9495507436,LastMile##123
+CORA18118A1082,Fahad Nk,Dispatcher,UTR,ALWD,UTR,fahadnk567@gmail.com,01-08-2002,LEXPK9862C,9400477364,LastMile##123
+CORA18118A1084,Abdul Khayyoom Kallrakkal,Driver,OTR,COKD,Shopping,abdulkhayyoomcokd01@gmail.com,15-05-1970,IEJPK6427N,9846537996,LastMile##123
+CORA18118A1090,Hafish Ali N,Sorter,UTR,COKD,UTR,hafishali4@gmail.com,08-03-2002,CYMPN2290M,6282675362,LastMile##123
+CORA18118A1092,Lalkrishna Vinuraj,Driver,OTR,PNKE,Fresh,lalkrishnarokzz1@gmail.com ,04-04-2000,0,8139881645,LastMile##123
+CORA18118A1093,Anoop M,Driver,OTR,COKD,Shopping,anoop182mavara@gmail.com,06-11-1985,ETGPM2058R,9633906182,LastMile##123
+CORA18118A1094,Muhammed Munawir Kl,Sorter,UTR,COKD,UTR,munnasmuhammed007@gmail.com,10-03-2004,BNUPL1743H,7909199756,LastMile##123
+CORA18118A1095,Ajeesh P V,Driver,OTR,COKD,Shopping, ajeeshpvpayyanur@gmail.com,27-09-1986,CTHPA6776M,9567330149,LastMile##123
+CORA18118A1100,Athul A S,Driver,OTR,PNTS,Fresh,achu17960@gmail.com,27-06-2003,PZOPS7890N,7356788997,LastMile##123
+CORA18118A1101,Abdul Rahim N H,Driver,OTR,PNTV,Fresh,rahimlovable13786@gmail.com,15-05-1989,ASYPH7965D,8129433029,LastMile##123
+CORA18118A1102,Nikhil Babu,Driver,OTR,PNTM,Fresh,nandhunikhil643@gmail.com,09-04-1998,BUGPN8089M,8921110397,LastMile##123
+CORA18118A1103,Shijin S,Driver,OTR,PNTU,Fresh,shijinjoyal31@gmail.com,05-11-1998,KDFPS8477F,9809473767,LastMile##123
+CORA18118A1104,Vishnu R S Nair,Driver,OTR,PNTT,Fresh,vishnurs0001998@gmail.com,22-06-1998,KEMPS1281B,8714424386,LastMile##123
+CORA18118A1105,Vignesh S Nair,Driver,OTR,PNTT,Fresh,vignesh0079@gmail.com,06-05-1997,BQGPN0077B,7012368806,LastMile##123
+CORA18118A1108,Sadakath S,Driver,OTR,PNTK,Fresh,sadakathsalim89@gmail.com,25-05-1989,0,9207301029,LastMile##123
+CORA18118A1109,Nithin V B,Driver,OTR,PNTK,Fresh,nithinsurya542@gmail.com,12-05-1994,0,8075593544,LastMile##123
+CORA18118A1111,Alwin Jacob,Driver,OTR,PNKE,Fresh,alwin.alwinfire.jacob@gmail.com,11-08-1997,CVOPA2052H,7736732691,LastMile##123
+CORA18118A1113,Samuel Vincent,Driver,OTR,PNKE,Fresh,samuelvincent2001@gmail.com,09-03-2001,CQIPV6607L,9526772214,LastMile##123
+CORA18118A1114,Muhammed Jasim S,Dispatcher,UTR,COKD,UTR,jasimskp94@gmail.com,22-04-2004,QJSPS3463Q,9946751349,LastMile##123
+CORA18118A1115,Sreekanth V,Dispatcher,UTR,COKD,UTR,sreekanthwr98@gmail.com,02-09-1998,MSLPS6199H,8086086375,LastMile##123
+CORA18118A1116,Siddharth Ac,Dispatcher,UTR,COKD,UTR,siddharthacs777@gmail.com,18-11-2002,COHPC6884H,8138952230,LastMile##123
+CORA18118A1117,Aswanth Ks,Dispatcher,UTR,COKD,UTR,aswanthks162@gmail.com,08-06-2002,RVIPS6718B,9746608749,LastMile##123
+CORA18118A1118,Richu John,Dispatcher,UTR,COKD,UTR,richujohnky@gmail.com,07-10-2001,0,7306164963,LastMile##123
+CORA18118A1119,Mahin Manoj,Dispatcher,UTR,ALWD,UTR,mmahinmanoj@gmail.com,16-04-2003,0,6238084936,LastMile##123
+CORA18118A1120,Midhun  B Nair,Driver,OTR,PNTV,Fresh,midhunjithu1998@gmail.com,13-05-1998,FRRPM1460D,7907958291,LastMile##123
+CORA18118A1121,Muhammed Sadhique,Driver,OTR,PNTU,Fresh,ml.sadhique@gmail.com,29-04-1976,ACYPL7149R,9847333719,LastMile##123
+CORA18118A1122,Syam  S S,Driver,OTR,PNTT,Fresh,syam1986varkala@gmail.com,07-05-1986,MAHPS9046M,9562120510,LastMile##123
+CORA18118A1123,Syed Raffee,Driver,OTR,PNTM,Fresh,syedraficvra7@gmail.com,26-04-1975,BHJPR2068G,8089986838,LastMile##123
+CORA18118A1124,Shaju S,Driver,OTR,PNTV,Fresh,shajushaju604@gmail.com,21-05-2000,PSRPS9098J,7559967694,LastMile##123
+CORA18118A1125,Muhammed Femees N P,Driver,OTR,PNKQ,Fresh,femeezfaaz2@gmail.com,07-09-1999,GYEPP8976A,8891318367,LastMile##123
+CORA18118A1126,Vishnu V,Driver,OTR,PNKQ,Fresh,vishnuvpnkq@gmail.com,10-07-2004,CLWPV0204Q,9072668857,LastMile##123
+CORA18118A1127,Arun Kumar V K,Driver,OTR,PNKQ,Fresh,arunvk228@gmail.com,11-09-2001,OSQPK1217M,9895307831,LastMile##123
+CORA18118A1129,Lal Prasad T P,Driver,OTR,PNKQ,Fresh,laluprasadtp89@gmail.com,27-03-1988,FYWPP3674Q,9207998947,LastMile##123
+CORA18118A1130,Anasbin Sayid,Driver,OTR,PNKP,Fresh,anasbinsayid111@gmail.com,03-11-2001,EFTPA2323L,6238621212,LastMile##123
+CORA18118A1131,Anurag V,Driver,OTR,PNKE,Fresh,anurag.v894348@gmail.com,10-11-2002,CEHPV9222C,8943486454,LastMile##123
+CORA18118A1132,Safwan N P,Driver,OTR,PNKQ,Fresh,safwannppnkq@gmail.com,18-03-2005,IDWPP3269K,8714960608,LastMile##123
+CORA18118A1133,Nandakumar P C,Driver,OTR,PNKQ,Fresh,nandakumarpc11@gmail.com,11-03-1974,ADHPN6928N,9846976677,LastMile##123
+CORA18118A1134,Jeffin James,Driver,OTR,TRVM,Shopping,jeffyjeffin3112@gmail.com,31-12-1999,0,7559097561,LastMile##123
+CORA18118A1135,Farhadh C V,Driver,OTR,PNKQ,Fresh,farhadhcvpnkq@gmail.com,18-07-1999,AGJPF3304M,7025377176,LastMile##123
+CORA18118A1136,Navaneeth Rajesh,Driver,OTR,ALWD,Shopping,navaneethrajesh007@gmail.com,10-03-2004,GLJPR3304E,8590990522,LastMile##123
+CORA18118A1137,Nandhu Soman,Dispatcher,UTR,COKD,UTR,nandhusoms@gmail.com, 28/10/2002,PSJPS9876N,7306919695,LastMile##123
+CORA18118A1138,Adharsh Siju ,Dispatcher,UTR,COKD,UTR, adharshsiju007@gmail.com,12-01-2002,PXUPS8995G,8590055423,LastMile##123
+CORA18118A1139,Muhsin Younus,Sorter,UTR,COKD,UTR,muhsinsafee@gmail.com,18-08-2003,BOWPY8089L,9778346937,LastMile##123
+CORA18118A1140,Philiph George,Sorter,UTR,COKD,UTR,philippgeorge724@gmail.com ,21-06-2005,EMYPG6045R,8086398479,LastMile##123
+CORA18118A1141,Akhil As,Driver,OTR,PNTT,Fresh,akhilaspnt@gmail.com,13-09-1998,KQDPS6034K,8075179384,LastMile##123
+CORA18118A1142,Aneeshkumar A,Driver,OTR,PNTM,Fresh,aneeshkumarapntm@gmail.com,30-03-1994,CVKPA2763B,9562226607,LastMile##123
+CORA18118A1143,Nandhu Ks,Driver,OTR,PNTM,Fresh,nandhukspntm@gmail.com,30-03-1997,IFEPS0806H,8086019284,LastMile##123
+CORA18118A1144,Arun  Krishnan,Driver,OTR,PNTK,Fresh,arunkrishnanpntk@gmail.com,02-02-1992,JBHPK0800B,9656361114,LastMile##123
+CORA18118A1145,Kala Al,Driver,OTR,PNTU,Fresh,kalaalpntu@gmail.com,05-11-1991,MCAPK3424L,6282818098,LastMile##123
+CORA18118A1146,Seyyad Muhammad.A,Driver,OTR,PNTV,Fresh,seyyadmapntv@gmail.com,03-08-2002,QKJPS5155P,9633301027,LastMile##123
+CORA18118A1147,Sajeev  L. S ,Driver,OTR,PNTM,Fresh,sajeevlspntm@gmail.com,30-05-1984,CACPS7473M,7034340755,LastMile##123
+CORA18118A1148,Sreejith R,Driver,OTR,PNTS,Fresh,sreejithrpnts@gmail.com,15-05-1983,CAZPR0695F,8891632774,LastMile##123
+CORA18118A1149,Vaishakh R,Driver,OTR,PNTS,Fresh,vaishakhrpnts@gmail.com,21-11-1999,EYJPR8824J,8139825605,LastMile##123
+CORA18118A1150,Fuaad Saneen  K,Driver,OTR,PNKQ,Fresh,fuaadsaneenkpnkq@gmail.com,27-02-2002,AHKPF8860A,7510638429,LastMile##123
+CORA18118A1151,Navas Basheer,Driver,OTR,PNKQ,Fresh,tnavaspnkq@gmail.com,08-06-1991,AQPPN2415B,9061647289,LastMile##123
+CORA18118A1152,Milen Joseph,Driver,OTR,PNKA,Fresh,milanjosephpnk@gmail.com,27-08-1998,BRVPJ8578B,8129076746,LastMile##123
+CORA18118A1154,Sreehari K,Driver,OTR,PNKE,Fresh,sreeharipnke@gmail.com,18-11-1996,KFJPS4883F,8714868675,LastMile##123
+CORA18118A1155,Muhammed Ashique K N,Driver,OTR,PNKV,Fresh,ashiqueknpnk@gmail.com,28-11-2001,CKTPN7402E,8075134920,LastMile##123
+CORA18118A1156,Sudheesh K S,Driver,OTR,PNKP,Fresh,sudheeshkspnk@gmail.com,02-01-1983,OBNS8229F,9207277995,LastMile##123
+CORA18118A1157,Joseph  Baby,Driver,OTR,PNKE,Fresh,josephbabypnk@gmail.com,15-06-1993,DPZPB0467K,9526943201,LastMile##123
+CORA18118A1158,Gautham P S ,Driver,OTR,PNKA,Fresh,gautham.pnka@gmail.com,25-10-1996,CIQPG5203H,9746630273,LastMile##123
+CORA18118A1159,Devassy Naveen ,Driver,OTR,PNKE,Fresh,devassynaveenpnk@gmail.com,15-11-2004,DGOPN2975L,81380 09729,LastMile##123
+CORA18118A1160,Arun Seby ,Driver,OTR,ALWD,Shopping,arunseby@gmail.com,10-10-1999,BQPN1254L,8239200011,LastMile##123
+CORA18118A1161,Pramod C K,Driver,OTR,COKD,Shopping,pramodprathapandurga@gmail.com,18-01-1982,BLWPK9961N,9846203151,LastMile##123
+CORA18118A1162,Malavika V S,Dispatcher,UTR,COKD,UTR, malavikavs646@gmail.com,11-01-2002,GQTPM6175D,9539864355,LastMile##123
+CORA18118A1163,Aneegha K A,Dispatcher,UTR,COKD,UTR, aneeghaanu@gmail.com,30-04-2002,FPJPA4713K,8590644202,LastMile##123
+CORA18118A1164,Amalendhu S,Dispatcher,UTR,COKD,UTR, amalendhus131@gmail.com,18-03-2002,RILPS6281lK,7034373687,LastMile##123
+CORA18118A1166,Jabir A,Dispatcher,UTR,COKD,UTR,jabira313@gmail.com,11-02-1999,FKPPA3457R,8839374442,LastMile##123
+CORA18118A1167,Gokul  S,Sorter,UTR,COKD,UTR, gs4904967@gmail.com,10-04-1998,DMKPG8137F,9895519318,LastMile##123
+CORA18118A1168,Abin Raymond,Dispatcher,UTR,COKD,UTR, abyraymond.666@gmail.com,03-11-1994, FFPPR3200J,7994570188,LastMile##123
+CORA18118A1171,Vishnu P,Developer,UTR,KALA,UTR,vishnushaji431@gmail.com,27-10-2002,CDIPV5199J,7994689802,LastMile##123
+CORA18118A1172,Marvan V P,Developer,UTR,KALA,UTR,marvanvp6@gmail.com,01-05-2000,GNOPP5100B,6282471884,LastMile##123
+CORA18118A1174,Rayyan K.A,Junior HR,UTR,KALA,UTR,rayyanashraf225@gmail.com,23-04-2003,EYSPA0561C,8606382474,LastMile##123
+CORA18118A1176,Akshay K,Dispatcher,UTR,ALWD,UTR,akshaykashokann@gmail.com,09-05-1998,FKNPA6768P,9495404846,LastMile##123
+CORA18118A1177,Sajo John Thomas,Driver,OTR,TRVY,Shopping,sajojohnthomas7@gmail.com,22-09-2000,CKXPT4572K,6235372022,LastMile##123
+CORA18118A1178,Stalin S Thomas,Dispatcher,UTR,TRVY,UTR,stalinsthomas72@gmail.com,24-04-1999,BOOPT8203H,8157082561,LastMile##123
+CORA18118A1179,Karthik A,Driver,OTR,TVCY,Shopping,karthiktvcy@gmail.com,28-11-1997,FKDPA8249D,9020119708,LastMile##123
+CORA18118A1180,Vishnu B,Driver,OTR,TVCY,Shopping,vishnubaijutvcy@gmail.com,20-05-1992,BKNPV7876B,7736061687,LastMile##123
+CORA18118A1181,Saidu Saji,Driver,OTR,TVCY,Shopping,saidutvcy@gmail.com,26-03-1996,MGGPS0618N,8593878281,LastMile##123
+CORA18118A1182,Sajimon T S,Driver,OTR,TRVM,Shopping,sajimontrvm@gmail.com,24-03-1987,PMUPS7183H,9605456730,LastMile##123
+CORA18118A1183,Sudeep Sadasivan,Driver,OTR,TRVM,Shopping,sudeepsivan7899@gmail.com,23-07-1999,LVAPS4638A,9746173455,LastMile##123
+CORA18118A1184,Rufus  Bovas,Driver,OTR,PNTV,Fresh,rufasbovaspntv@gmail.com,31-05-2001,FRFPR3751G,9567195648,LastMile##123
+CORA18118A1185,Alan  Paul,Driver,OTR,PNTK,Fresh,alanpaulsaji098@gmail.com,07-07-1996,EHXPA9970G,8137944831,LastMile##123
+CORA18118A1186,Sibi  Santhosh,Driver,OTR,PNTV,Fresh,sibisanthosh35@gmail.com,14-07-1999,OPQPS3895E,8921738198,LastMile##123
+CORA18118A1187,Allwin Martin  Vaz,Driver,OTR,PNTT,Fresh,allwinmartinvaz@gmail.com,22-06-1995,BQHPA3054J,9188832774,LastMile##123
+CORA18118A1188,Akshay  T R,Driver,OTR,PNKE,Fresh,akshayreji25@gmail.com,16-03-1999,EAWPR7281G,9207565345,LastMile##123
+CORA18118A1189,Sreejith  C K,Driver,OTR,PNTT,Fresh,cksreejith70@gmail.com,15-11-1995,KKKPK0430C,9961542200,LastMile##123
+CORA18118A1190,Appala Raju Singinipalli,Driver,OTR,PNKP,Fresh,appalarajusinginipalli@gmail.com,24-10-1985,MRFPS3141G,7907291871,LastMile##123
+CORA18118A1191,Nidhin M J,Driver,OTR,PNTU,Fresh,nidhinvichu21@gmail.com,18-04-1999,BYDPN8994G,8089467316,LastMile##123
+CORA18118A1192,Abhiram S,Driver,OTR,PNTU,Fresh,abhiappu256@gmail.com,14-05-2002,PDFPS0528L,9895925078,LastMile##123
+CORA18118A1193,Aboobacker Swalih P,Driver,OTR,PNKV,Fresh,swalihnaju@email.com,14-12-2000,HDWPP3984A,8281142954,LastMile##123
+CORA18118A1194,Adil Gazar K M,Driver,OTR,PNK1,Fresh,adilgazar13122000@gmail.com,13-12-2000,GNHPM9193Q,9074198789,LastMile##123
+CORA18118A1195,Jickson Shaiju,Driver,OTR,PNKE,Fresh,jicksonshaijupnke@gmail.com,24-03-2002,NPUPS6706H,8129714882,LastMile##123
+CORA18118A1196,Rakesh  M,Driver,OTR,PNTT,Fresh,rakeshmpntt@gmail.com,14-03-1985,DFTPM9924Q,7012146792,LastMile##123
+CORA18118A1197,Amal Raj  V,Driver,OTR,PNKQ,Fresh,amal588822@gmail.com,08-03-2003,CHAPV1304H,7306523728,LastMile##123
+CORA18118A1198,Midhun  V,Driver,OTR,PNKQ,Fresh,vmidhun99@gmail.com,06-05-1990,AWAPV4683N,6238002176,LastMile##123
+CORA18118A1199,Jaimy V J ,Driver,OTR,PNKE,Fresh,jjaimy073@gmail.com,01-11-1976,AORPJ8034J,7907968775,LastMile##123
+CORA18118A1200,Ajay Ramesh,Driver,OTR,ALWD,Shopping,ajayramesh19@gmail.com,19-02-2001,ERCPA3693C,8594094186,LastMile##123
+CORA18118A1201,Arifudeen Pm,Driver,OTR,ALWD,Shopping,arifudeen4780@gmail.com,04-07-2002,HGJPP2135R,7034309211,LastMile##123
+CORA18118A1202,Arjun Prakash  Mp,Driver,OTR,ALWD,Shopping,arjunprakash6699@gmail.com,23-12-2000,DHOPA0026C,8590205441,LastMile##123
+CORA18118A1203,Muhammed Fahd T.N,Driver,OTR,ALWD,Shopping,muhammedfahd831@gmail.com,24-08-2005,DJRPN5502H,9846060410,LastMile##123
+CORA18118A1204,Ajmiya A,Dispatcher,UTR,ALWD,UTR,ajmiyaansari@gmail.com,03-01-2002,FNWPA1250E,9037579780,LastMile##123
+CORA18118A1205,Sreekumar A S ,Driver,OTR,ALWD,Shopping,sreekumaras85@gmail.com,28-05-1985,GLSPS9698H,9020675030,LastMile##123
+CORA18118A1206,Rayan Abdul Rahman,Driver,OTR,ALWD,Shopping,rayanabdulrahman2002@gmail.com,12-04-2002,GYNPR9291B,7356565001,LastMile##123
+CORA18118A1207,Mohamed Hisham,Dispatcher,UTR,ALWD,UTR, muhammedhisham835@gmail.com,13-11-1999,Not Available,7558970657,LastMile##123
+CORA18118A1208,Sumangaladevi  Ks,Dispatcher,UTR,COKD,UTR, devuzz456@gamil.com,19-08-2005,SGGPS5133E,8089042736,LastMile##123
+CORA18118A1209,Jinu Joseph ,Driver,OTR,COKD,Shopping, jinuvj91@gmail.com,29-07-1991,ASJPJ9614J,9746065775,LastMile##123
+CORA18118A1210,Akshay T S,Driver,OTR,COKD,Shopping,akshaylena13@gmail.com,14-01-1997,JAMPS4240B,9946915566,LastMile##123
+CORA18118A1211,Saifudheen M N,Driver,OTR,COKD,Shopping,saifudheenmn07@gmail.com,27-09-1993,AVGPN4640Q,9895949380,LastMile##123
+CORA18118A1212,Thangam S,Driver,OTR,COKD,Shopping, thangamsthangams432@gmail.com,11-08-2001,CRCPT4346M,9342969441,LastMile##123
+CORA18118A1213,Shinoj O E,Driver,OTR,COKD,Shopping, oeshinoj@gmail.com,22-10-1978,ECOPS2912B,7907974973,LastMile##123
+CORA18118A1214,Niyas N,Sorter,UTR,COKD,UTR,niyaspkd42@gmail.com,16-09-2001,DBLPN2948P,8943274068,LastMile##123
+CORA18118A1215,Akhildas  Varma A,Sorter,UTR,COKD,UTR,akhildasvarma96@gmail.com,06-12-1996,MLHPK7874G,7907923276,LastMile##123
+CORA18118A1216,Arun  V,Sorter,UTR,COKD,UTR,arunvarun5241@gmail.com,07-01-2000,CTTPV4554L,9207035241,LastMile##123
+CORA18118A1217,V Yadu Nandan,Dispatcher,UTR,COKD,UTR, yadunandan225@gmail.com,12-05-1999,CDYPV3042C,8075123312,LastMile##123
+CORA18118A1218,Vineeth  Varghese ,Driver,OTR,COKD,Shopping,vineethveliyath121@gmail.com ,17-02-1986,BANPV8956N ,9746257006,LastMile##123
+CORA18118ADMIN,Cora Admin,,,,Admin,,,,,12345
+CORA18118TE101,Saleem U B,Driver,OTR,PNK1,Fresh,saleemubpnk1@gmail.com,15-04-1967,AZXPB2112N,9072397896,LastMile##123
+CORA18118TE102,Saleeshk S,Driver,OTR,PNKV,Fresh,saleeshkspnkv@gmail.com,07-01-1997,MMXPS7258B,9400828321,LastMile##123
+CORA18118TE104,Cecil Francis,Driver,OTR,PNKP,Fresh,cecilfrancispnkp@gmail.com,12-09-1993,BODPC6646A,8089748110,LastMile##123
+CORA18118TE105,Muhammed Haris,Driver,OTR,PNKE,Fresh,harisnpnke@gmail.com,18-05-1996,COLPN0302P,9746528617,LastMile##123
+CORA18118TE106,Midhun T B,Driver,OTR,PNKP,Fresh,midhuntbpnkp@gmail.com,21-09-1996,EXEPB6498E,7306517042,LastMile##123
+CORA18118TE107,Vishnuvushnu. K,Driver,OTR,PNKO ,Fresh,vishnukpnko@gmail.com,12-10-1994,ODYPK9914G,7012263951,LastMile##123
+CORA18118TE108,Arunkumar A,Driver,OTR,PNKO ,Fresh,arunkumarapnko@gmail.com,01-09-1996,DLUPA0686J,9846012846,LastMile##123
+CORA18118TE109,Jithu Krishna B,Driver,OTR,PNKO ,Fresh,jithukrishnabpnko@gmail.com,22-05-2000,HAQPB9877P,8136949913,LastMile##123
+CORA18118TE110,Varun Prasad M K,Driver,OTR,PNKV,Fresh,varunprasadpnkv@gmail.com,13-07-2001,Ijspm1814f,9995230193,LastMile##123
+CORA18118TE111,Shadil Ibad,Driver,OTR,PNKE,Fresh,shadilibadpnke&@gmail.com,17-11-2002,PPNPS1369F,7034643980,LastMile##123
+CORA18118TE112,Safeer Nazar,Driver,OTR,PNKV,Fresh,safeernazarpnkv@gmail.com,18-06-1997,CCLPN8171N,8848032078,LastMile##123
+CORA18118TE113,Vishnu K P,Driver,OTR,PNKV,Fresh,vishnukppnkv@gamil.com,14-03-2000,BRIPV3263J,9074228075,LastMile##123
+CORA18118TE114,Gokul Raj D,Driver,OTR,PNKO ,Fresh,gokulrajdpnko@gmail.com,04-06-2001,IKEPD3685N,8606460669,LastMile##123
+CORA18118TE115,Prijith S,Driver,OTR,PNKO ,Fresh,prijiths129@gmail.com,17-11-2000,PXNPS6675G,7356756586,LastMile##123
+CORA18118TE116,Muhammed Anas N,Driver,OTR,PNKE,Fresh,anasnpnke@gmail.com,22-03-2000,COLPN0301Q,9567366105,LastMile##123
+CORA18118TE117,Arjun Shaji,Driver,OTR,PNKP,Fresh,arjunshajipnkp@gmail.com,30-12-1997,DBXPA9815A,8089570418,LastMile##123
+CORA18118TE118,Manu Krishnan,Driver,OTR,PNTT,Fresh,manukrishnanmspntt@gmail.com,03-06-1996,SOLPS7863L,8137887438,LastMile##123
+CORA18118TE119,Vyshak Suresh,Driver,OTR,PNKP,Fresh,vyshaksureshpnkp@gmail.com,16-10-2003,QQRPS2982G,8089292055,LastMile##123
+CORA18118TE120,Shifas K N,Driver,OTR,PNKP,Fresh,shifasknpnkp@gmail.com,13-11-2000,CITPN0609M,8113954707,LastMile##123
+CORA18118TE121,Sreejith Kumar S,Driver,OTR,PNTN,Fresh,sreejithkumarspntn@gmail.com,31-08-2002,RVVPS7230D,8301040769,LastMile##123
+CORA18118TE122,Cijo Reji,Driver,OTR,PNTN,Fresh,cijovrejipntn@gmail.com,16-11-2001,GACPR1117R,7994897428,LastMile##123
+CORA18118TE123,Tharun Rajappan,Driver,OTR,PNTN,Fresh,tharunpntn@gmail.com,27-11-1996,DZFPR1118K,9656617590,LastMile##123
+CORA18118TE124,Muhammed Ameer,Driver,OTR,PNKQ,Fresh,muhammedameerpnkq3@gmail.com,23-04-2000,MODPK9181D,7909112411,LastMile##123
+CORA18118TE125,Niyas N,Driver,OTR,PNKO ,Fresh,niyasnpnko@gmail.com,18-05-2001,DHOPN4883C,8921745830,LastMile##123
+CORA18118TE126,Vaishnav Suresh,Driver,OTR,PNTN,Fresh,vaishnavsureshpntn@gmail.com,09-03-2003,9.23E+11,8089983970,LastMile##123
+CORA18118TE127,Vishnu Viswanath,Driver,OTR,PNKG,Fresh,vishnuviswanathpnkg@gmail.com,29-10-1996,BLQPV9212B,9562528585,LastMile##123
+CORA18118TE128,CORA18118TE128,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE129,CORA18118TE129,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE130,CORA18118TE130,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE131,CORA18118TE131,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE132,CORA18118TE132,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE133,CORA18118TE133,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE134,CORA18118TE134,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE135,CORA18118TE135,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE136,CORA18118TE136,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE137,CORA18118TE137,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE138,CORA18118TE138,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE139,CORA18118TE139,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE140,CORA18118TE140,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE141,CORA18118TE141,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE142,CORA18118TE142,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE143,CORA18118TE143,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE144,CORA18118TE144,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE145,CORA18118TE145,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE146,CORA18118TE146,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE147,CORA18118TE147,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE148,CORA18118TE148,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE149,CORA18118TE149,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE150,Cora App & Web,Driver,OTR,KALA,Fresh,fortesting@cordrila.com,N/A,N/A,N/A,12345
+CORA18118TE151,Cora App & Web,Driver,OTR,KALA,Shopping,fortesting@cordrila.com,N/A,N/A,N/A,12345
+CORA18118TE152,Cora App & Web,Dispatcher,UTR,KALA,UTR,fortesting@cordrila.com,N/A,N/A,N/A,12345
+CORA18118TE153,CORA18118TE153,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE154,CORA18118TE154,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE155,CORA18118TE155,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE156,CORA18118TE156,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE157,CORA18118TE157,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE158,CORA18118TE158,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE159,CORA18118TE159,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE160,CORA18118TE160,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE161,CORA18118TE161,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE162,CORA18118TE162,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE163,CORA18118TE163,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE164,CORA18118TE164,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE165,CORA18118TE165,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE166,CORA18118TE166,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE167,CORA18118TE167,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE168,CORA18118TE168,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE169,CORA18118TE169,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE170,CORA18118TE170,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE171,CORA18118TE171,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE172,CORA18118TE172,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE173,CORA18118TE173,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE174,CORA18118TE174,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE175,CORA18118TE175,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE176,CORA18118TE176,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE177,CORA18118TE177,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE178,CORA18118TE178,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE179,CORA18118TE179,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE180,CORA18118TE180,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE181,CORA18118TE181,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE182,CORA18118TE182,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE183,CORA18118TE183,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE184,CORA18118TE184,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE185,CORA18118TE185,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE186,CORA18118TE186,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE187,CORA18118TE187,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE188,CORA18118TE188,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE189,CORA18118TE189,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE190,CORA18118TE190,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE191,CORA18118TE191,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE192,CORA18118TE192,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE193,CORA18118TE193,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE194,CORA18118TE194,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE195,CORA18118TE195,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE196,CORA18118TE196,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE197,CORA18118TE197,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE198,CORA18118TE198,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE199,CORA18118TE199,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123
+CORA18118TE200,CORA18118TE200,Driver,OTR,PNKG,Fresh,N/A,N/A,N/A,N/A,LastMile##123

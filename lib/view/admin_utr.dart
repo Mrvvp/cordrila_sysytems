@@ -254,16 +254,17 @@ class _AdminUtrPageState extends State<AdminUtrPage>
         color: Colors.grey,
       ),
     ),
+    
+   
     Text(
-      'Date: $formattedDate',
+      'Location: ${data['Location']}',
       style: const TextStyle(
         fontSize: 15, 
         color: Colors.grey,
       ),
     ),
-   
     Text(
-      'Location: ${data['Location']}',
+      'Date: $formattedDate',
       style: const TextStyle(
         fontSize: 15, 
         color: Colors.grey,
@@ -472,7 +473,7 @@ class _AdminUtrPageState extends State<AdminUtrPage>
 
   String _extractDate(Timestamp timestamp) {
     final dateTime = timestamp.toDate();
-    return DateFormat('dd-MM-yyyy').format(dateTime);
+    return DateFormat('yyyy-MM-dd hh:mm a').format(dateTime);
   }
 
   Future<void> _downloadDailyData(BuildContext context) async {
@@ -530,8 +531,8 @@ class _AdminUtrPageState extends State<AdminUtrPage>
       List<dynamic> headings = [
         'ID',
         'Name',
-        'Date',
         'Location',
+        'Date',
         
       ];
 

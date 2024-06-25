@@ -57,6 +57,7 @@ void main() async {
         ChangeNotifierProvider<UtrFilterProvider>(
           create: (_) => UtrFilterProvider(),
         ),
+        
       ],
       child: MyApp(remoteConfig: remoteConfig),
     ),
@@ -109,9 +110,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     if (state == AppLifecycleState.resumed) {
       // App resumed from background
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        Provider.of<ShoppingPageProvider>(context, listen: false).updateTimestamp();
-        Provider.of<FreshPageProvider>(context, listen: false).updateTimestamp();
-        Provider.of<UtrpageProvider>(context, listen: false).updateTimestamp();
+        Provider.of<ShoppingPageProvider>(context, listen: false).initializeData();
+        Provider.of<FreshPageProvider>(context, listen: false).initializeData();
+        Provider.of<UtrpageProvider>(context, listen: false).loadData();
       });
     }
   }
