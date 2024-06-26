@@ -335,146 +335,85 @@ class _ShoppingPageState extends State<ShoppingPage> {
                               height: 10,
                             ),
                             const Text(
-                              'Select Shift :',
+                              'Shift :',
                               style: TextStyle(
                                   fontSize: 15, fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(
                               height: 10,
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.45,
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      backgroundColor: appStateProvider
-                                              .disabledTimeSlots
-                                              .contains(
-                                                  'Morning (before 12 PM)')
-                                          ? Colors.grey
-                                          : Colors.blue,
-                                      elevation: 5,
-                                    ),
-                                    onPressed: appStateProvider
-                                            .disabledTimeSlots
-                                            .contains('Morning (before 12 PM)')
-                                        ? null
-                                        : () {
-                                            showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  title: Text(
-                                                      "Confirm Attendance"),
-                                                  content: Text(
-                                                      "Are you sure you want to mark attendance for Morning (before 12 PM)?"),
-                                                  actions: [
-                                                    TextButton(
-                                                      child: Text("Cancel"),
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                    ),
-                                                    TextButton(
-                                                      child: Text("Confirm"),
-                                                      onPressed: () {
-                                                        appStateProvider
-                                                            .setSelectedTimeSlot(
-                                                                'Morning (before 12 PM)');
-                                                        appStateProvider
-                                                            .markAttendance();
-                                                        appStateProvider
-                                                            .disableSelectedTimeSlot();
-                                                        Navigator.of(context)
-                                                            .pop(); // Close the dialog
-                                                      },
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            );
-                                          },
-                                    child: Text(
-                                      'Morning (before 12 PM)',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.bold),
-                                    ),
+                            SizedBox(
+                              child: DropdownButtonFormField<String>(
+                                value: appStateProvider.selectedTimeSlot,
+                                decoration: InputDecoration(
+                                  hintText: 'Select shift',
+                                   hintStyle:
+                                    TextStyle(color: Colors.grey.shade500),
+                                  filled: true,
+                                  fillColor: Colors.grey.shade200,
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 8),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide.none,
                                   ),
                                 ),
-                                SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.45,
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      backgroundColor: appStateProvider
-                                              .disabledTimeSlots
-                                              .contains('Evening (after 12 PM)')
-                                          ? Colors.grey
-                                          : Colors.blue,
-                                      elevation: 5,
-                                    ),
-                                    onPressed: appStateProvider
-                                            .disabledTimeSlots
-                                            .contains('Evening (after 12 PM)')
-                                        ? null
-                                        : () {
-                                            showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  title: Text(
-                                                      "Confirm Attendance"),
-                                                  content: Text(
-                                                      "Are you sure you want to mark attendance for Evening (after 12 PM)?"),
-                                                  actions: [
-                                                    TextButton(
-                                                      child: Text("Cancel"),
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                    ),
-                                                    TextButton(
-                                                      child: Text("Confirm"),
-                                                      onPressed: () {
-                                                        appStateProvider
-                                                            .setSelectedTimeSlot(
-                                                                'Evening (after 12 PM)');
-                                                        appStateProvider
-                                                            .markAttendance();
-                                                        appStateProvider
-                                                            .disableSelectedTimeSlot();
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            );
-                                          },
+                                items: appStateProvider.timeSlots
+                                    .map((String timeSlot) {
+                                  bool isDisabled = appStateProvider
+                                          .disabledTimeSlots
+                                          .contains(timeSlot) ||
+                                      appStateProvider
+                                          .isTimeSlotSelectedForToday(timeSlot);
+                                  return DropdownMenuItem<String>(
+                                    value: timeSlot,
                                     child: Text(
-                                      'Evening (after 12 PM)',
+                                      timeSlot,
                                       style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.bold),
+                                        color: isDisabled
+                                            ? Colors.grey
+                                            : Colors.black,
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              ],
+                                    enabled: !isDisabled,
+                                  );
+                                }).toList(),
+                                onChanged: (newValue) {
+                                  if (newValue != null) {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text("Confirm Attendance"),
+                                          content: Text(
+                                              "Are you sure you want to mark attendance for $newValue?"),
+                                          actions: [
+                                            TextButton(
+                                              child: Text("Cancel"),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                            TextButton(
+                                              child: Text("Confirm"),
+                                              onPressed: () {
+                                                appStateProvider
+                                                    .setSelectedTimeSlot(
+                                                        newValue);
+                                                appStateProvider
+                                                    .markAttendance();
+                                                Navigator.of(context)
+                                                    .pop(); // Close the dialog
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  }
+                                },
+                                isExpanded: true,
+                              ),
                             ),
                             const SizedBox(
                               height: 10,
@@ -610,26 +549,20 @@ class _ShoppingPageState extends State<ShoppingPage> {
                                 onPressed: appStateProvider
                                             .isWithinPredefinedLocation() &&
                                         appStateProvider.selectedTimeSlot !=
-                                            null
+                                            null &&
+                                        !appStateProvider
+                                            .isTimeSlotSelectedForToday(
+                                                appStateProvider
+                                                    .selectedTimeSlot!)
                                     ? () {
                                         if (_shipmentController.text.isEmpty ||
-                                            _mfnController.text.isEmpty ||
-                                            _pickupController.text.isEmpty) {
+                                            _pickupController.text.isEmpty ||
+                                            _mfnController.text.isEmpty) {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(
                                             const SnackBar(
                                               content: Text(
                                                   'Please fill in all fields'),
-                                            ),
-                                          );
-                                        } else if (appStateProvider
-                                                .selectedTimeSlot ==
-                                            null) {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            const SnackBar(
-                                              content: Text(
-                                                  'Please select your shift'),
                                             ),
                                           );
                                         } else {

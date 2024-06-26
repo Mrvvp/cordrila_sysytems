@@ -10,7 +10,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 class FreshPageProvider with ChangeNotifier {
   String? _selectedTimeSlot;
   final List<String> _timeSlots = [
-    '7 AM - 10 AM' , '10 AM - 1 PM','1 PM - 4 PM','4 PM - 7 PM','7 PM - 10 PM'
+    '7 AM - 10 AM', 
+    '10 AM - 1 PM',
+    '1 PM - 4 PM',
+    '4 PM - 7 PM',
+    '7 PM - 10 PM'
   ];
   List<String> _disabledTimeSlots = [];
   Timestamp _timestamp = Timestamp.now();
@@ -23,6 +27,10 @@ class FreshPageProvider with ChangeNotifier {
   Color get buttonColor => _isAttendanceMarked ? Colors.grey.shade200 : Colors.blue;
   Timestamp get timestamp => _timestamp;
   final TextEditingController timedateController = TextEditingController();
+   String _currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+  Map<String, String> _disabledSlotsWithDate = {};
+
+  
 
   FreshPageProvider() {
     initializeData();
@@ -106,7 +114,7 @@ class FreshPageProvider with ChangeNotifier {
 
   void markAttendance() {
     if (!_isAttendanceMarked) {
-      _isAttendanceMarked = true;
+      _isAttendanceMarked = false;
       _saveAttendanceMarkedDate();
       notifyListeners();
     }
@@ -118,15 +126,19 @@ class FreshPageProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void disableSelectedTimeSlot() {
+   void disableSelectedTimeSlot() {
     if (_selectedTimeSlot != null &&
         !_disabledTimeSlots.contains(_selectedTimeSlot)) {
       _disabledTimeSlots.add(_selectedTimeSlot!);
-      _saveDisabledTimeSlotsToPrefs();
+      _disabledSlotsWithDate[_selectedTimeSlot!] = _currentDate;
       notifyListeners();
     }
   }
-  
+
+  bool isTimeSlotSelectedForToday(String timeSlot) {
+    return _disabledSlotsWithDate[timeSlot] == _currentDate;
+  }
+   
 
   Position? _currentUserPosition;
 
@@ -157,7 +169,7 @@ class FreshPageProvider with ChangeNotifier {
     {'name':'PNKG','latitude': 9.584526, 'longitude': 76.547472, 'radius': 0.25},
     {'name':'PNKO','latitude': 8.879023, 'longitude': 76.609582 , 'radius': 0.25},
     {'name':'KALA1','latitude': 10.081877, 'longitude': 76.283371 , 'radius': 0.25},
-    {'name':'KALA','latitude': 10.064555, 'longitude': 76.322242, 'radius':0.20},
+    {'name':'KALA','latitude': 10.064555, 'longitude': 76.322242, 'radius':0.25},
       
 
        

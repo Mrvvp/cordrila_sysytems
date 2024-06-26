@@ -9,9 +9,9 @@ import 'package:cordrila_sysytems/view/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:package_info_plus/package_info_plus.dart';
+// import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 import 'controller/signinpage_provider.dart';
 import 'controller/user_attendence_provider.dart';
 import 'view/admin_shopping.dart';
@@ -21,7 +21,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await FlutterDownloader.initialize(debug: true);
-  await clearOldAppData();
+  // await clearOldAppData();
   FirebaseRemoteConfig remoteConfig = await setupRemoteConfig();
 
   runApp(
@@ -57,29 +57,28 @@ void main() async {
         ChangeNotifierProvider<UtrFilterProvider>(
           create: (_) => UtrFilterProvider(),
         ),
-        
       ],
       child: MyApp(remoteConfig: remoteConfig),
     ),
   );
 }
 
-Future<void> clearOldAppData() async {
-  final prefs = await SharedPreferences.getInstance();
-  final packageInfo = await PackageInfo.fromPlatform();
+// Future<void> clearOldAppData() async {
+//   final prefs = await SharedPreferences.getInstance();
+//   final packageInfo = await PackageInfo.fromPlatform();
 
-  String currentVersion = packageInfo.version;
-  String savedVersion = prefs.getString('app_version') ?? '';
+//   String currentVersion = packageInfo.version;
+//   String savedVersion = prefs.getString('app_version') ?? '';
 
-  if (currentVersion != savedVersion) {
-    // App has been updated, clear the old data
-    await prefs.clear(); // Clears all shared preferences
-    // Optionally clear other cached data here
+//   if (currentVersion != savedVersion) {
+//     // App has been updated, clear the old data
+//     await prefs.clear(); // Clears all shared preferences
+//     // Optionally clear other cached data here
 
-    // Save the new version
-    await prefs.setString('app_version', currentVersion);
-  }
-}
+//     // Save the new version
+//     await prefs.setString('app_version', currentVersion);
+//   }
+// }
 
 class MyApp extends StatefulWidget {
   final FirebaseRemoteConfig remoteConfig;
@@ -110,7 +109,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     if (state == AppLifecycleState.resumed) {
       // App resumed from background
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        Provider.of<ShoppingPageProvider>(context, listen: false).initializeData();
+        Provider.of<ShoppingPageProvider>(context, listen: false)
+            .initializeData();
         Provider.of<FreshPageProvider>(context, listen: false).initializeData();
         Provider.of<UtrpageProvider>(context, listen: false).loadData();
       });

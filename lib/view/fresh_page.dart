@@ -9,13 +9,13 @@ import 'package:cordrila_sysytems/controller/signinpage_provider.dart';
 import 'package:cordrila_sysytems/view/profilepage.dart';
 
 class FreshPage extends StatefulWidget {
-  const FreshPage ({super.key});
+  const FreshPage({super.key});
 
   @override
   _FreshPageState createState() => _FreshPageState();
 }
 
-class _FreshPageState extends State<FreshPage > {
+class _FreshPageState extends State<FreshPage> {
   final CollectionReference users =
       FirebaseFirestore.instance.collection('userdata');
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -335,345 +335,86 @@ class _FreshPageState extends State<FreshPage > {
                               height: 10,
                             ),
                             const Text(
-                              'Select Shift :',
+                              'Shift :',
                               style: TextStyle(
                                   fontSize: 15, fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(
                               height: 10,
                             ),
-                       Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.45,
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      backgroundColor: freshStateProvider
-                                              .disabledTimeSlots
-                                              .contains(
-                                                  '7 AM - 10 AM')
-                                          ? Colors.grey
-                                          : Colors.blue,
-                                      elevation: 5,
-                                    ),
-                                    onPressed: freshStateProvider
-                                            .disabledTimeSlots
-                                            .contains('7 AM - 10 AM')
-                                        ? null
-                                        : () {
-                                            showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  title: Text(
-                                                      "Confirm Attendance"),
-                                                  content: Text(
-                                                      "Are you sure you want to mark attendance for 7 AM - 10 AM?"),
-                                                  actions: [
-                                                    TextButton(
-                                                      child: Text("Cancel"),
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                    ),
-                                                    TextButton(
-                                                      child: Text("Confirm"),
-                                                      onPressed: () {
-                                                        freshStateProvider
-                                                            .setSelectedTimeSlot(
-                                                                '7 AM - 10 AM');
-                                                        freshStateProvider
-                                                            .markAttendance();
-                                                        freshStateProvider
-                                                            .disableSelectedTimeSlot();
-                                                        Navigator.of(context)
-                                                            .pop(); // Close the dialog
-                                                      },
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            );
-                                          },
-                                    child: Text(
-                                      '7 AM - 10 AM',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.bold),
-                                    ),
+                            SizedBox(
+                              child: DropdownButtonFormField<String>(
+                                value: freshStateProvider.selectedTimeSlot,
+                                decoration: InputDecoration(
+                                  hintText: 'Select shift',
+                                   hintStyle:
+                                    TextStyle(color: Colors.grey.shade500),
+                                  filled: true,
+                                  fillColor: Colors.grey.shade200,
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 8),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide.none,
                                   ),
                                 ),
-                                SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.45,
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      backgroundColor: freshStateProvider
-                                              .disabledTimeSlots
-                                              .contains('10 AM - 1 PM')
-                                          ? Colors.grey
-                                          : Colors.blue,
-                                      elevation: 5,
-                                    ),
-                                    onPressed: freshStateProvider
-                                            .disabledTimeSlots
-                                            .contains('10 AM - 1 PM')
-                                        ? null
-                                        : () {
-                                            showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  title: Text(
-                                                      "Confirm Attendance"),
-                                                  content: Text(
-                                                      "Are you sure you want to mark attendance for 10 AM - 1 PM?"),
-                                                  actions: [
-                                                    TextButton(
-                                                      child: Text("Cancel"),
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                    ),
-                                                    TextButton(
-                                                      child: Text("Confirm"),
-                                                      onPressed: () {
-                                                        freshStateProvider
-                                                            .setSelectedTimeSlot(
-                                                                '10 AM - 1 PM');
-                                                        freshStateProvider
-                                                            .markAttendance();
-                                                        freshStateProvider
-                                                            .disableSelectedTimeSlot();
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            );
-                                          },
+                                items: freshStateProvider.timeSlots
+                                    .map((String timeSlot) {
+                                  bool isDisabled = freshStateProvider
+                                          .disabledTimeSlots
+                                          .contains(timeSlot) ||
+                                      freshStateProvider
+                                          .isTimeSlotSelectedForToday(timeSlot);
+                                  return DropdownMenuItem<String>(
+                                    value: timeSlot,
                                     child: Text(
-                                      '10 AM - 1 PM',
+                                      timeSlot,
                                       style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.bold),
+                                        color: isDisabled
+                                            ? Colors.grey
+                                            : Colors.black,
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              ],
+                                    enabled: !isDisabled,
+                                  );
+                                }).toList(),
+                                onChanged: (newValue) {
+                                  if (newValue != null) {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text("Confirm Attendance"),
+                                          content: Text(
+                                              "Are you sure you want to mark attendance for $newValue?"),
+                                          actions: [
+                                            TextButton(
+                                              child: Text("Cancel"),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                            TextButton(
+                                              child: Text("Confirm"),
+                                              onPressed: () {
+                                                freshStateProvider
+                                                    .setSelectedTimeSlot(
+                                                        newValue);
+                                                freshStateProvider
+                                                    .markAttendance();
+                                                Navigator.of(context)
+                                                    .pop(); // Close the dialog
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  }
+                                },
+                                isExpanded: true,
+                              ),
                             ),
-                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.45,
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      backgroundColor: freshStateProvider
-                                              .disabledTimeSlots
-                                              .contains(
-                                                 '1 PM - 4 PM')
-                                          ? Colors.grey
-                                          : Colors.blue,
-                                      elevation: 5,
-                                    ),
-                                    onPressed: freshStateProvider
-                                            .disabledTimeSlots
-                                            .contains('1 PM - 4 PM')
-                                        ? null
-                                        : () {
-                                            showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  title: Text(
-                                                      "Confirm Attendance"),
-                                                  content: Text(
-                                                      "Are you sure you want to mark attendance for 1 PM - 4 PM?"),
-                                                  actions: [
-                                                    TextButton(
-                                                      child: Text("Cancel"),
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                    ),
-                                                    TextButton(
-                                                      child: Text("Confirm"),
-                                                      onPressed: () {
-                                                        freshStateProvider
-                                                            .setSelectedTimeSlot(
-                                                               '1 PM - 4 PM');
-                                                        freshStateProvider
-                                                            .markAttendance();
-                                                        freshStateProvider
-                                                            .disableSelectedTimeSlot();
-                                                        Navigator.of(context)
-                                                            .pop(); // Close the dialog
-                                                      },
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            );
-                                          },
-                                    child: Text(
-                                     '1 PM - 4 PM',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.45,
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      backgroundColor: freshStateProvider
-                                              .disabledTimeSlots
-                                              .contains('4 PM - 7 PM')
-                                          ? Colors.grey
-                                          : Colors.blue,
-                                      elevation: 5,
-                                    ),
-                                    onPressed: freshStateProvider
-                                            .disabledTimeSlots
-                                            .contains('4 PM - 7 PM')
-                                        ? null
-                                        : () {
-                                            showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  title: Text(
-                                                      "Confirm Attendance"),
-                                                  content: Text(
-                                                      "Are you sure you want to mark attendance for 4 PM - 7 PM?"),
-                                                  actions: [
-                                                    TextButton(
-                                                      child: Text("Cancel"),
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                    ),
-                                                    TextButton(
-                                                      child: Text("Confirm"),
-                                                      onPressed: () {
-                                                        freshStateProvider
-                                                            .setSelectedTimeSlot(
-                                                               '4 PM - 7 PM');
-                                                        freshStateProvider
-                                                            .markAttendance();
-                                                        freshStateProvider
-                                                            .disableSelectedTimeSlot();
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            );
-                                          },
-                                    child: Text(
-                                      '4 PM - 7 PM',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                              SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.45,
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      backgroundColor: freshStateProvider
-                                              .disabledTimeSlots
-                                              .contains('7 PM - 10 PM')
-                                          ? Colors.grey
-                                          : Colors.blue,
-                                      elevation: 5,
-                                    ),
-                                    onPressed: freshStateProvider
-                                            .disabledTimeSlots
-                                            .contains('7 PM - 10 PM')
-                                        ? null
-                                        : () {
-                                            showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  title: Text(
-                                                      "Confirm Attendance"),
-                                                  content: Text(
-                                                      "Are you sure you want to mark attendance for 7 PM - 10 PM?"),
-                                                  actions: [
-                                                    TextButton(
-                                                      child: Text("Cancel"),
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                    ),
-                                                    TextButton(
-                                                      child: Text("Confirm"),
-                                                      onPressed: () {
-                                                        freshStateProvider
-                                                            .setSelectedTimeSlot(
-                                                               '7 PM - 10 PM');
-                                                        freshStateProvider
-                                                            .markAttendance();
-                                                        freshStateProvider
-                                                            .disableSelectedTimeSlot();
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            );
-                                          },
-                                    child: Text(
-                                      '7 PM - 10 PM',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ),
                             const SizedBox(
                               height: 10,
                             ),
@@ -794,74 +535,93 @@ class _FreshPageState extends State<FreshPage > {
                             const SizedBox(
                               height: 50,
                             ),
-                            SizedBox(
+                           SizedBox(
                               width: MediaQuery.of(context).size.width,
                               height: 60,
                               child: ElevatedButton(
-  style: ElevatedButton.styleFrom(
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(10),
-    ),
-    backgroundColor: Colors.blue.shade700,
-    elevation: 5,
-  ),
-  onPressed: freshStateProvider.isWithinPredefinedLocation() && freshStateProvider.selectedTimeSlot != null
-      ? () {
-          if (_ordersController.text.isEmpty ||
-              _bagsController.text.isEmpty ||
-              _mopController.text.isEmpty) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Please fill in all fields'),
-              ),
-            );
-          } else {
-            // Show confirmation dialog
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text('Confirm Attendance Marking'),
-                  content: Text('Are you sure you want to mark attendance?'),
-                  actions: <Widget>[
-                    TextButton(
-                      child: Text('Cancel'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                    TextButton(
-                      child: Text('Confirm'),
-                      onPressed: () {
-                        Navigator.of(context).pop(); // Close dialog
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  backgroundColor: Colors.blue.shade700,
+                                  elevation: 5,
+                                ),
+                                onPressed: freshStateProvider
+                                            .isWithinPredefinedLocation() &&
+                                        freshStateProvider.selectedTimeSlot !=
+                                            null &&
+                                        !freshStateProvider
+                                            .isTimeSlotSelectedForToday(
+                                                freshStateProvider
+                                                    .selectedTimeSlot!)
+                                    ? () {
+                                        if (_ordersController.text.isEmpty ||
+                                            _bagsController.text.isEmpty ||
+                                            _mopController.text.isEmpty) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                              content: Text(
+                                                  'Please fill in all fields'),
+                                            ),
+                                          );
+                                        } else {
+                                          // Show confirmation dialog
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text(
+                                                    'Confirm Attendance Marking'),
+                                                content: Text(
+                                                    'Are you sure you want to mark attendance?'),
+                                                actions: <Widget>[
+                                                  TextButton(
+                                                    child: Text('Cancel'),
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                  ),
+                                                  TextButton(
+                                                    child: Text('Confirm'),
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop(); // Close dialog
 
-                        // Proceed with marking attendance and adding data
-                        addDetails();
-                        _clearShoppingFields();
-                        freshStateProvider.disableSelectedTimeSlot();
+                                                      // Proceed with marking attendance and adding data
+                                                      addDetails();
+                                                      _clearShoppingFields();
+                                                      freshStateProvider
+                                                          .disableSelectedTimeSlot();
 
-                        String employeeId = _idController.text;
-                        Navigator.of(context).push(
-                          CupertinoPageRoute(
-                            builder: (context) => AttendencePage(
-                              employeeId: employeeId,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                );
-              },
-            );
-          }
-        }
-      : null,
-  child: const Text(
-    'Mark Attendance',
-    style: TextStyle(color: Colors.white, fontSize: 17),
-  ),
-),
+                                                      String employeeId =
+                                                          _idController.text;
+                                                      Navigator.of(context)
+                                                          .push(
+                                                        CupertinoPageRoute(
+                                                          builder: (context) =>
+                                                              AttendencePage(
+                                                            employeeId:
+                                                                employeeId,
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        }
+                                      }
+                                    : null,
+                                child: const Text(
+                                  'Mark Attendance',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 17),
+                                ),
+                              ),
                             ),
                           ],
                         ),

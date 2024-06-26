@@ -23,6 +23,8 @@ class ShoppingPageProvider with ChangeNotifier {
   Color get buttonColor => _isAttendanceMarked ? Colors.grey.shade200 : Colors.blue;
   Timestamp get timestamp => _timestamp;
   final TextEditingController timedateController = TextEditingController();
+  String _currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+  Map<String, String> _disabledSlotsWithDate = {};
 
   ShoppingPageProvider() {
     initializeData();
@@ -122,9 +124,13 @@ class ShoppingPageProvider with ChangeNotifier {
     if (_selectedTimeSlot != null &&
         !_disabledTimeSlots.contains(_selectedTimeSlot)) {
       _disabledTimeSlots.add(_selectedTimeSlot!);
-      _saveDisabledTimeSlotsToPrefs();
+      _disabledSlotsWithDate[_selectedTimeSlot!] = _currentDate;
       notifyListeners();
     }
+  }
+
+  bool isTimeSlotSelectedForToday(String timeSlot) {
+    return _disabledSlotsWithDate[timeSlot] == _currentDate;
   }
   
 
