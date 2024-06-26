@@ -58,13 +58,13 @@ class FreshPageProvider with ChangeNotifier {
     }
   }
 
-  Future<void> _loadDisabledTimeSlotsFromPrefs() async {
+ Future<void> _loadDisabledTimeSlotsFromPrefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? disabledTimeSlotsJson = prefs.getString('disabled_time_slots');
     if (disabledTimeSlotsJson != null) {
       _disabledTimeSlots = List<String>.from(jsonDecode(disabledTimeSlotsJson));
     }
-    notifyListeners(); // Notify listeners to update UI after loading
+    notifyListeners();
   }
 
   Future<void> _saveDisabledTimeSlotsToPrefs() async {
@@ -76,7 +76,7 @@ class FreshPageProvider with ChangeNotifier {
   Future<void> _loadSelectedTimeSlotFromPrefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _selectedTimeSlot = prefs.getString('selected_time_slot');
-    notifyListeners(); // Notify listeners to update UI after loading
+    notifyListeners();
   }
 
   Future<void> _saveSelectedTimeSlotToPrefs() async {
@@ -103,7 +103,6 @@ class FreshPageProvider with ChangeNotifier {
       _isAttendanceMarked = true;
     } else {
       _isAttendanceMarked = false;
-      // Clear saved attendance date and disabled time slots if it's a new day
       prefs.remove('attendance_marked_date');
       prefs.remove('disabled_time_slots');
       _disabledTimeSlots.clear();
@@ -114,7 +113,7 @@ class FreshPageProvider with ChangeNotifier {
 
   void markAttendance() {
     if (!_isAttendanceMarked) {
-      _isAttendanceMarked = false;
+      _isAttendanceMarked = true;  // Corrected to mark attendance correctly
       _saveAttendanceMarkedDate();
       notifyListeners();
     }
@@ -126,17 +125,29 @@ class FreshPageProvider with ChangeNotifier {
     notifyListeners();
   }
 
-   void disableSelectedTimeSlot() {
+  void disableSelectedTimeSlot() {
     if (_selectedTimeSlot != null &&
         !_disabledTimeSlots.contains(_selectedTimeSlot)) {
       _disabledTimeSlots.add(_selectedTimeSlot!);
       _disabledSlotsWithDate[_selectedTimeSlot!] = _currentDate;
+      _saveDisabledTimeSlotsToPrefs();
       notifyListeners();
     }
   }
 
   bool isTimeSlotSelectedForToday(String timeSlot) {
     return _disabledSlotsWithDate[timeSlot] == _currentDate;
+  }
+
+  void resetDisabledTimeSlotsIfDateChanged() {
+    String todayDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    if (_currentDate != todayDate) {
+      _currentDate = todayDate;
+      _disabledTimeSlots.clear();
+      _disabledSlotsWithDate.clear();
+      _saveDisabledTimeSlotsToPrefs(); // Save the reset state
+      notifyListeners();
+    }
   }
    
 
