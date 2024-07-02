@@ -10,11 +10,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 class FreshPageProvider with ChangeNotifier {
   String? _selectedTimeSlot;
   final List<String> _timeSlots = [
-    '7 AM - 10 AM', 
-    '10 AM - 1 PM',
-    '1 PM - 4 PM',
-    '4 PM - 7 PM',
-    '7 PM - 10 PM'
+    '1.     7 AM - 10 AM', 
+    '2.   10 AM -  1 PM',
+    '3.     1 PM -  4 PM',
+    '4.     4 PM -  7 PM',
+    '5.     7 PM - 10 PM',
   ];
   List<String> _disabledTimeSlots = [];
   Timestamp _timestamp = Timestamp.now();
@@ -41,7 +41,7 @@ class FreshPageProvider with ChangeNotifier {
       await _loadDisabledTimeSlotsFromPrefs();
       await _loadSelectedTimeSlotFromPrefs();
         await _loadAttendanceState();
-
+        await getLocationName();
       await _getCurrentUserLocation();
 
       bool atWarehouse = isWithinPredefinedLocation();
@@ -180,7 +180,7 @@ class FreshPageProvider with ChangeNotifier {
     {'name':'PNKG','latitude': 9.584526, 'longitude': 76.547472, 'radius': 0.25},
     {'name':'PNKO','latitude': 8.879023, 'longitude': 76.609582 , 'radius': 0.25},
     {'name':'KALA1','latitude': 10.081877, 'longitude': 76.283371 , 'radius': 0.25},
-    {'name':'KALA','latitude': 10.064555, 'longitude': 76.322242, 'radius':0.25},
+    {'name':'KALA','latitude': 10.064555, 'longitude': 76.322242, 'radius':0.02},
       
 
        
@@ -257,10 +257,10 @@ class FreshPageProvider with ChangeNotifier {
       notifyListeners();
 
       showDialog(
-        barrierColor: Colors.blueGrey,
+        
         context: context,
         builder: (BuildContext context) {
-          return AlertDialog(
+          return AlertDialog(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             title: const Text(
               'You are far away from the location!!',
               style: TextStyle(
@@ -279,7 +279,7 @@ class FreshPageProvider with ChangeNotifier {
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
-                  _alertShown = true;
+                  
                 },
                 child: const Text(
                   'OK',

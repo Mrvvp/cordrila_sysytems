@@ -1,3 +1,4 @@
+
 import 'package:cordrila_sysytems/controller/user_attendence_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -169,8 +170,7 @@ class _AttendencePageState extends State<AttendencePage> {
                                                           color: Colors.black)),
                                                   Text('Time: ${user.time}',
                                                       style: const TextStyle(
-                                                          color: Colors.black)),
-                                                         
+                                                          color: Colors.black)),                 
                                                 ],
                                               ],
                                             ),

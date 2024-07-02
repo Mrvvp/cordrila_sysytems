@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SigninpageProvider with ChangeNotifier {
@@ -112,7 +114,50 @@ class SigninpageProvider with ChangeNotifier {
  
 
 
+  
+   dynamic _lastLoggedInTime;
+  dynamic get lastLoggedInTime => _lastLoggedInTime;
+
+  Future<void> saveLastLoggedInTime() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String formattedDateTime = DateFormat('yyyy-MM-dd hh:mm a').format(DateTime.now());
+    await prefs.setString('last_logged_in_time', formattedDateTime);
+    _lastLoggedInTime = formattedDateTime;
+    notifyListeners(); // Notify listeners after updating
   }
+
+  Future<void> loadLastLoggedInTime() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _lastLoggedInTime = prefs.getString('last_logged_in_time');
+    notifyListeners(); // Notify listeners after loading
+  }
+
+  Future<void> saveLastLoggedInTimeToFirebase(String userId) async {
+    final lastLoginTime = DateTime.now();
+    try {
+      final firestore = FirebaseFirestore.instance;
+      await firestore.collection('userdata').doc(userId).update({
+        'lastLoggedInTime': Timestamp.fromDate(lastLoginTime),
+      });
+      _lastLoggedInTime = lastLoginTime; // Update local variable
+      notifyListeners(); // Notify listeners after updating
+    } catch (e) {
+      throw Exception('Failed to save last logged-in time: $e');
+    }
+  }
+
+  Future<void> fetchLastLoggedInTimeFromFirebase(String userId) async {
+    try {
+      final firestore = FirebaseFirestore.instance;
+      final document = await firestore.collection('userdata').doc(userId).get();
+      if (document.exists) {
+        final timestamp = document.data()?['lastLoggedInTime'] as Timestamp?;
+        _lastLoggedInTime = timestamp?.toDate() ?? DateTime.now();
+        notifyListeners();
+      }
+    } catch (e) {
+      throw Exception('Failed to fetch last logged-in time: $e');
+    }
+  }
+ }
  
-
-

@@ -10,7 +10,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ShoppingPageProvider with ChangeNotifier {
   String? _selectedTimeSlot;
   final List<String> _timeSlots = [
-    'Morning (before 12 PM)' , 'Evening (after 12 PM)'
+    'Morning (before 12 PM)', 
+    'Evening (after 12 PM)',
+   
   ];
   List<String> _disabledTimeSlots = [];
   Timestamp _timestamp = Timestamp.now();
@@ -23,8 +25,10 @@ class ShoppingPageProvider with ChangeNotifier {
   Color get buttonColor => _isAttendanceMarked ? Colors.grey.shade200 : Colors.blue;
   Timestamp get timestamp => _timestamp;
   final TextEditingController timedateController = TextEditingController();
-  String _currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+   String _currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
   Map<String, String> _disabledSlotsWithDate = {};
+
+  
 
   ShoppingPageProvider() {
     initializeData();
@@ -35,7 +39,7 @@ class ShoppingPageProvider with ChangeNotifier {
       await _loadDisabledTimeSlotsFromPrefs();
       await _loadSelectedTimeSlotFromPrefs();
         await _loadAttendanceState();
-
+  await getLocationName();
       await _getCurrentUserLocation();
 
       bool atWarehouse = isWithinPredefinedLocation();
@@ -143,6 +147,7 @@ class ShoppingPageProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+   
 
   Position? _currentUserPosition;
 
@@ -162,8 +167,9 @@ class ShoppingPageProvider with ChangeNotifier {
     {'name': 'TVCY', 'latitude': 8.489644, 'longitude': 76.930294, 'radius': 0.1},
     {'name': 'TRVM', 'latitude': 9.32715, 'longitude': 76.72961, 'radius': 0.1},
     {'name': 'TRVY', 'latitude': 9.40751, 'longitude': 76.79594, 'radius': 0.1},
-    {'name':'KALA','latitude': 10.064555, 'longitude': 76.322242, 'radius':0.25},
-    {'name':'KALA1','latitude': 10.081877, 'longitude': 76.283371 , 'radius': 0.25},
+    {'name': 'KALA1', 'latitude': 10.081877, 'longitude': 76.283371, 'radius': 0.25},
+     {'name': 'KALA', 'latitude': 10.064555, 'longitude': 76.322242, 'radius': 0.02},
+      
 
        
   ];
@@ -239,10 +245,10 @@ class ShoppingPageProvider with ChangeNotifier {
       notifyListeners();
 
       showDialog(
-        barrierColor: Colors.blueGrey,
+        
         context: context,
         builder: (BuildContext context) {
-          return AlertDialog(
+          return AlertDialog(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             title: const Text(
               'You are far away from the location!!',
               style: TextStyle(
@@ -261,7 +267,7 @@ class ShoppingPageProvider with ChangeNotifier {
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
-                  _alertShown = true;
+                  
                 },
                 child: const Text(
                   'OK',
@@ -282,6 +288,12 @@ class ShoppingPageProvider with ChangeNotifier {
     notifyListeners();
   }
 }
+
+
+  
+
+
+  
 
 
   

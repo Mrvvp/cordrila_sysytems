@@ -27,22 +27,22 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider<SigninpageProvider>(
+        ChangeNotifierProvider<SigninpageProvider> (
           create: (context) => SigninpageProvider(),
         ),
-        ChangeNotifierProvider<ShoppingPageProvider>(
+        ChangeNotifierProvider<ShoppingPageProvider> (
           create: (context) => ShoppingPageProvider(),
         ),
-        ChangeNotifierProvider<UtrpageProvider>(
-          create: (context) => UtrpageProvider(),
+        ChangeNotifierProvider<UtrPageProvider> (
+          create: (context) => UtrPageProvider(),
         ),
-        ChangeNotifierProvider<FreshPageProvider>(
+        ChangeNotifierProvider<FreshPageProvider> (
           create: (context) => FreshPageProvider(),
         ),
-        ChangeNotifierProvider<AteendenceProvider>(
+        ChangeNotifierProvider<AteendenceProvider> (
           create: (context) => AteendenceProvider(),
         ),
-        ChangeNotifierProvider<ProfilepageProvider>(
+        ChangeNotifierProvider<ProfilepageProvider> (
           create: (context) => ProfilepageProvider(),
         ),
         ChangeNotifierProvider<AdminRequestProvider>(
@@ -112,7 +112,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         Provider.of<ShoppingPageProvider>(context, listen: false)
             .initializeData();
         Provider.of<FreshPageProvider>(context, listen: false).initializeData();
-        Provider.of<UtrpageProvider>(context, listen: false).loadData();
+        Provider.of<UtrPageProvider>(context, listen: false).initializeData();
       });
     }
   }

@@ -161,6 +161,7 @@ class _SigninPageState extends State<SigninPage> {
                                   bool isValid = await appStateProvider
                                       .validatePassword(userId, password);
                                   if (isValid) {
+                                    await appStateProvider.saveLastLoggedInTime();
                                     // Save user data upon successful authentication
                                     await appStateProvider.saveUserData(
                                         userId, password);

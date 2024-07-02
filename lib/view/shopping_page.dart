@@ -29,7 +29,13 @@ class _ShoppingPageState extends State<ShoppingPage> {
   @override
   void initState() {
     _initializeLocation();
+    _initializeLastLoggedInTime();
     super.initState();
+  }
+
+  void _initializeLastLoggedInTime() async {
+    final signinProvider = Provider.of<SigninpageProvider>(context, listen: false);
+    await signinProvider.loadLastLoggedInTime();
   }
 
   void _initializeLocation() async {
@@ -70,6 +76,7 @@ class _ShoppingPageState extends State<ShoppingPage> {
   @override
   Widget build(BuildContext context) {
     final appStateProvider = Provider.of<ShoppingPageProvider>(context);
+    final signinpageProvider = Provider.of<SigninpageProvider>(context);
     void addDetails() async {
       try {
         final data = {
@@ -81,6 +88,7 @@ class _ShoppingPageState extends State<ShoppingPage> {
           'Name': _nameController.text,
           'Date': appStateProvider.timestamp,
           'Location': _locationController.text,
+          'Login': signinpageProvider.lastLoggedInTime ?? '',
         };
         await users.add(data);
         Fluttertoast.showToast(
@@ -138,47 +146,51 @@ class _ShoppingPageState extends State<ShoppingPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 5),
-                          child: Row(
-                            children: [
-                              const Text(
-                                'Welcome',
-                                style: TextStyle(
+                        Row(
+                          children: [
+                            const Text(
+                              'Welcome',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            const Spacer(),
+                            IconButton(
+                                onPressed: () {
+                                  Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const ProfilePage()));
+                                },
+                                icon: const Icon(
+                                    CupertinoIcons.profile_circled,
                                     color: Colors.black,
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              const Spacer(),
-                              IconButton(
-                                  onPressed: () {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const ProfilePage()));
-                                  },
-                                  icon: const Icon(
-                                      CupertinoIcons.profile_circled,
-                                      color: Colors.black,
-                                      size: 40)),
-                              IconButton(
-                                  onPressed: () {
-                                    String employeeId = _idController.text;
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                AttendencePage(
-                                                  employeeId: employeeId,
-                                                )));
-                                  },
-                                  icon: const Icon(
-                                    CupertinoIcons.calendar,
-                                    color: Colors.black,
-                                    size: 40,
-                                  )),
-                            ],
-                          ),
+                                    size: 40)),
+                            IconButton(
+                                onPressed: () {
+                                  String employeeId = _idController.text;
+                                  Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              AttendencePage(
+                                                employeeId: employeeId,
+                                              )));
+                                },
+                                icon: const Icon(
+                                  CupertinoIcons.calendar,
+                                  color: Colors.black,
+                                  size: 40,
+                                )),
+                          ],
                         ),
+                        Text(
+                                'Logged In: ${signinpageProvider.lastLoggedInTime ?? 'No data available'}',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.red,
+                                    fontSize: 10),
+                              ),
                         SizedBox(
                           height: 10,
                         ),
@@ -383,7 +395,7 @@ class _ShoppingPageState extends State<ShoppingPage> {
                                     showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
-                                        return AlertDialog(
+                                        return AlertDialog(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                                           title: Text("Confirm Attendance"),
                                           content: Text(
                                               "Are you sure you want to mark attendance for $newValue?"),

@@ -28,12 +28,17 @@ class _UtrPageState extends State<UtrPage> {
   @override
   void initState() {
     _initializeLocation();
+    _initializeLastLoggedInTime();
     super.initState();
+  }
+  void _initializeLastLoggedInTime() async {
+    final signinProvider = Provider.of<SigninpageProvider>(context, listen: false);
+    await signinProvider.loadLastLoggedInTime();
   }
 
   void _initializeLocation() async {
-    final provider = Provider.of<UtrpageProvider>(context, listen: false);
-    await provider.loadData();
+    final provider = Provider.of<UtrPageProvider>(context, listen: false);
+    await provider.initializeData();
     _locationController.text = provider.getLocationName();
   }
 
@@ -48,12 +53,13 @@ class _UtrPageState extends State<UtrPage> {
   }
 
   Future<void> _refreshData() async {
-    Provider.of<UtrpageProvider>(context, listen: false).loadData();
+    Provider.of<UtrPageProvider>(context, listen: false).initializeData();
   }
 
   @override
   Widget build(BuildContext context) {
-    final utrStateProvider = Provider.of<UtrpageProvider>(context);
+    final utrStateProvider = Provider.of<UtrPageProvider>(context);
+    final signinpageProvider = Provider.of<SigninpageProvider>(context);
     Future<bool> addDetails() async {
       try {
         final data = {
@@ -62,6 +68,7 @@ class _UtrPageState extends State<UtrPage> {
           'Date': utrStateProvider.timestamp,
           'Location': _locationController.text,
           'Utr': _utrController.text,
+          'Login': signinpageProvider.lastLoggedInTime ?? '',
         };
         await users.add(data);
         Fluttertoast.showToast(
@@ -89,15 +96,15 @@ class _UtrPageState extends State<UtrPage> {
     }
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      bool isWithinWarehouse = utrStateProvider.isAtAnyStation();
-      bool dialogShown = utrStateProvider.dialogShown;
+      bool isWithinWarehouse = utrStateProvider.isWithinPredefinedLocation();
+      bool dialogShown = utrStateProvider.alertShown;
 
       // print('isWithinWarehouse: $isWithinWarehouse');
       // print('dialogShown: $dialogShown');
 
       if (!isWithinWarehouse && !dialogShown) {
         // print('Showing dialog');
-        utrStateProvider.showLocationDialog(context);
+        utrStateProvider.showLocationAlert(context);
       } else if (isWithinWarehouse && dialogShown) {
         // print('Hiding dialog');
         // appStateProvider.resetDialogShown();
@@ -108,7 +115,7 @@ class _UtrPageState extends State<UtrPage> {
       backgroundColor: Colors.white,
       body: RefreshIndicator(
         onRefresh: _refreshData,
-        child: utrStateProvider.isLoading
+        child: utrStateProvider.isFetchingData
             ? const Center(
                 child: CircularProgressIndicator(
                   color: Colors.blue,
@@ -123,47 +130,51 @@ class _UtrPageState extends State<UtrPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 5),
-                          child: Row(
-                            children: [
-                              const Text(
-                                'Welcome',
-                                style: TextStyle(
+                        Row(
+                          children: [
+                            const Text(
+                              'Welcome',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            const Spacer(),
+                            IconButton(
+                                onPressed: () {
+                                  Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const ProfilePage()));
+                                },
+                                icon: const Icon(
+                                    CupertinoIcons.profile_circled,
                                     color: Colors.black,
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              const Spacer(),
-                              IconButton(
-                                  onPressed: () {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const ProfilePage()));
-                                  },
-                                  icon: const Icon(
-                                      CupertinoIcons.profile_circled,
-                                      color: Colors.black,
-                                      size: 40)),
-                              IconButton(
-                                  onPressed: () {
-                                    String employeeId = _idController.text;
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                AttendencePage(
-                                                  employeeId: employeeId,
-                                                )));
-                                  },
-                                  icon: const Icon(
-                                    CupertinoIcons.calendar,
-                                    color: Colors.black,
-                                    size: 40,
-                                  )),
-                            ],
-                          ),
+                                    size: 40)),
+                            IconButton(
+                                onPressed: () {
+                                  String employeeId = _idController.text;
+                                  Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              AttendencePage(
+                                                employeeId: employeeId,
+                                              )));
+                                },
+                                icon: const Icon(
+                                  CupertinoIcons.calendar,
+                                  color: Colors.black,
+                                  size: 40,
+                                )),
+                          ],
                         ),
+                        Text(
+                                'Logged In: ${signinpageProvider.lastLoggedInTime ?? 'No data available'}',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.red,
+                                    fontSize: 10),
+                              ),
                         SizedBox(
                           height: 10,
                         ),
@@ -333,48 +344,53 @@ class _UtrPageState extends State<UtrPage> {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10),
                                   ),
-                                  backgroundColor:
-                                      utrStateProvider.isAttendanceMarked
-                                          ? Colors.grey
-                                          : Colors.blue,
+                                  backgroundColor: Colors.blue.shade700,
                                   elevation: 5,
                                 ),
-                                onPressed: utrStateProvider.isAttendanceMarked
-  ? null
-  : () {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Confirm Attendance"),
-            content: Text("Are you sure you want to mark attendance?"),
-            actions: [
-              TextButton(
-                child: Text("Cancel"),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              TextButton(
-                child: Text("Confirm"),
-                onPressed: () {
-                  Navigator.of(context).pop(); // Close the dialog
-                  utrStateProvider.markAttendance();
-                  addDetails();
-                  String employeeId = _idController.text;
-                  Navigator.of(context).push(
-                    CupertinoPageRoute(
-                      builder: (context) => AttendencePage(employeeId: employeeId),
-                    ),
-                  );
-                },
-              ),
-            ],
-          );
-        },
-      );
-    },
-
+                                onPressed: utrStateProvider.isAttendanceMarked ||
+                              !utrStateProvider.isWithinPredefinedLocation()
+                          ? null
+                                    : () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog( shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10)),
+                                              title: Text("Confirm Attendance"),
+                                              content: Text(
+                                                  "Are you sure you want to mark attendance?"),
+                                              actions: [
+                                                TextButton(
+                                                  child: Text("Cancel"),
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                ),
+                                                TextButton(
+                                                  child: Text("Confirm"),
+                                                  onPressed: () {
+                                                    Navigator.of(context)
+                                                        .pop(); // Close the dialog
+                                                    utrStateProvider
+                                                        .markAttendance();
+                                                    addDetails();
+                                                    String employeeId =
+                                                        _idController.text;
+                                                    Navigator.of(context).push(
+                                                      CupertinoPageRoute(
+                                                        builder: (context) =>
+                                                            AttendencePage(
+                                                                employeeId:
+                                                                    employeeId),
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      },
                                 child: Text(
                                   'Mark Attendance',
                                   style: TextStyle(
@@ -393,3 +409,5 @@ class _UtrPageState extends State<UtrPage> {
     );
   }
 }
+
+

@@ -29,7 +29,13 @@ class _FreshPageState extends State<FreshPage> {
   @override
   void initState() {
     _initializeLocation();
+     _initializeLastLoggedInTime();
     super.initState();
+  }
+
+  void _initializeLastLoggedInTime() async {
+    final signinProvider = Provider.of<SigninpageProvider>(context, listen: false);
+    await signinProvider.loadLastLoggedInTime();
   }
 
   void _initializeLocation() async {
@@ -70,6 +76,8 @@ class _FreshPageState extends State<FreshPage> {
   @override
   Widget build(BuildContext context) {
     final freshStateProvider = Provider.of<FreshPageProvider>(context);
+    final signinpageProvider = Provider.of<SigninpageProvider>(context);
+
     void addDetails() async {
       try {
         final data = {
@@ -81,6 +89,7 @@ class _FreshPageState extends State<FreshPage> {
           'Name': _nameController.text,
           'Date': freshStateProvider.timestamp,
           'Location': _locationController.text,
+          'Login': signinpageProvider.lastLoggedInTime ?? '',
         };
         await users.add(data);
         Fluttertoast.showToast(
@@ -138,47 +147,47 @@ class _FreshPageState extends State<FreshPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 5),
-                          child: Row(
-                            children: [
-                              const Text(
-                                'Welcome',
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              const Spacer(),
-                              IconButton(
-                                  onPressed: () {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const ProfilePage()));
-                                  },
-                                  icon: const Icon(
-                                      CupertinoIcons.profile_circled,
-                                      color: Colors.black,
-                                      size: 40)),
-                              IconButton(
-                                  onPressed: () {
-                                    String employeeId = _idController.text;
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                AttendencePage(
-                                                  employeeId: employeeId,
-                                                )));
-                                  },
-                                  icon: const Icon(
-                                    CupertinoIcons.calendar,
-                                    color: Colors.black,
-                                    size: 40,
-                                  )),
-                            ],
-                          ),
+                        Row(
+                          children: [
+                            const Text(
+                              'Welcome',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            const Spacer(),
+                            IconButton(
+                                onPressed: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ProfilePage()));
+                                },
+                                icon: const Icon(CupertinoIcons.profile_circled,
+                                    color: Colors.black, size: 40)),
+                            IconButton(
+                                onPressed: () {
+                                  String employeeId = _idController.text;
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => AttendencePage(
+                                            employeeId: employeeId,
+                                          )));
+                                },
+                                icon: const Icon(
+                                  CupertinoIcons.calendar,
+                                  color: Colors.black,
+                                  size: 40,
+                                )),
+                          ],
                         ),
+                         Text(
+                                'Logged In: ${signinpageProvider.lastLoggedInTime ?? 'No data available'}',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.red,
+                                    fontSize: 10),
+                              ),
+                            
                         SizedBox(
                           height: 10,
                         ),
@@ -347,8 +356,8 @@ class _FreshPageState extends State<FreshPage> {
                                 value: freshStateProvider.selectedTimeSlot,
                                 decoration: InputDecoration(
                                   hintText: 'Select shift',
-                                   hintStyle:
-                                    TextStyle(color: Colors.grey.shade500),
+                                  hintStyle:
+                                      TextStyle(color: Colors.grey.shade500),
                                   filled: true,
                                   fillColor: Colors.grey.shade200,
                                   contentPadding: EdgeInsets.symmetric(
@@ -384,6 +393,9 @@ class _FreshPageState extends State<FreshPage> {
                                       context: context,
                                       builder: (BuildContext context) {
                                         return AlertDialog(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
                                           title: Text("Confirm Attendance"),
                                           content: Text(
                                               "Are you sure you want to mark attendance for $newValue?"),
@@ -535,7 +547,7 @@ class _FreshPageState extends State<FreshPage> {
                             const SizedBox(
                               height: 50,
                             ),
-                           SizedBox(
+                            SizedBox(
                               width: MediaQuery.of(context).size.width,
                               height: 60,
                               child: ElevatedButton(
@@ -571,6 +583,10 @@ class _FreshPageState extends State<FreshPage> {
                                             context: context,
                                             builder: (BuildContext context) {
                                               return AlertDialog(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10)),
                                                 title: Text(
                                                     'Confirm Attendance Marking'),
                                                 content: Text(
