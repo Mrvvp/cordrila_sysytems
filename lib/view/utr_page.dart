@@ -107,8 +107,7 @@ class _UtrPageState extends State<UtrPage> {
         // print('Showing dialog');
         utrStateProvider.showLocationAlert(context);
       } else if (isWithinWarehouse && dialogShown) {
-        // print('Hiding dialog');
-        // appStateProvider.resetDialogShown();
+        
       }
     });
 
@@ -117,7 +116,7 @@ class _UtrPageState extends State<UtrPage> {
       body: RefreshIndicator(
         onRefresh: _refreshData,
         child: Consumer<UtrPageProvider>(
-        builder: (context, freshStateProvider, child) {
+        builder: (context, utrStateProvider, child) {
           if (utrStateProvider.isFetchingData) {
             return Center(child: CircularProgressIndicator(color: Colors.blue));
           } else {

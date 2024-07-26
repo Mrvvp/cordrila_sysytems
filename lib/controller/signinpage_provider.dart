@@ -118,7 +118,7 @@ class SigninpageProvider with ChangeNotifier {
   Future<bool> loadUserData() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      String? empCode = prefs.getString('EmpCodee');
+      String? empCode = prefs.getString('EmpCode');
       String? password = prefs.getString('Password');
       if (empCode != null && password != null) {
         return validatePassword(empCode, password);
