@@ -156,7 +156,7 @@ class FreshPageProvider with ChangeNotifier {
       'name': 'KALA',
       'latitude': 10.064555,
       'longitude': 76.322242,
-      'radius': 5
+      'radius': 0.25
     },
   ];
 
@@ -201,7 +201,7 @@ class FreshPageProvider with ChangeNotifier {
     return false;
   }
 
-  String getLocationName() {
+ String getLocationName() {
     String? locationName;
     if (_currentUserPosition != null) {
       for (var location in predefinedLocations) {
@@ -212,12 +212,11 @@ class FreshPageProvider with ChangeNotifier {
             _currentUserPosition!.longitude);
         if (distance <= location['radius']!) {
           locationName = location['name'];
-          break; // No need to continue looping if the location is found
+          break;
         }
       }
     }
-    return locationName ??
-        'Unknown'; // Return 'Unknown' if the user is not within any predefined location
+    return locationName ?? 'Unknown';
   }
 
   void resetAlertShown() {
