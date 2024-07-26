@@ -14,6 +14,10 @@ class UserDetail {
   final String? time;
   final String? shift;
   final String? location;
+  final String? gsf;
+  final String? helmet;
+  final String? lm;
+  final String? cash;
 
   UserDetail({
     required this.employeeId,
@@ -28,6 +32,10 @@ class UserDetail {
     this.time,
     this.shift,
     this.location,
+    this.gsf,
+    this.helmet,
+    this.lm,
+    this.cash,
   });
 }
 
@@ -65,6 +73,10 @@ class AteendenceProvider extends ChangeNotifier {
           time: data['Time']?.toString(),
           shift: data['shift']?.toString(),
           location: data['Location']?.toString(),
+          gsf: data['GSF']?.toString(),
+          helmet: data['Helmet Adherence']?.toString(),
+          lm: data['LM Read']?.toString(),
+          cash: data['Cash Submitted']?.toString(),
         );
       }).toList();
 

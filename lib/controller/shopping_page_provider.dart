@@ -1,50 +1,58 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ntp/ntp.dart';
+
 
 class ShoppingPageProvider with ChangeNotifier {
-  String? _selectedTimeSlot;
-  final List<String> _timeSlots = [
-    'Morning (before 12 PM)', 
-    'Evening (after 12 PM)',
-   
-  ];
-  List<String> _disabledTimeSlots = [];
-  Timestamp _timestamp = Timestamp.now();
-    bool _isAttendanceMarked = false;
 
-  String? get selectedTimeSlot => _selectedTimeSlot;
-  List<String> get timeSlots => _timeSlots;
-  List<String> get disabledTimeSlots => _disabledTimeSlots;
-  bool get isAttendanceMarked => _isAttendanceMarked;
-  Color get buttonColor => _isAttendanceMarked ? Colors.grey.shade200 : Colors.blue;
+
+  Timestamp _timestamp = Timestamp.now();
+  Position? _alternativeLocation;
+  bool _isHomeLocationSet = false;
+
+
   Timestamp get timestamp => _timestamp;
   final TextEditingController timedateController = TextEditingController();
-   String _currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-  Map<String, String> _disabledSlotsWithDate = {};
+
+
+  Position? get alternativeLocation => _alternativeLocation;
+  bool get isHomeLocationSet => _isHomeLocationSet;
+
+   String? _selectedYesNoOption;
+  final List<String> _yesNoOptions = ['Yes', 'No'];
+
+  String? get selectedYesNoOption => _selectedYesNoOption;
+  List<String> get yesNoOptions => _yesNoOptions;
+
+  String? _selectedDoneNoOption;
+  final List<String> _doneNoOptions = ['Yes', 'No' , 'Not Applicable'];
+
+  String? get selectedDoneNoOption => _selectedDoneNoOption;
+  List<String> get doneNoOptions => _doneNoOptions;
+
+  String? _selectedTrueFalseOption;
+  final List<String> _trueFalseOptions = ['Yes', 'No'];
+
+  String? get selectedTrueFalseOption => _selectedTrueFalseOption;
+  List<String> get trueFalseOptions => _trueFalseOptions;
 
   
 
-  ShoppingPageProvider() {
-    initializeData();
-  }
+  ShoppingPageProvider();
 
-  Future<void> initializeData() async {
+  Future<void> initializeData(String empCode) async {
   try {
-      await _loadDisabledTimeSlotsFromPrefs();
-      await _loadSelectedTimeSlotFromPrefs();
-        await _loadAttendanceState();
+   
   await getLocationName();
       await _getCurrentUserLocation();
-
-      bool atWarehouse = isWithinPredefinedLocation();
+      await  loadHomeLocationFromFirestore(empCode);
+      bool atWarehouse = isWithinPredefinedLocation() || isWithinAlternativeLocation();
       if (atWarehouse) {
-        await _saveDisabledTimeSlotsToPrefs();
+        
       }
 
       updateTimestamp();
@@ -56,96 +64,21 @@ class ShoppingPageProvider with ChangeNotifier {
     }
   }
 
- Future<void> _loadDisabledTimeSlotsFromPrefs() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? disabledTimeSlotsJson = prefs.getString('disabled_time_slots');
-    if (disabledTimeSlotsJson != null) {
-      _disabledTimeSlots = List<String>.from(jsonDecode(disabledTimeSlotsJson));
-    }
+
+  
+  void setSelectedYesNoOption(String? value) {
+    _selectedYesNoOption = value;
     notifyListeners();
   }
 
-  Future<void> _saveDisabledTimeSlotsToPrefs() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String disabledTimeSlotsJson = jsonEncode(_disabledTimeSlots);
-    prefs.setString('disabled_time_slots', disabledTimeSlotsJson);
-  }
-
-  Future<void> _loadSelectedTimeSlotFromPrefs() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    _selectedTimeSlot = prefs.getString('selected_time_slot');
+  void setSelectedDoneNoOption(String? value) {
+    _selectedDoneNoOption = value;
     notifyListeners();
   }
 
-  Future<void> _saveSelectedTimeSlotToPrefs() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (_selectedTimeSlot != null) {
-      prefs.setString('selected_time_slot', _selectedTimeSlot!);
-    }
-  }
-
-  Future<void> _saveAttendanceMarkedDate() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-    await prefs.setString('attendance_marked_date', formattedDate);
-  }
-
-  Future<void> _loadAttendanceState() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    _isAttendanceMarked = prefs.getBool('isAttendanceMarked') ?? false;
-
-    String? attendanceDate = prefs.getString('attendance_marked_date');
-    String todayDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-
-    if (attendanceDate != null && attendanceDate == todayDate) {
-      _isAttendanceMarked = true;
-    } else {
-      _isAttendanceMarked = false;
-      prefs.remove('attendance_marked_date');
-      prefs.remove('disabled_time_slots');
-      _disabledTimeSlots.clear();
-    }
-
+  void setSelectedTrueFalseOption(String? value) {
+    _selectedTrueFalseOption = value;
     notifyListeners();
-  }
-
-  void markAttendance() {
-    if (!_isAttendanceMarked) {
-      _isAttendanceMarked = true;  // Corrected to mark attendance correctly
-      _saveAttendanceMarkedDate();
-      notifyListeners();
-    }
-  }
-
-  void setSelectedTimeSlot(String? value) {
-    _selectedTimeSlot = value;
-    _saveSelectedTimeSlotToPrefs();
-    notifyListeners();
-  }
-
-  void disableSelectedTimeSlot() {
-    if (_selectedTimeSlot != null &&
-        !_disabledTimeSlots.contains(_selectedTimeSlot)) {
-      _disabledTimeSlots.add(_selectedTimeSlot!);
-      _disabledSlotsWithDate[_selectedTimeSlot!] = _currentDate;
-      _saveDisabledTimeSlotsToPrefs();
-      notifyListeners();
-    }
-  }
-
-  bool isTimeSlotSelectedForToday(String timeSlot) {
-    return _disabledSlotsWithDate[timeSlot] == _currentDate;
-  }
-
-  void resetDisabledTimeSlotsIfDateChanged() {
-    String todayDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-    if (_currentDate != todayDate) {
-      _currentDate = todayDate;
-      _disabledTimeSlots.clear();
-      _disabledSlotsWithDate.clear();
-      _saveDisabledTimeSlotsToPrefs(); // Save the reset state
-      notifyListeners();
-    }
   }
    
 
@@ -168,7 +101,7 @@ class ShoppingPageProvider with ChangeNotifier {
     {'name': 'TRVM', 'latitude': 9.32715, 'longitude': 76.72961, 'radius': 0.1},
     {'name': 'TRVY', 'latitude': 9.40751, 'longitude': 76.79594, 'radius': 0.1},
     {'name': 'KALA1', 'latitude': 10.081877, 'longitude': 76.283371, 'radius': 0.25},
-     {'name': 'KALA', 'latitude': 10.064555, 'longitude': 76.322242, 'radius': 0.02},
+     {'name': 'KALA', 'latitude': 10.064555, 'longitude': 76.322242, 'radius': 0.25},
       
 
        
@@ -214,7 +147,107 @@ class ShoppingPageProvider with ChangeNotifier {
     }
     return false;
   }
-  String getLocationName() {
+
+   bool isWithinAlternativeLocation() {
+    if (_alternativeLocation != null && _currentUserPosition != null) {
+      double distance = _calculateDistance(
+          _alternativeLocation!.latitude,
+          _alternativeLocation!.longitude,
+          _currentUserPosition!.latitude,
+          _currentUserPosition!.longitude);
+      return distance <=
+          0.1; // Define your own acceptable radius for home location
+    }
+    return false;
+  }
+
+  
+   Future<void> saveHomeLocationToFirestore(Position position, String empCode) async {
+    try {
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      await firestore.collection('location').add({
+        'home_latitude': position.latitude,
+        'home_longitude': position.longitude,
+        'isHomeLocationSet': true,
+        'EmpCode': empCode,
+      });
+    } catch (e) {
+      print('Error saving home location to Firestore: $e');
+    }
+  }
+
+  Future<void> loadHomeLocationFromFirestore(String empCode) async {
+    try {
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      QuerySnapshot querySnapshot = await firestore
+          .collection('location')
+          .where('EmpCode', isEqualTo: empCode)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        // Assuming you want to get the first document found
+        DocumentSnapshot doc = querySnapshot.docs.first;
+        Map<String, dynamic>? data = doc.data() as Map<String, dynamic>?;
+        if (data != null) {
+          double? latitude = data['home_latitude'];
+          double? longitude = data['home_longitude'];
+          _isHomeLocationSet = data['isHomeLocationSet'] ?? false;
+
+          if (latitude != null && longitude != null) {
+            _alternativeLocation = Position(
+              latitude: latitude,
+              longitude: longitude,
+              timestamp: DateTime.now(),
+              accuracy: 0.0,
+              altitude: 0.0,
+              heading: 0.0,
+              speed: 0.0,
+              speedAccuracy: 0.0,
+            );
+          }
+        }
+      }
+    } catch (e) {
+      print('Error loading home location from Firestore: $e');
+    }
+    notifyListeners();
+  }
+
+ Future<void> setHomeLocation(BuildContext context, String empCode) async {
+  if (_currentUserPosition != null && !_isHomeLocationSet) {
+    // Show confirmation dialog
+    bool confirm = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          title: Text('Confirm Home Location'),
+          content: Text('Do you want to set this as your home location?'),
+          actions: [
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () => Navigator.of(context).pop(false),
+            ),
+            TextButton(
+              child: Text('Confirm'),
+              onPressed: () => Navigator.of(context).pop(true),
+            ),
+          ],
+        );
+      },
+    );
+
+    // If user confirms, set the home location
+    if (confirm) {
+      _alternativeLocation = _currentUserPosition;
+      _isHomeLocationSet = true;
+      await saveHomeLocationToFirestore(_currentUserPosition!, empCode);
+      notifyListeners();
+    }
+  }
+}
+   
+String getLocationName() {
     String? locationName;
     if (_currentUserPosition != null) {
       for (var location in predefinedLocations) {
@@ -225,22 +258,34 @@ class ShoppingPageProvider with ChangeNotifier {
             _currentUserPosition!.longitude);
         if (distance <= location['radius']!) {
           locationName = location['name'];
-          break; // No need to continue looping if the location is found
+          break;
+        }
+      }
+      if (locationName == null && _alternativeLocation != null) {
+        double distance = _calculateDistance(
+            _alternativeLocation!.latitude,
+            _alternativeLocation!.longitude,
+            _currentUserPosition!.latitude,
+            _currentUserPosition!.longitude);
+        if (distance <= 0.1) {
+          // Acceptable radius for home location
+          locationName = "Home";
         }
       }
     }
-    return locationName ?? 'Unknown'; // Return 'Unknown' if the user is not within any predefined location
+    return locationName ?? 'Unknown';
   }
-
   void resetAlertShown() {
     _alertShown = false;
     notifyListeners();
   }
 
   void showLocationAlert(BuildContext context) {
-    bool atPredefinedLocation = isWithinPredefinedLocation();
+   
+    String locationName = getLocationName();
+    bool atPredefinedLocation =  isWithinPredefinedLocation() || isWithinAlternativeLocation() || locationName != "Home";
 
-    if (!_alertShown && !atPredefinedLocation && _currentUserPosition != null) {
+    if (!_alertShown && !atPredefinedLocation && _currentUserPosition != null ) {
       _alertShown = true;
       notifyListeners();
 
@@ -281,11 +326,16 @@ class ShoppingPageProvider with ChangeNotifier {
     }
   
   }
-    void updateTimestamp() {
-    _timestamp = Timestamp.now();
-    timedateController.text =
-        DateFormat('yyyy-MM-dd hh:mm a').format(_timestamp.toDate());
-    notifyListeners();
+  
+     Future<void> updateTimestamp() async {
+    try {
+      DateTime currentTime = await NTP.now();// Use NTP time
+      String formattedDateTime = DateFormat('yyyy-MM-dd hh:mm a').format(currentTime);
+      _timestamp = Timestamp.fromDate(currentTime); // Store as Firebase Timestamp
+      timedateController.text = formattedDateTime; // Update text controller
+    } catch (e) {
+      print('Error fetching NTP time: $e');
+    }
   }
 }
 

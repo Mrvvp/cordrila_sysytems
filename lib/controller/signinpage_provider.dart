@@ -1,9 +1,9 @@
-import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:ntp/ntp.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 
 class SigninpageProvider with ChangeNotifier {
   String? _selectedDropdownValue;
@@ -11,9 +11,9 @@ class SigninpageProvider with ChangeNotifier {
 
   bool _obscurePassword = true;
   Map<String, dynamic>? _userData;
-    bool _isLoading = false;
+  bool _isLoading = false;
 
-   bool get isLoading => _isLoading;
+  bool get isLoading => _isLoading;
 
   bool get obscurePassword => _obscurePassword;
   Map<String, dynamic>? get userData => _userData;
@@ -22,142 +22,191 @@ class SigninpageProvider with ChangeNotifier {
     _obscurePassword = !_obscurePassword;
     notifyListeners();
   }
-  
+
   void setLoading(bool loading) {
     _isLoading = loading;
     notifyListeners();
   }
-  
-  Future<void> fetchUserData(String userId) async {
-    final url = 'https://cordrilladb.onrender.com/users/byEmpIC/$userId';
 
+  Future<void> fetchUserData(String empCode) async {
     try {
-      final response = await http.get(Uri.parse(url));
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('USERS')
+          .where('EmpCode', isEqualTo: empCode)
+          .get();
 
-      if (response.statusCode == 200) {
-        _userData = json.decode(response.body);
+      if (querySnapshot.docs.isNotEmpty) {
+        _userData = querySnapshot.docs.first.data() as Map<String, dynamic>;
         notifyListeners();
       } else {
-        _handleErrorResponse(response);
+        throw Exception('User not found');
       }
     } catch (error) {
-      
-
-      throw Exception('Failed to load user data');
-    }
-  }
-  
-  Future<bool> validatePassword(String userId, String password) async {
-    await fetchUserData(userId);
-    if (_userData != null && _userData!['Password'] == password) {
-      return true;
-    } else {
-      return false;
+      print('Failed to load user data: $error');
+      throw Exception('Failed to load user data: $error');
     }
   }
 
-  Future<void> updateUserData(String userId, Map<String, dynamic> updatedData) async {
-    final url = 'https://cordrilladb.onrender.com/users/byEmpIC/$userId';
-
+  Future<bool> validatePassword(String empCode, String password) async {
     try {
-      final response = await http.put(
-        Uri.parse(url),
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode(updatedData),
-      );
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('USERS')
+          .where('EmpCode', isEqualTo: empCode)
+          .where('Password', isEqualTo: password)
+          .get();
 
-      if (response.statusCode == 200) {
+      if (querySnapshot.docs.isNotEmpty) {
+        // User with matching empCode and password found
+        _userData = querySnapshot.docs.first.data() as Map<String, dynamic>;
+        return true;
+      } else {
+        // User not found or password doesn't match
+        return false;
+      }
+    } catch (error) {
+      print('Failed to validate password: $error');
+      throw Exception('Failed to validate password: $error');
+    }
+  }
+
+  Future<void> updateUserData(
+      String empCode, Map<String, dynamic> updatedData) async {
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('USERS')
+          .where('EmpCode', isEqualTo: empCode)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        String docId = querySnapshot.docs.first.id;
+        await FirebaseFirestore.instance
+            .collection('USERS')
+            .doc(docId)
+            .update(updatedData);
         _userData = updatedData;
         notifyListeners();
       } else {
-        _handleErrorResponse(response);
+        throw Exception('User not found');
       }
     } catch (error) {
-      
-      throw Exception('Failed to update user data');
+      print('Failed to update user data: $error');
+      throw Exception('Failed to update user data: $error');
     }
   }
 
-  Future<void> updatePassword(String userId, String newPassword) async {
+  Future<void> updatePassword(String empCode, String newPassword) async {
     try {
-      Map<String, dynamic> updatedData = {'Password': newPassword}; // Update only the password field
-      await updateUserData(userId, updatedData);
+      Map<String, dynamic> updatedData = {'Password': newPassword};
+      await updateUserData(empCode, updatedData);
     } catch (error) {
-      
-      throw Exception('Failed to update password');
+      print('Failed to update password: $error');
+      throw Exception('Failed to update password: $error');
     }
   }
 
-  void _handleErrorResponse(http.Response response) {
-    
-    throw Exception(
-        'Failed with status code: ${response.statusCode} - ${response.reasonPhrase}');
-  }
-    
-    Future<void> saveUserData(String userId, String password) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('userId', userId);
-    await prefs.setString('password', password);
+  Future<void> saveUserData(String empCode, String password) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('EmpCode', empCode);
+      await prefs.setString('Password', password);
+    } catch (error) {
+      print('Failed to save user data: $error');
+      throw Exception('Failed to save user data: $error');
+    }
   }
 
   Future<bool> loadUserData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? userId = prefs.getString('userId');
-    String? password = prefs.getString('password');
-    if (userId != null && password != null) {
-      // Validate the stored credentials
-      return validatePassword(userId, password);
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? empCode = prefs.getString('EmpCodee');
+      String? password = prefs.getString('Password');
+      if (empCode != null && password != null) {
+        return validatePassword(empCode, password);
+      }
+      return false;
+    } catch (error) {
+      print('Failed to load user data: $error');
+      throw Exception('Failed to load user data: $error');
     }
-    return false;
   }
-  
- 
 
-
-  
    dynamic _lastLoggedInTime;
   dynamic get lastLoggedInTime => _lastLoggedInTime;
 
   Future<void> saveLastLoggedInTime() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String formattedDateTime = DateFormat('yyyy-MM-dd hh:mm a').format(DateTime.now());
-    await prefs.setString('last_logged_in_time', formattedDateTime);
-    _lastLoggedInTime = formattedDateTime;
-    notifyListeners(); // Notify listeners after updating
+    try {
+      DateTime ntpTime = await NTP.now(); // Fetch NTP time
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String formattedDateTime =
+          DateFormat('yyyy-MM-dd hh:mm a').format(ntpTime);
+      await prefs.setString('last_logged_in_time', formattedDateTime);
+      _lastLoggedInTime = formattedDateTime;
+      notifyListeners();
+    } catch (error) {
+      print('Failed to save last logged-in time: $error');
+      throw Exception('Failed to save last logged-in time: $error');
+    }
   }
 
   Future<void> loadLastLoggedInTime() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    _lastLoggedInTime = prefs.getString('last_logged_in_time');
-    notifyListeners(); // Notify listeners after loading
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      _lastLoggedInTime = prefs.getString('last_logged_in_time');
+      notifyListeners();
+    } catch (error) {
+      print('Failed to load last logged-in time: $error');
+      throw Exception('Failed to load last logged-in time: $error');
+    }
   }
 
-  Future<void> saveLastLoggedInTimeToFirebase(String userId) async {
-    final lastLoginTime = DateTime.now();
+  Future<void> saveLastLoggedInTimeToFirebase(String empCode) async {
     try {
-      final firestore = FirebaseFirestore.instance;
-      await firestore.collection('userdata').doc(userId).update({
-        'lastLoggedInTime': Timestamp.fromDate(lastLoginTime),
-      });
-      _lastLoggedInTime = lastLoginTime; // Update local variable
-      notifyListeners(); // Notify listeners after updating
+      DateTime ntpTime = await NTP.now(); // Fetch NTP time
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('userdata')
+          .where('EmpCode', isEqualTo: empCode)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        String docId = querySnapshot.docs.first.id;
+        await FirebaseFirestore.instance
+            .collection('userdata')
+            .doc(docId)
+            .update({'lastLoggedInTime': Timestamp.fromDate(ntpTime)});
+        _lastLoggedInTime = ntpTime;
+        notifyListeners();
+      } else {
+        throw Exception('User not found');
+      }
     } catch (e) {
+      print('Failed to save last logged-in time: $e');
       throw Exception('Failed to save last logged-in time: $e');
     }
   }
 
-  Future<void> fetchLastLoggedInTimeFromFirebase(String userId) async {
+  Future<void> fetchLastLoggedInTimeFromFirebase(String empCode) async {
     try {
-      final firestore = FirebaseFirestore.instance;
-      final document = await firestore.collection('userdata').doc(userId).get();
-      if (document.exists) {
-        final timestamp = document.data()?['lastLoggedInTime'] as Timestamp?;
-        _lastLoggedInTime = timestamp?.toDate() ?? DateTime.now();
-        notifyListeners();
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('userdata')
+          .where('EmpCode', isEqualTo: empCode)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        final docData =
+            querySnapshot.docs.first.data() as Map<String, dynamic>?;
+        if (docData != null && docData.containsKey('lastLoggedInTime')) {
+          final timestamp = docData['lastLoggedInTime'] as Timestamp?;
+          _lastLoggedInTime = timestamp?.toDate() ?? DateTime.now();
+          notifyListeners();
+        } else {
+          _lastLoggedInTime = DateTime.now();
+        }
+      } else {
+        throw Exception('User not found');
       }
     } catch (e) {
+      print('Failed to fetch last logged-in time: $e');
       throw Exception('Failed to fetch last logged-in time: $e');
     }
   }
- }
- 
+}

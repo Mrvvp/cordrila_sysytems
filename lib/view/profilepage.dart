@@ -1,5 +1,6 @@
 import 'package:cordrila_sysytems/controller/profile_provider.dart';
 import 'package:cordrila_sysytems/controller/signinpage_provider.dart';
+import 'package:cordrila_sysytems/view/forget_password.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -33,7 +34,7 @@ class _ProfilePageState extends State<ProfilePage> {
     final userData = Provider.of<SigninpageProvider>(context).userData;
     if (userData != null) {
       _nameController.text = userData['Employee Name'] ?? '';
-      _idController.text = userData['Emp/IC Code'] ?? '';
+      _idController.text = userData['EmpCode'] ?? '';
       _titleController.text = userData['Business Title'] ?? '';
       _emailController.text = userData['Mail ID'] ?? '';
       _dobController.text = userData['DOB'] ?? '';
@@ -41,7 +42,7 @@ class _ProfilePageState extends State<ProfilePage> {
       _mobileController.text = userData['Mobile Number'].toString();
       _categoryController.text = userData['Category'] ?? '';
       _typeController.text = userData['Location'] ?? '';
-      _stationController.text = userData['Station Code'] ?? '';
+      _stationController.text = userData['StationCode'] ?? '';
     }
   }
 
@@ -163,6 +164,19 @@ class _ProfilePageState extends State<ProfilePage> {
                                   color: Colors.black,
                                   fontSize: 30,
                                   fontWeight: FontWeight.bold),
+                            ),
+                            Spacer(),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).push(CupertinoPageRoute(
+                                    builder: (context) =>
+                                        ForgotPasswordPage()));
+                              },
+                              child: Text(
+                                'Update password?',
+                                style:
+                                    TextStyle(color: Colors.blue, fontSize: 15),
+                              ),
                             ),
                           ],
                         ),
@@ -425,7 +439,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                     child: ElevatedButton(
                                       onPressed: () {
                                         _sendUpdateRequest(context);
-                                        
                                       },
                                       style: ElevatedButton.styleFrom(
                                         shape: RoundedRectangleBorder(

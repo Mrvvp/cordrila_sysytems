@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
+import 'package:ntp/ntp.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UtrPageProvider with ChangeNotifier {
@@ -182,11 +183,17 @@ class UtrPageProvider with ChangeNotifier {
     }
   }
 
-  void updateTimestamp() {
-    _timestamp = Timestamp.now();
-    timedateController.text =
-        DateFormat('yyyy-MM-dd hh:mm a').format(_timestamp.toDate());
-    notifyListeners();
+  Future<void> updateTimestamp() async {
+    try {
+      DateTime currentTime = await NTP.now(); // Use NTP time
+      String formattedDateTime =
+          DateFormat('yyyy-MM-dd hh:mm a').format(currentTime);
+      _timestamp =
+          Timestamp.fromDate(currentTime); // Store as Firebase Timestamp
+      timedateController.text = formattedDateTime; // Update text controller
+    } catch (e) {
+      print('Error fetching NTP time: $e');
+    }
   }
 
   final List<Map<String, dynamic>> predefinedLocations = [

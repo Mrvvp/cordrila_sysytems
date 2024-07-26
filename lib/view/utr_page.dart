@@ -39,7 +39,8 @@ class _UtrPageState extends State<UtrPage> {
   void _initializeLocation() async {
     final provider = Provider.of<UtrPageProvider>(context, listen: false);
     await provider.initializeData();
-    _locationController.text = provider.getLocationName();
+    String locationName = await provider.getLocationName();
+    _locationController.text = locationName;
   }
 
   @override
@@ -48,7 +49,7 @@ class _UtrPageState extends State<UtrPage> {
     final userData = Provider.of<SigninpageProvider>(context).userData;
     if (userData != null) {
       _nameController.text = userData['Employee Name'] ?? '';
-      _idController.text = userData['Emp/IC Code'] ?? '';
+      _idController.text = userData['EmpCode'] ?? '';
     }
   }
 
@@ -115,13 +116,12 @@ class _UtrPageState extends State<UtrPage> {
       backgroundColor: Colors.white,
       body: RefreshIndicator(
         onRefresh: _refreshData,
-        child: utrStateProvider.isFetchingData
-            ? const Center(
-                child: CircularProgressIndicator(
-                  color: Colors.blue,
-                ),
-              )
-            : SingleChildScrollView(
+        child: Consumer<UtrPageProvider>(
+        builder: (context, freshStateProvider, child) {
+          if (utrStateProvider.isFetchingData) {
+            return Center(child: CircularProgressIndicator(color: Colors.blue));
+          } else {
+            return SingleChildScrollView(
                 child: Form(
                   key: _formKey,
                   child: Padding(
@@ -351,11 +351,23 @@ class _UtrPageState extends State<UtrPage> {
                               !utrStateProvider.isWithinPredefinedLocation()
                           ? null
                                     : () {
+                                       if (_locationController.text ==
+                                                'Unknown' ||
+                                            _locationController.text.isEmpty) {
+                                          // Handle location error
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                              content: Text(
+                                                  'Location error! Please restart your app.'),
+                                            ),
+                                          );
+                                        }
                                         showDialog(
                                           context: context,
                                           builder: (BuildContext context) {
                                             return AlertDialog( shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10)),
+                                             borderRadius: BorderRadius.circular(10)),
                                               title: Text("Confirm Attendance"),
                                               content: Text(
                                                   "Are you sure you want to mark attendance?"),
@@ -404,8 +416,11 @@ class _UtrPageState extends State<UtrPage> {
                     ),
                   ),
                 ),
-              ),
+              );
+          }
+        }
       ),
+      )
     );
   }
 }

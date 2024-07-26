@@ -1,11 +1,9 @@
-import 'package:cordrila_sysytems/controller/admin_request_provider.dart';
-import 'package:cordrila_sysytems/view/forget_password.dart';
-import 'package:cordrila_sysytems/view/navigate_to_home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import 'package:cordrila_sysytems/controller/signinpage_provider.dart';
+import 'package:cordrila_sysytems/controller/admin_request_provider.dart';
+import 'package:cordrila_sysytems/view/navigate_to_home.dart';
 
 class SigninPage extends StatefulWidget {
   const SigninPage({super.key});
@@ -15,7 +13,6 @@ class SigninPage extends StatefulWidget {
 }
 
 class _SigninPageState extends State<SigninPage> {
-  
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -33,9 +30,8 @@ class _SigninPageState extends State<SigninPage> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.only(left: 20,right: 20,top: 100),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 100),
             child: Column(
-             
               children: [
                 const SizedBox(height: 50.0),
                 const Row(
@@ -92,7 +88,8 @@ class _SigninPageState extends State<SigninPage> {
                         filled: true,
                         fillColor: Colors.grey.shade200,
                         focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Colors.transparent),
+                          borderSide:
+                              const BorderSide(color: Colors.transparent),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         border: OutlineInputBorder(
@@ -115,7 +112,8 @@ class _SigninPageState extends State<SigninPage> {
                         filled: true,
                         fillColor: Colors.grey.shade200,
                         focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Colors.transparent),
+                          borderSide:
+                              const BorderSide(color: Colors.transparent),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         border: OutlineInputBorder(
@@ -151,24 +149,26 @@ class _SigninPageState extends State<SigninPage> {
                                   );
                                   return;
                                 }
-            
+
                                 appStateProvider.setLoading(true);
-            
+
                                 final userId = _idController.text;
                                 final password = _passwordController.text;
-            
+
                                 try {
                                   bool isValid = await appStateProvider
                                       .validatePassword(userId, password);
                                   if (isValid) {
-                                    await appStateProvider.saveLastLoggedInTime();
-                                    // Save user data upon successful authentication
+                                    await appStateProvider
+                                        .saveLastLoggedInTime();
                                     await appStateProvider.saveUserData(
                                         userId, password);
-                                        Provider.of<AdminRequestProvider>(context, listen: false).fetchRequests();
-            
-                                    // Navigate to the appropriate page
-                                    navigateToHomePage(context, appStateProvider);
+                                    Provider.of<AdminRequestProvider>(context,
+                                            listen: false)
+                                        .fetchRequests();
+
+                                    navigateToHomePage(
+                                        context, appStateProvider,userId);
                                   } else {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
@@ -195,7 +195,8 @@ class _SigninPageState extends State<SigninPage> {
                           elevation: 5,
                         ),
                         child: appStateProvider.isLoading
-                            ? const CircularProgressIndicator(color: Colors.white)
+                            ? const CircularProgressIndicator(
+                                color: Colors.lightBlue)
                             : const Text(
                                 'Sign In',
                                 style: TextStyle(
@@ -204,19 +205,6 @@ class _SigninPageState extends State<SigninPage> {
                                   color: Colors.white,
                                 ),
                               ),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () {
-                          Navigator.of(context).push(CupertinoPageRoute(
-                              builder: (context) => ForgotPasswordPage()));
-                        },
-                        child: const Text(
-                          'Forgot Password?',
-                          style: TextStyle(color: Colors.black38),
-                        ),
                       ),
                     ),
                   ],

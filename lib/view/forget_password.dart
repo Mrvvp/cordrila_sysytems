@@ -1,4 +1,5 @@
 import 'package:cordrila_sysytems/controller/signinpage_provider.dart';
+import 'package:cordrila_sysytems/view/sign_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -28,6 +29,12 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       _newPasswordController.clear();
       _confirmPasswordController.clear();
     }
+    
+
+    final userData = Provider.of<SigninpageProvider>(context).userData;
+    if (userData != null) {
+      _idController.text = userData['EmpCode'] ?? '';
+    }
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -54,12 +61,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     controller: _idController,
                     cursorColor: Colors.black,
                     decoration: InputDecoration(
+                      enabled: false,
                       prefixIcon: Icon(
                         CupertinoIcons.number,
                         color: Colors.grey.shade500,
                       ),
-                      hintText: 'Enter your ID',
-                      hintStyle: TextStyle(color: Colors.grey.shade500),
                       filled: true,
                       fillColor: Colors.grey.shade200,
                       focusedBorder: OutlineInputBorder(
@@ -175,6 +181,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                   textColor: Colors.white,
                                   fontSize: 16.0);
                               _clearForgotPasswordFields();
+                       
+                              Navigator.of(context).push(CupertinoPageRoute(builder: (context)=>SigninPage()));
+                              
+                              
+                                
                             }
                           },
                           child: appStateProvider.isLoading
@@ -183,6 +194,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                               : const Text('Done',
                                   style: TextStyle(color: Colors.white)),
                         ),
+                        
                       ],
                     ),
                   ),

@@ -20,6 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
       _checkLoginStatus();
     });
   }
+
   Future<void> _checkLoginStatus() async {
     // Delay for splash screen duration
     await Future.delayed(const Duration(milliseconds: 3000));
@@ -29,7 +30,8 @@ class _SplashScreenState extends State<SplashScreen> {
     bool isLoggedIn = await appStateProvider.loadUserData();
 
     if (isLoggedIn) {
-      navigateToHomePage(context, appStateProvider);
+      String userId = appStateProvider.userData?['EmpCode']; // Extract userId from userData
+      navigateToHomePage(context, appStateProvider, userId);
     } else {
       Navigator.pushReplacement(
         context,

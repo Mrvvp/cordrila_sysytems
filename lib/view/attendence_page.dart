@@ -1,4 +1,3 @@
-
 import 'package:cordrila_sysytems/controller/user_attendence_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,14 +18,17 @@ class _AttendencePageState extends State<AttendencePage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<AteendenceProvider>().fetchUserData(context, employeeId: widget.employeeId);
+      context
+          .read<AteendenceProvider>()
+          .fetchUserData(context, employeeId: widget.employeeId);
     });
   }
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: context.read<AteendenceProvider>().selectedDate ?? DateTime.now(),
+      initialDate:
+          context.read<AteendenceProvider>().selectedDate ?? DateTime.now(),
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
     );
@@ -43,11 +45,14 @@ class _AttendencePageState extends State<AttendencePage> {
           return RefreshIndicator(
             onRefresh: () async {
               attendanceProvider.clearFilter();
-              await attendanceProvider.fetchUserData(context, employeeId: widget.employeeId);
+              await attendanceProvider.fetchUserData(context,
+                  employeeId: widget.employeeId);
             },
             child: attendanceProvider.isLoading
                 ? const Center(
-                    child: CircularProgressIndicator(color: Colors.blue,),
+                    child: CircularProgressIndicator(
+                      color: Colors.blue,
+                    ),
                   )
                 : Padding(
                     padding: const EdgeInsets.only(left: 20, right: 20),
@@ -128,13 +133,12 @@ class _AttendencePageState extends State<AttendencePage> {
                                               children: [
                                                 Text('Name: ${user.name}',
                                                     style: TextStyle(
-                                                        color: Colors
-                                                            .black)),
+                                                        color: Colors.black)),
                                                 Text(
                                                     'Date: ${DateFormat('yyyy-MM-dd hh:mm a').format(user.date)}',
                                                     style: TextStyle(
                                                         color: Colors.black)),
-                                                        Text(
+                                                Text(
                                                     'Location: ${user.location}',
                                                     style: TextStyle(
                                                         color: Colors.black)),
@@ -155,6 +159,15 @@ class _AttendencePageState extends State<AttendencePage> {
                                                   Text('Shift: ${user.shift}',
                                                       style: const TextStyle(
                                                           color: Colors.black)),
+                                                  Text('LM Read: ${user.lm}',
+                                                      style: const TextStyle(
+                                                          color: Colors.black)),
+                                                  Text('Helmet: ${user.helmet}',
+                                                      style: const TextStyle(
+                                                          color: Colors.black)),
+                                                  Text('Cash: ${user.cash}',
+                                                      style: const TextStyle(
+                                                          color: Colors.black)),
                                                 ] else if (user.orders !=
                                                         null ||
                                                     user.bags != null ||
@@ -168,9 +181,12 @@ class _AttendencePageState extends State<AttendencePage> {
                                                   Text('Cash: ${user.mop}',
                                                       style: const TextStyle(
                                                           color: Colors.black)),
-                                                  Text('Time: ${user.time}',
+                                                  Text('Slot: ${user.time}',
                                                       style: const TextStyle(
-                                                          color: Colors.black)),                 
+                                                          color: Colors.black)),
+                                                  Text('GSF: ${user.gsf}',
+                                                      style: const TextStyle(
+                                                          color: Colors.black)),
                                                 ],
                                               ],
                                             ),
