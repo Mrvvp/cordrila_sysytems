@@ -24,6 +24,7 @@ class _UtrPageState extends State<UtrPage> {
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _utrController = TextEditingController();
+  final TextEditingController _stationController = TextEditingController();
 
   @override
   void initState() {
@@ -50,6 +51,7 @@ class _UtrPageState extends State<UtrPage> {
     if (userData != null) {
       _nameController.text = userData['Employee Name'] ?? '';
       _idController.text = userData['EmpCode'] ?? '';
+      _stationController.text = userData['StationCode'] ?? '';
     }
   }
 
@@ -69,6 +71,7 @@ class _UtrPageState extends State<UtrPage> {
           'Date': utrStateProvider.timestamp,
           'Location': _locationController.text,
           'Utr': _utrController.text,
+          'Station': _stationController.text,
           'Login': signinpageProvider.lastLoggedInTime ?? '',
         };
         await users.add(data);
@@ -288,6 +291,43 @@ class _UtrPageState extends State<UtrPage> {
                                 ),
                               ),
                             ),
+                             const SizedBox(
+                              height: 10,
+                            ),
+                            const Text(
+                              'Station Code :',
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            TextFormField(
+                              keyboardType: TextInputType.number,
+                              controller: _locationController,
+                              cursorColor: Colors.black,
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.all(10),
+                                constraints:
+                                    const BoxConstraints(maxHeight: 70),
+                                enabled: false,
+                                prefixIcon: Icon(
+                                  CupertinoIcons.location,
+                                  color: Colors.grey.shade500,
+                                ),
+                                filled: true,
+                                fillColor: Colors.grey.shade200,
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                      color: Colors.transparent),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                            ),
                             const SizedBox(
                               height: 10,
                             ),
@@ -301,7 +341,7 @@ class _UtrPageState extends State<UtrPage> {
                             ),
                             TextFormField(
                               keyboardType: TextInputType.number,
-                              controller: _locationController,
+                              controller: _stationController,
                               cursorColor: Colors.black,
                               decoration: InputDecoration(
                                 contentPadding: const EdgeInsets.all(10),
@@ -335,6 +375,7 @@ class _UtrPageState extends State<UtrPage> {
                                 ),
                               ),
                             ),
+                            
                             SizedBox(
                               width: MediaQuery.of(context).size.width,
                               height: 60,

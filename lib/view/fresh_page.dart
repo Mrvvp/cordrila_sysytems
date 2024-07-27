@@ -4,6 +4,7 @@ import 'package:cordrila_sysytems/controller/shift_Controller.dart';
 import 'package:cordrila_sysytems/view/attendence_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:cordrila_sysytems/controller/signinpage_provider.dart';
@@ -27,15 +28,15 @@ class _FreshPageState extends State<FreshPage> {
   final CollectionReference users =
       FirebaseFirestore.instance.collection('userdata');
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _corabagsController = TextEditingController();
-  final TextEditingController _coraordersController = TextEditingController();
-  final TextEditingController _mopcoraController = TextEditingController();
   final TextEditingController _namecoraController = TextEditingController();
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _coralocationController = TextEditingController();
 
+
+
   @override
   void initState() {
+    _initialize();
     _initializeLocation();
     _initializeLastLoggedInTime();
     super.initState();
@@ -47,25 +48,34 @@ class _FreshPageState extends State<FreshPage> {
     await signinProvider.loadLastLoggedInTime();
   }
 
+  void _initialize() async {
+    final provider = Provider.of<ShiftProvider>(context, listen: false);
+    provider.initialize();
+  }
+
+ 
+
   void _initializeLocation() async {
     final provider = Provider.of<FreshPageProvider>(context, listen: false);
-    provider.initializeData();
-    String locationName = await provider.getLocationName();
-    _coralocationController.text = locationName;
-  }
+    try {
+      // Initialize data
+      await provider.initializeData();
 
-  void _clearShoppingFields() {
-    _corabagsController.clear();
-    _coraordersController.clear();
-    _mopcoraController.clear();
-  }
+      // Fetch the location name
+      String locationName = await provider.getLocationName();
 
-  @override
-  void dispose() {
-    _corabagsController.dispose();
-    _coraordersController.dispose();
-    _mopcoraController.dispose();
-    super.dispose();
+      // Log the location name for debugging
+      print('Fetched Location Name: $locationName');
+
+      // Update the controller with the location name or coordinates
+      _coralocationController.text = locationName != 'Unknown'
+          ? locationName
+          : 'Location not found';
+    } catch (e) {
+      // Handle any errors in fetching location
+      print('Error fetching location: $e');
+      _coralocationController.text = 'Error fetching location';
+    }
   }
 
   @override
@@ -89,37 +99,67 @@ class _FreshPageState extends State<FreshPage> {
     final shiftProvider = Provider.of<ShiftProvider>(context);
 
     void addDetails() async {
+      // Save form fields regardless of validation
+      _formKey.currentState!.save();
+
       try {
+        // Extract text values from the TextEditingController instances
         final data = {
-          'Time': shiftProvider.selectedShift,
-          'bags': _corabagsController.text,
-          'orders': _coraordersController.text,
-          'cash': _mopcoraController.text,
-          'ID': _idController.text,
-          'Name': _namecoraController.text,
-          'Date': freshStateProvider.timestamp,
-          'Location': _coralocationController.text,
-          'Login': signinpageProvider.lastLoggedInTime ?? '',
-          'GSF': freshStateProvider.selectedYesNoOption ?? '',
+          'Time':
+              shiftProvider.selectedShift, // Use default empty string if null
+          'bags': freshStateProvider.bags.isNotEmpty
+              ? freshStateProvider.bags
+              : 'N/A', // Provide default value if empty
+          'orders': freshStateProvider.orders.isNotEmpty
+              ? freshStateProvider.orders
+              : 'N/A', // Provide default value if empty
+          'cash': freshStateProvider.cash.isNotEmpty
+              ? freshStateProvider.cash
+              : 'N/A', // Provide default value if empty // Provide default value if empty
+          'ID': _idController.text.isNotEmpty
+              ? _idController.text
+              : 'Unknown ID', // Provide default value if empty
+          'Name': _namecoraController.text.isNotEmpty
+              ? _namecoraController.text
+              : 'Unknown Name', // Provide default value if empty
+          'Date': freshStateProvider.timestamp, // Provide default value if null
+          'Location': _coralocationController.text.isNotEmpty
+              ? _coralocationController.text
+              : 'Unknown Location', // Provide default value if empty
+          'Login': signinpageProvider.lastLoggedInTime ??
+              'No Data', // Provide default value if null
+          'GSF': freshStateProvider.selectedYesNoOption ??
+              'N/A', // Provide default value if null
         };
+
+        // Log the data for debugging
+        print('Adding details to Firestore: $data');
+
+        // Add data to Firestore
         await users.add(data);
+
+        // Show success message
         Fluttertoast.showToast(
-            msg: "Attendence Marked",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 2,
-            backgroundColor: Colors.blue,
-            textColor: Colors.white,
-            fontSize: 16.0);
+          msg: "Attendance Marked",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 2,
+          backgroundColor: Colors.blue,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
       } catch (e) {
+        // Log error and show failure message
+        print('Error adding details to Firestore: $e');
         Fluttertoast.showToast(
-            msg: "Attendence not Marked",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 2,
-            backgroundColor: Colors.blue,
-            textColor: Colors.white,
-            fontSize: 16.0);
+          msg: "Attendance not Marked",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 2,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
       }
     }
 
@@ -127,16 +167,10 @@ class _FreshPageState extends State<FreshPage> {
       bool isWithinWarehouse = freshStateProvider.isWithinPredefinedLocation();
       bool dialogShown = freshStateProvider.alertShown;
 
-      // print('isWithinWarehouse: $isWithinWarehouse');
-      // print('dialogShown: $dialogShown');
-
       if (!isWithinWarehouse && !dialogShown) {
-        // print('Showing dialog');
+        print('Showing dialog');
         freshStateProvider.showLocationAlert(context);
-      } else if (isWithinWarehouse && dialogShown) {
-        // print('Hiding dialog');
-        // appStateProvider.resetDialogShown();
-      }
+      } else if (isWithinWarehouse && dialogShown) {}
     });
 
     return Scaffold(
@@ -444,17 +478,17 @@ class _FreshPageState extends State<FreshPage> {
                           ),
                           TextFormField(
                             keyboardType: TextInputType.number,
-                            controller: _coraordersController,
-                            cursorColor: Colors.black,
                             decoration: InputDecoration(
+                              labelStyle: TextStyle(
+                                  color: Colors.grey.shade500,
+                                  fontWeight: FontWeight.w500),
+                              labelText: 'No of orders',
                               contentPadding: const EdgeInsets.all(10),
                               constraints: const BoxConstraints(maxHeight: 70),
                               prefixIcon: Icon(
                                 CupertinoIcons.cube_box,
                                 color: Colors.grey.shade500,
                               ),
-                              hintText: 'Enter no.of.Orders',
-                              hintStyle: TextStyle(color: Colors.grey.shade500),
                               filled: true,
                               fillColor: Colors.grey.shade200,
                               focusedBorder: OutlineInputBorder(
@@ -467,6 +501,15 @@ class _FreshPageState extends State<FreshPage> {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter the No of orders';
+                              }
+                              return null;
+                            },
+                            onSaved: (value) {
+                              freshStateProvider.setOrders(value!.trim());
+                            },
                           ),
                           const SizedBox(
                             height: 10,
@@ -481,17 +524,17 @@ class _FreshPageState extends State<FreshPage> {
                           ),
                           TextFormField(
                             keyboardType: TextInputType.number,
-                            controller: _corabagsController,
-                            cursorColor: Colors.black,
                             decoration: InputDecoration(
+                              labelStyle: TextStyle(
+                                  color: Colors.grey.shade500,
+                                  fontWeight: FontWeight.w500),
+                              labelText: 'No of bags',
                               contentPadding: const EdgeInsets.all(10),
                               constraints: const BoxConstraints(maxHeight: 70),
                               prefixIcon: Icon(
-                                CupertinoIcons.cube_box,
+                                CupertinoIcons.cube,
                                 color: Colors.grey.shade500,
                               ),
-                              hintText: 'Enter no.of.Bags',
-                              hintStyle: TextStyle(color: Colors.grey.shade500),
                               filled: true,
                               fillColor: Colors.grey.shade200,
                               focusedBorder: OutlineInputBorder(
@@ -504,6 +547,15 @@ class _FreshPageState extends State<FreshPage> {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter No of bags';
+                              }
+                              return null;
+                            },
+                            onSaved: (value) {
+                              freshStateProvider.setBags(value!.trim());
+                            },
                           ),
                           const SizedBox(
                             height: 10,
@@ -518,17 +570,17 @@ class _FreshPageState extends State<FreshPage> {
                           ),
                           TextFormField(
                             keyboardType: TextInputType.number,
-                            controller: _mopcoraController,
-                            cursorColor: Colors.black,
                             decoration: InputDecoration(
+                              labelStyle: TextStyle(
+                                  color: Colors.grey.shade500,
+                                  fontWeight: FontWeight.w500),
+                              labelText: 'Enter Amount',
                               contentPadding: const EdgeInsets.all(10),
                               constraints: const BoxConstraints(maxHeight: 70),
                               prefixIcon: Icon(
                                 CupertinoIcons.money_dollar,
                                 color: Colors.grey.shade500,
                               ),
-                              hintText: 'Enter the amount',
-                              hintStyle: TextStyle(color: Colors.grey.shade500),
                               filled: true,
                               fillColor: Colors.grey.shade200,
                               focusedBorder: OutlineInputBorder(
@@ -541,6 +593,15 @@ class _FreshPageState extends State<FreshPage> {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter the amount';
+                              }
+                              return null;
+                            },
+                            onSaved: (value) {
+                              freshStateProvider.setCash(value!.trim());
+                            },
                           ),
                           const SizedBox(
                             height: 30,
@@ -560,83 +621,77 @@ class _FreshPageState extends State<FreshPage> {
                                           .isWithinPredefinedLocation() &&
                                       shiftProvider.isNewShiftSelected()
                                   ? () {
-                                      if (_coraordersController.text.isEmpty ||
-                                          _corabagsController.text.isEmpty ||
-                                          _mopcoraController.text.isEmpty ||
-                                          freshStateProvider
-                                                  .selectedYesNoOption ==
-                                              null) {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                            content: Text(
-                                                'Please fill in all fields'),
-                                          ),
-                                        );
-                                      }
-                                      // else if (_locationController.text ==
-                                      //         'Unknown' ||
-                                      //     _locationController.text.isEmpty) {
-                                      //   // Handle location error
-                                      //   ScaffoldMessenger.of(context)
-                                      //       .showSnackBar(
-                                      //     const SnackBar(
-                                      //       content: Text(
-                                      //           'Location error! Refresh your app.'),
-                                      //     ),
-                                      //   );
-                                      // }
-                                      else if (freshStateProvider
-                                          .timedateController.text.isEmpty) {
-                                        // Handle location error
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                            content: Text(
-                                                'Error loading data! Refresh your app'),
-                                          ),
-                                        );
-                                      } else {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return AlertDialog(
-                                              title: Text('Confirm Attendance'),
+                                      if (_formKey.currentState!.validate()) {
+                                         if (_coralocationController
+                                                    .text ==
+                                                'Unknown' ||
+                                            _coralocationController
+                                                .text.isEmpty || _coralocationController
+                                                    .text ==
+                                                'Location not found') {
+                                          // Handle location error
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
                                               content: Text(
-                                                  'Are you sure you want to mark attendance?'),
-                                              actions: [
-                                                TextButton(
-                                                  onPressed: () {
-                                                    Navigator.of(context)
-                                                        .pop(); // Close the dialog
-                                                  },
-                                                  child: Text('Cancel'),
-                                                ),
-                                                TextButton(
-                                                  onPressed: () {
-                                                    shiftProvider
-                                                        .markAttendance(); // Mark attendance and update shift visibility
-                                                    Navigator.of(context).pop();
-                                                    _clearShoppingFields();
-                                                    addDetails();
-                                                    String employeeId =
-                                                        _idController.text;
-                                                    Navigator.of(context).push(
-                                                      CupertinoPageRoute(
-                                                        builder: (context) =>
-                                                            AttendencePage(
-                                                          employeeId:
-                                                              employeeId,
+                                                  'Location error! Refresh your app.'),
+                                            ),
+                                          );
+                                        } else if (freshStateProvider
+                                            .timedateController.text.isEmpty) {
+                                          // Handle location error
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                              content: Text(
+                                                  'Error loading data! Refresh your app'),
+                                            ),
+                                          );
+                                        } else {
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                title:
+                                                    Text('Confirm Attendance'),
+                                                content: Text(
+                                                    'Are you sure you want to mark attendance?'),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop(); // Close the dialog
+                                                    },
+                                                    child: Text('Cancel'),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      shiftProvider
+                                                          .markAttendance(); // Mark attendance and update shift visibility
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                   
+                                                      addDetails();
+                                                      String employeeId =
+                                                          _idController.text;
+                                                      Navigator.of(context)
+                                                          .push(
+                                                        CupertinoPageRoute(
+                                                          builder: (context) =>
+                                                              AttendencePage(
+                                                            employeeId:
+                                                                employeeId,
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ); // Close the dialog
-                                                  },
-                                                  child: Text('Mark'),
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        );
+                                                      ); // Close the dialog
+                                                    },
+                                                    child: Text('Mark'),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        }
                                       }
                                     }
                                   : null,

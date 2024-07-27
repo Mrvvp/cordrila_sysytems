@@ -101,7 +101,7 @@ class ShoppingPageProvider with ChangeNotifier {
     {'name': 'TRVM', 'latitude': 9.32715, 'longitude': 76.72961, 'radius': 0.1},
     {'name': 'TRVY', 'latitude': 9.40751, 'longitude': 76.79594, 'radius': 0.1},
     {'name': 'KALA1', 'latitude': 10.081877, 'longitude': 76.283371, 'radius': 0.25},
-     {'name': 'KALA', 'latitude': 10.064555, 'longitude': 76.322242, 'radius': 0.25},
+    {'name': 'KALA', 'latitude': 10.064555, 'longitude': 76.322242, 'radius': 0.25},
       
 
        

@@ -51,6 +51,11 @@ dependencies:
   url_launcher: ^6.3.0
   firebase_remote_config: ^4.4.7
   ntp: ^2.0.0
+  # dio: ^5.5.0+1
+  # open_file: ^3.2.1
+  # android_intent: ^2.0.2
+  # android_intent_plus: ^4.0.0
+  
   
 
   # The following adds the Cupertino Icons font to your application.

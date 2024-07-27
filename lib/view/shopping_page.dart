@@ -72,7 +72,6 @@ class _ShoppingPageState extends State<ShoppingPage> {
     _pickupController.dispose();
     _shipmentController.dispose();
     _mfnController.dispose();
-
     super.dispose();
   }
 

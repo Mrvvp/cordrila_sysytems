@@ -132,7 +132,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Home(remoteConfig: widget.remoteConfig),
+      home: Home(remoteConfig: widget.remoteConfig,),
     );
   }
 }
