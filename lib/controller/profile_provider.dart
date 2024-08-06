@@ -11,11 +11,12 @@ class ProfilepageProvider extends ChangeNotifier {
   }
 
   // Method to send update request to Firebase
-  Future<void> sendUpdateRequest(String userId, String updateRequest) async {
+  Future<void> sendUpdateRequest(String userId, String updateRequest, String name) async {
     await FirebaseFirestore.instance.collection('requests').add({
       'userId': userId,
       'request': updateRequest,
       'timestamp': FieldValue.serverTimestamp(),
+      'name': name,
     });
   }
 }

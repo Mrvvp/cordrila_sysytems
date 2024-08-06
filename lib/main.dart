@@ -1,5 +1,7 @@
 import 'package:cordrila_sysytems/controller/admin_request_provider.dart';
+import 'package:cordrila_sysytems/controller/download_proivder.dart';
 import 'package:cordrila_sysytems/controller/fresh_page_provider.dart';
+import 'package:cordrila_sysytems/controller/notification_provider.dart';
 import 'package:cordrila_sysytems/controller/profile_provider.dart';
 import 'package:cordrila_sysytems/controller/shift_Controller.dart';
 import 'package:cordrila_sysytems/controller/shift_shop_provider.dart';
@@ -43,22 +45,28 @@ void main() async {
         ),
         ChangeNotifierProvider<ShopProvider>(
           create: (context) => ShopProvider(
-              ['Morning (before 12 PM)',
-               'Evening (after 12 PM )']),
+              ['Morning (before 12 PM)', 
+              'Evening (after 12 PM )']),
         ),
-        ChangeNotifierProvider<ShoppingPageProvider>(
+        ChangeNotifierProvider<ShoppingPageProvider> (
           create: (context) => ShoppingPageProvider(),
         ),
-        ChangeNotifierProvider<UtrPageProvider>(
+        ChangeNotifierProvider<UtrPageProvider> (
           create: (context) => UtrPageProvider(),
         ),
-        ChangeNotifierProvider<AteendenceProvider>(
+        ChangeNotifierProvider<DownloadProvider>(
+          create: (context) => DownloadProvider(),
+        ),
+        ChangeNotifierProvider<RepliesProvider>(
+          create: (context) => RepliesProvider(),
+        ),
+        ChangeNotifierProvider<AteendenceProvider> (
           create: (context) => AteendenceProvider(),
         ),
-        ChangeNotifierProvider<ProfilepageProvider>(
+        ChangeNotifierProvider<ProfilepageProvider> (
           create: (context) => ProfilepageProvider(),
         ),
-        ChangeNotifierProvider<AdminRequestProvider>(
+        ChangeNotifierProvider<AdminRequestProvider> (
           create: (context) => AdminRequestProvider(),
         ),
         ChangeNotifierProvider<ShoppingFilterProvider>(
@@ -104,6 +112,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addPostFrameCallback((_) => _initializeData());
   }
 
   @override
@@ -114,25 +123,33 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        final signinpageprovider =
-            Provider.of<SigninpageProvider>(context, listen: false);
-        final empCode = signinpageprovider.userData?['EmpCode'] ?? '';
-        Provider.of<ShoppingPageProvider>(context, listen: false)
-            .initializeData(empCode);
-        Provider.of<FreshPageProvider>(context, listen: false).initializeData();
-        Provider.of<UtrPageProvider>(context, listen: false).initializeData();
-      });
+      _refreshData();
     }
+  }
+
+  Future<void> _initializeData() async {
+    final signinpageprovider = Provider.of<SigninpageProvider>(context, listen: false);
+    bool isLoggedIn = await signinpageprovider.loadUserData();
+    if (isLoggedIn) {
+      final empCode = signinpageprovider.userData?['EmpCode'] ?? '';
+      await Future.wait([
+        Provider.of<ShoppingPageProvider>(context, listen: false).initializeData(empCode),
+        Provider.of<FreshPageProvider>(context, listen: false).initializeData(empCode),
+        Provider.of<UtrPageProvider>(context, listen: false).initializeData(),
+      ]);
+    }
+  }
+
+  void _refreshData() {
+    WidgetsBinding.instance.addPostFrameCallback((_) => _initializeData());
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Home(remoteConfig: widget.remoteConfig,),
+      home: Home(),
     );
   }
 }

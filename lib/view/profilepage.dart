@@ -95,11 +95,12 @@ class _ProfilePageState extends State<ProfilePage> {
                 if (_updateRequestController.text.isNotEmpty) {
                   final updateRequest = _updateRequestController.text;
                   final userId = _idController.text;
+                  final name = _nameController.text;
 
                   try {
                     await Provider.of<ProfilepageProvider>(context,
                             listen: false)
-                        .sendUpdateRequest(userId, updateRequest);
+                        .sendUpdateRequest(userId, updateRequest, name);
 
                     Fluttertoast.showToast(
                         msg: "Request sent successfully",

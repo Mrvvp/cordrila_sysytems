@@ -2,16 +2,19 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cordrila_sysytems/controller/fresh_page_provider.dart';
 import 'package:cordrila_sysytems/controller/shift_Controller.dart';
 import 'package:cordrila_sysytems/view/attendence_page.dart';
+import 'package:cordrila_sysytems/view/replies.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:cordrila_sysytems/controller/signinpage_provider.dart';
 import 'package:cordrila_sysytems/view/profilepage.dart';
 
 class FreshPage extends StatefulWidget {
-  const FreshPage({super.key});
+  const FreshPage({super.key ,required this.userId});
+  final String userId;
 
   @override
   _FreshPageState createState() => _FreshPageState();
@@ -31,14 +34,16 @@ class _FreshPageState extends State<FreshPage> {
   final TextEditingController _namecoraController = TextEditingController();
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _coralocationController = TextEditingController();
-
-
+  final TextEditingController _bagscoraController = TextEditingController();
+  final TextEditingController _cashController = TextEditingController();
+  final TextEditingController _ordersController = TextEditingController();
 
   @override
   void initState() {
     _initialize();
     _initializeLocation();
     _initializeLastLoggedInTime();
+    _timestamp();
     super.initState();
   }
 
@@ -48,18 +53,35 @@ class _FreshPageState extends State<FreshPage> {
     await signinProvider.loadLastLoggedInTime();
   }
 
+  void _timestamp() async {
+    final timeProvider = Provider.of<FreshPageProvider>(context, listen: false);
+    await timeProvider.updateTimestamp();
+  }
+
   void _initialize() async {
     final provider = Provider.of<ShiftProvider>(context, listen: false);
     provider.initialize();
   }
 
- 
+  void _clearShoppingFields() {
+    _ordersController.clear();
+    _bagscoraController.clear();
+    _cashController.clear();
+  }
+
+  @override
+  void dispose() {
+    _ordersController.dispose();
+    _bagscoraController.dispose();
+    _cashController.dispose();
+    super.dispose();
+  }
 
   void _initializeLocation() async {
     final provider = Provider.of<FreshPageProvider>(context, listen: false);
     try {
       // Initialize data
-      await provider.initializeData();
+      await provider.initializeData(widget.userId);
 
       // Fetch the location name
       String locationName = await provider.getLocationName();
@@ -68,9 +90,8 @@ class _FreshPageState extends State<FreshPage> {
       print('Fetched Location Name: $locationName');
 
       // Update the controller with the location name or coordinates
-      _coralocationController.text = locationName != 'Unknown'
-          ? locationName
-          : 'Location not found';
+      _coralocationController.text =
+          locationName != 'Unknown' ? locationName : 'Location not found';
     } catch (e) {
       // Handle any errors in fetching location
       print('Error fetching location: $e');
@@ -89,7 +110,7 @@ class _FreshPageState extends State<FreshPage> {
   }
 
   Future<void> _refreshData() async {
-    Provider.of<FreshPageProvider>(context, listen: false).initializeData();
+    Provider.of<FreshPageProvider>(context, listen: false).initializeData(widget.userId);
   }
 
   @override
@@ -107,29 +128,19 @@ class _FreshPageState extends State<FreshPage> {
         final data = {
           'Time':
               shiftProvider.selectedShift, // Use default empty string if null
-          'bags': freshStateProvider.bags.isNotEmpty
-              ? freshStateProvider.bags
-              : 'N/A', // Provide default value if empty
-          'orders': freshStateProvider.orders.isNotEmpty
-              ? freshStateProvider.orders
-              : 'N/A', // Provide default value if empty
-          'cash': freshStateProvider.cash.isNotEmpty
-              ? freshStateProvider.cash
-              : 'N/A', // Provide default value if empty // Provide default value if empty
-          'ID': _idController.text.isNotEmpty
-              ? _idController.text
-              : 'Unknown ID', // Provide default value if empty
-          'Name': _namecoraController.text.isNotEmpty
-              ? _namecoraController.text
-              : 'Unknown Name', // Provide default value if empty
+          'bags': _bagscoraController.text, // Provide default value if empty
+          'orders': _ordersController.text,
+          'cash': _cashController.text,
+
+          'ID': _idController.text, // Provide default value if empty
+          'Name': _namecoraController.text, // Provide default value if empty
           'Date': freshStateProvider.timestamp, // Provide default value if null
-          'Location': _coralocationController.text.isNotEmpty
-              ? _coralocationController.text
-              : 'Unknown Location', // Provide default value if empty
+          'Location':
+              _coralocationController.text, // Provide default value if empty
           'Login': signinpageProvider.lastLoggedInTime ??
-              'No Data', // Provide default value if null
+              '', // Provide default value if null
           'GSF': freshStateProvider.selectedYesNoOption ??
-              'N/A', // Provide default value if null
+              '', // Provide default value if null
         };
 
         // Log the data for debugging
@@ -180,7 +191,11 @@ class _FreshPageState extends State<FreshPage> {
         child: Consumer<FreshPageProvider>(
             builder: (context, freshStateProvider, child) {
           if (freshStateProvider.isFetchingData) {
-            return Center(child: CircularProgressIndicator(color: Colors.blue));
+            return Center(
+                child: Lottie.asset(
+              'assets/animations/Animation - 1722594040196.json',
+              fit: BoxFit.contain,
+            ));
           } else {
             return SingleChildScrollView(
               child: Form(
@@ -221,14 +236,18 @@ class _FreshPageState extends State<FreshPage> {
                                 color: Colors.black,
                                 size: 40,
                               )),
+                              IconButton(
+                              onPressed: () {
+                                Navigator.of(context).push(CupertinoPageRoute(
+                                    builder: (context) =>
+                                        RepliesPage(userId: widget.userId)));
+                              },
+                              icon: const Icon(
+                                Icons.notifications_outlined,
+                                color: Colors.black,
+                                size: 35,
+                              )),
                         ],
-                      ),
-                      Text(
-                        'Logged In: ${signinpageProvider.lastLoggedInTime ?? 'No data available'}',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.red,
-                            fontSize: 10),
                       ),
                       SizedBox(
                         height: 10,
@@ -237,10 +256,20 @@ class _FreshPageState extends State<FreshPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text(
-                            'Name :',
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold),
+                          Row(
+                            children: [
+                              const Text(
+                                'Name :',
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold),
+                              ),
+                              Spacer(),
+                              Text(
+                                'LOGIN: ${signinpageProvider.lastLoggedInTime ?? 'No data available'}',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 8),
+                              ),
+                            ],
                           ),
                           const SizedBox(
                             height: 10,
@@ -477,6 +506,7 @@ class _FreshPageState extends State<FreshPage> {
                             height: 10,
                           ),
                           TextFormField(
+                            controller: _ordersController,
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                               labelStyle: TextStyle(
@@ -523,6 +553,7 @@ class _FreshPageState extends State<FreshPage> {
                             height: 10,
                           ),
                           TextFormField(
+                            controller: _bagscoraController,
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                               labelStyle: TextStyle(
@@ -569,6 +600,7 @@ class _FreshPageState extends State<FreshPage> {
                             height: 10,
                           ),
                           TextFormField(
+                            controller: _cashController,
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                               labelStyle: TextStyle(
@@ -622,12 +654,11 @@ class _FreshPageState extends State<FreshPage> {
                                       shiftProvider.isNewShiftSelected()
                                   ? () {
                                       if (_formKey.currentState!.validate()) {
-                                         if (_coralocationController
-                                                    .text ==
+                                        if (_coralocationController.text ==
                                                 'Unknown' ||
                                             _coralocationController
-                                                .text.isEmpty || _coralocationController
-                                                    .text ==
+                                                .text.isEmpty ||
+                                            _coralocationController.text ==
                                                 'Location not found') {
                                           // Handle location error
                                           ScaffoldMessenger.of(context)
@@ -652,6 +683,10 @@ class _FreshPageState extends State<FreshPage> {
                                             context: context,
                                             builder: (context) {
                                               return AlertDialog(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10)),
                                                 title:
                                                     Text('Confirm Attendance'),
                                                 content: Text(
@@ -668,10 +703,11 @@ class _FreshPageState extends State<FreshPage> {
                                                     onPressed: () {
                                                       shiftProvider
                                                           .markAttendance(); // Mark attendance and update shift visibility
+
+                                                      addDetails();
+                                                      _clearShoppingFields();
                                                       Navigator.of(context)
                                                           .pop();
-                                                   
-                                                      addDetails();
                                                       String employeeId =
                                                           _idController.text;
                                                       Navigator.of(context)

@@ -1,6 +1,7 @@
 import 'package:cordrila_sysytems/controller/user_attendence_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
@@ -18,9 +19,9 @@ class _AttendencePageState extends State<AttendencePage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context
-          .read<AteendenceProvider>()
-          .fetchUserData(context, employeeId: widget.employeeId);
+      // Fetch data for today by default
+      context.read<AteendenceProvider>().fetchUserData(context,
+          employeeId: widget.employeeId, date: DateTime.now());
     });
   }
 
@@ -33,7 +34,10 @@ class _AttendencePageState extends State<AttendencePage> {
       lastDate: DateTime(2101),
     );
     if (picked != null) {
-      context.read<AteendenceProvider>().filterUserDataByDate(picked);
+      // Fetch data for the selected date
+      await context
+          .read<AteendenceProvider>()
+          .fetchUserData(context, employeeId: widget.employeeId, date: picked);
     }
   }
 
@@ -46,12 +50,13 @@ class _AttendencePageState extends State<AttendencePage> {
             onRefresh: () async {
               attendanceProvider.clearFilter();
               await attendanceProvider.fetchUserData(context,
-                  employeeId: widget.employeeId);
+                  employeeId: widget.employeeId, date: DateTime.now());
             },
             child: attendanceProvider.isLoading
-                ? const Center(
-                    child: CircularProgressIndicator(
-                      color: Colors.blue,
+                ? Center(
+                    child: Lottie.asset(
+                      'assets/animations/Animation - 1722594040196.json',
+                      fit: BoxFit.contain,
                     ),
                   )
                 : Padding(
@@ -60,9 +65,7 @@ class _AttendencePageState extends State<AttendencePage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const SizedBox(
-                            height: 20,
-                          ),
+                          const SizedBox(height: 20),
                           Row(
                             children: [
                               IconButton(
@@ -72,9 +75,7 @@ class _AttendencePageState extends State<AttendencePage> {
                                   onPressed: () {
                                     Navigator.pop(context);
                                   }),
-                              SizedBox(
-                                width: 10,
-                              ),
+                              SizedBox(width: 10),
                               const Text(
                                 'Attendance',
                                 style: TextStyle(
@@ -92,7 +93,16 @@ class _AttendencePageState extends State<AttendencePage> {
                             ],
                           ),
                           if (attendanceProvider.userDataList.isEmpty)
-                            Center(child: const Text('No data available')),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 200, horizontal: 50),
+                              child: Center(
+                                child: Lottie.asset(
+                                  'assets/animations/Animation - 1722593381652.json',
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            ),
                           if (attendanceProvider.userDataList.isNotEmpty) ...[
                             const SizedBox(height: 10),
                             Expanded(

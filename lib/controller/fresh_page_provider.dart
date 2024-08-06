@@ -13,7 +13,6 @@ class FreshPageProvider with ChangeNotifier {
   Timestamp _timestamp = Timestamp.now();
   Timestamp get timestamp => _timestamp;
   final TextEditingController timedateController = TextEditingController();
-  final TextEditingController _coralocationController = TextEditingController();
 
   String? _selectedYesNoOption;
   final List<String> _yesNoOptions = ['Yes', 'No'];
@@ -52,11 +51,10 @@ class FreshPageProvider with ChangeNotifier {
 
   FreshPageProvider();
 
-  Future<void> initializeData() async {
+  Future<void> initializeData(String empCode) async {
     try {
-      await _checkLocationPermission();
       await _getCurrentUserLocation();
-      await _updateLocationName(); // Update location name here
+      await getLocationName(); 
       
       bool atWarehouse = isWithinPredefinedLocation();
       if (atWarehouse) {
@@ -190,31 +188,16 @@ class FreshPageProvider with ChangeNotifier {
       'name': 'KALA',
       'latitude': 10.0645644,
       'longitude': 76.3221503,
-      'radius': 1.5
+      'radius': 0.25
     },
   ];
 
   bool get isFetchingData => _isFetchingData;
   bool get alertShown => _alertShown;
 
-  Future<void> _checkLocationPermission() async {
-    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      // Location services are not enabled
-      print('Location services are disabled.');
-      return;
-    }
+  
 
-    LocationPermission permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission != LocationPermission.whileInUse && permission != LocationPermission.always) {
-        // Permissions are denied
-        print('Location permissions are denied');
-        return;
-      }
-    }
-  }
+ 
 
   Future<void> _getCurrentUserLocation() async {
     try {
@@ -224,8 +207,6 @@ class FreshPageProvider with ChangeNotifier {
       notifyListeners();
     } catch (e) {
       _isFetchingData = false;
-      print('Error fetching location: $e');
-      // Consider showing user-friendly error message
       notifyListeners();
     }
   }
@@ -239,6 +220,7 @@ class FreshPageProvider with ChangeNotifier {
         c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
     return 12742 * asin(sqrt(a));
   }
+ 
 
   bool isWithinPredefinedLocation() {
     if (_currentUserPosition != null) {
@@ -256,46 +238,23 @@ class FreshPageProvider with ChangeNotifier {
     return false;
   }
 
-  Future<void> _updateLocationName() async {
-    String? locationName = await getLocationName();
-    
-    // Update the TextEditingController with the location name or coordinates
-    _coralocationController.text = locationName != 'Unknown' 
-      ? locationName 
-      : 'Current Location: ${_currentUserPosition?.latitude}, ${_currentUserPosition?.longitude}';
-    
-    notifyListeners();
-  }
-
-  Future<String> getLocationName() async {
+ 
+  String getLocationName() {
     String? locationName;
     if (_currentUserPosition != null) {
-      double currentLatitude = _currentUserPosition!.latitude;
-      double currentLongitude = _currentUserPosition!.longitude;
-      
-      print('Current Location Latitude: $currentLatitude');
-      print('Current Location Longitude: $currentLongitude');
-      
       for (var location in predefinedLocations) {
         double distance = _calculateDistance(
             location['latitude']!,
             location['longitude']!,
-            currentLatitude,
-            currentLongitude);
-        
-        // If distance is within 500 meters (0.5 km)
-        if (distance <= 0.5) {
+            _currentUserPosition!.latitude,
+            _currentUserPosition!.longitude);
+        if (distance <= location['radius']!) {
           locationName = location['name'];
-          print('Current location is near: $locationName');
-          break;
+          break; // No need to continue looping if the location is found
         }
       }
-    } else {
-      print('Current Location Latitude: Not available');
-      print('Current Location Longitude: Not available');
     }
-    
-    return locationName ?? 'Unknown';
+    return locationName ?? 'Unknown'; // Return 'Unknown' if the user is not within any predefined location
   }
 
   void resetAlertShown() {
@@ -360,15 +319,7 @@ class FreshPageProvider with ChangeNotifier {
 
   // Additional methods
 
-  Future<void> clearLocationData() async {
-    _currentUserPosition = null;
-    notifyListeners();
-  }
   
-  void startLocationUpdates() {
-    Timer.periodic(Duration(minutes: 1), (timer) async {
-      await _getCurrentUserLocation();
-      notifyListeners();
-    });
-  }
+  
+
 }

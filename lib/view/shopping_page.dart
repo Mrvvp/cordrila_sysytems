@@ -2,9 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cordrila_sysytems/controller/shift_shop_provider.dart';
 import 'package:cordrila_sysytems/controller/shopping_page_provider.dart';
 import 'package:cordrila_sysytems/view/attendence_page.dart';
+import 'package:cordrila_sysytems/view/replies.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:cordrila_sysytems/controller/signinpage_provider.dart';
 import 'package:cordrila_sysytems/view/profilepage.dart';
@@ -58,7 +60,6 @@ class _ShoppingPageState extends State<ShoppingPage> {
   void _initialize() async {
     final provider = Provider.of<ShopProvider>(context, listen: false);
     provider.initialize();
-    
   }
 
   void _clearShoppingFields() {
@@ -153,13 +154,15 @@ class _ShoppingPageState extends State<ShoppingPage> {
 
     return Scaffold(
       backgroundColor: Colors.white,
+      
       body: RefreshIndicator(
         color: Colors.black,
         onRefresh: _refreshData,
         child: Consumer<ShoppingPageProvider>(
             builder: (context, freshStateProvider, child) {
           if (freshStateProvider.isFetchingData) {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: Lottie.asset('assets/animations/Animation - 1722594040196.json',
+                                  fit: BoxFit.contain,));
           } else {
             return SingleChildScrollView(
               child: Form(
@@ -182,7 +185,7 @@ class _ShoppingPageState extends State<ShoppingPage> {
                           const Spacer(),
                           IconButton(
                             icon: Icon(Icons.location_on_outlined,
-                                size: 38, color: Colors.black),
+                                size: 35, color: Colors.black),
                             onPressed: () {
                               if (!appStateProvider.isHomeLocationSet) {
                                 final signinpageprovider =
@@ -215,7 +218,7 @@ class _ShoppingPageState extends State<ShoppingPage> {
                                     builder: (context) => const ProfilePage()));
                               },
                               icon: const Icon(CupertinoIcons.profile_circled,
-                                  color: Colors.black, size: 40)),
+                                  color: Colors.black, size: 35)),
                           IconButton(
                               onPressed: () {
                                 String employeeId = _idController.text;
@@ -227,16 +230,20 @@ class _ShoppingPageState extends State<ShoppingPage> {
                               icon: const Icon(
                                 CupertinoIcons.calendar,
                                 color: Colors.black,
-                                size: 40,
+                                size: 35,
+                              )),
+                          IconButton(
+                              onPressed: () {
+                                Navigator.of(context).push(CupertinoPageRoute(
+                                    builder: (context) =>
+                                        RepliesPage(userId: widget.userId)));
+                              },
+                              icon: const Icon(
+                                Icons.notifications_outlined,
+                                color: Colors.black,
+                                size: 35,
                               )),
                         ],
-                      ),
-                      Text(
-                        'Logged In: ${signinpageProvider.lastLoggedInTime ?? 'No data available'}',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.red,
-                            fontSize: 10),
                       ),
                       SizedBox(
                         height: 10,
@@ -245,10 +252,20 @@ class _ShoppingPageState extends State<ShoppingPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text(
-                            'Name :',
-                            style: TextStyle(
-                                fontSize: 15, fontWeight: FontWeight.bold),
+                          Row(
+                            children: [
+                              const Text(
+                                'Name :',
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold),
+                              ),
+                              Spacer(),
+                              Text(
+                                'LOGIN: ${signinpageProvider.lastLoggedInTime ?? 'No data available'}',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 8),
+                              ),
+                            ],
                           ),
                           const SizedBox(
                             height: 10,
@@ -370,7 +387,7 @@ class _ShoppingPageState extends State<ShoppingPage> {
                               constraints: const BoxConstraints(maxHeight: 70),
                               enabled: false,
                               prefixIcon: Icon(
-                                CupertinoIcons.location,
+                                Icons.store_outlined,
                                 color: Colors.grey.shade500,
                               ),
                               filled: true,
@@ -406,7 +423,7 @@ class _ShoppingPageState extends State<ShoppingPage> {
                               constraints: const BoxConstraints(maxHeight: 70),
                               enabled: false,
                               prefixIcon: Icon(
-                                CupertinoIcons.location,
+                              Icons.location_on_outlined,
                                 color: Colors.grey.shade500,
                               ),
                               filled: true,
@@ -425,7 +442,6 @@ class _ShoppingPageState extends State<ShoppingPage> {
                           const SizedBox(
                             height: 10,
                           ),
-                         
                           const Text(
                             'Shift :',
                             style: TextStyle(
@@ -479,7 +495,6 @@ class _ShoppingPageState extends State<ShoppingPage> {
                               }).toList(),
                             ),
                           ),
-
                           const SizedBox(
                             height: 10,
                           ),
@@ -491,14 +506,17 @@ class _ShoppingPageState extends State<ShoppingPage> {
                           const SizedBox(
                             height: 10,
                           ),
-                          DropdownButtonFormField<String>(itemHeight: 60,
+                          DropdownButtonFormField<String>(
+                            itemHeight: 60,
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Colors.grey.shade200,
                               contentPadding: EdgeInsets.symmetric(
                                   horizontal: 16, vertical: 8),
-                                  labelStyle: TextStyle(color: Colors.grey.shade500,fontWeight: FontWeight.w500),
-                                  labelText: 'Select an option',
+                              labelStyle: TextStyle(
+                                  color: Colors.grey.shade500,
+                                  fontWeight: FontWeight.w500),
+                              labelText: 'Select an option',
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                                 borderSide: BorderSide.none,
@@ -526,10 +544,11 @@ class _ShoppingPageState extends State<ShoppingPage> {
                             height: 10,
                           ),
                           DropdownButtonFormField<String>(
-                            
                             decoration: InputDecoration(
-                               labelStyle: TextStyle(color: Colors.grey.shade500,fontWeight: FontWeight.w500),
-                                  labelText: 'Select an option',
+                              labelStyle: TextStyle(
+                                  color: Colors.grey.shade500,
+                                  fontWeight: FontWeight.w500),
+                              labelText: 'Select an option',
                               filled: true,
                               fillColor: Colors.grey.shade200,
                               contentPadding: EdgeInsets.symmetric(
@@ -675,8 +694,10 @@ class _ShoppingPageState extends State<ShoppingPage> {
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Colors.grey.shade200,
-                               labelStyle: TextStyle(color: Colors.grey.shade500,fontWeight: FontWeight.w500),
-                                  labelText: 'Select an option',
+                              labelStyle: TextStyle(
+                                  color: Colors.grey.shade500,
+                                  fontWeight: FontWeight.w500),
+                              labelText: 'Select an option',
                               contentPadding: EdgeInsets.symmetric(
                                   horizontal: 16, vertical: 8),
                               border: OutlineInputBorder(
@@ -698,7 +719,6 @@ class _ShoppingPageState extends State<ShoppingPage> {
                           const SizedBox(
                             height: 30,
                           ),
-
                           SizedBox(
                             width: MediaQuery.of(context).size.width,
                             height: 60,
@@ -710,11 +730,13 @@ class _ShoppingPageState extends State<ShoppingPage> {
                                 backgroundColor: Colors.blue.shade700,
                                 elevation: 5,
                               ),
-                              onPressed: freshStateProvider
-                                          .isWithinPredefinedLocation () || freshStateProvider.isWithinAlternativeLocation()
-                                          && shopProvider.isNewShiftSelected()
+                              onPressed: (freshStateProvider
+                                          .isWithinPredefinedLocation() ||
+                                      freshStateProvider
+                                              .isWithinAlternativeLocation()) &&
+                                          shopProvider.isNewShiftSelected()
                                   ? () {
-                                     if (_shipmentController.text.isEmpty ||
+                                      if (_shipmentController.text.isEmpty ||
                                           _pickupController.text.isEmpty ||
                                           _mfnController.text.isEmpty) {
                                         ScaffoldMessenger.of(context)
@@ -724,9 +746,7 @@ class _ShoppingPageState extends State<ShoppingPage> {
                                                 'Please fill in all fields'),
                                           ),
                                         );
-                                      }
-
-                                    else if (appStateProvider
+                                      } else if (appStateProvider
                                                   .selectedYesNoOption ==
                                               null ||
                                           appStateProvider
@@ -742,8 +762,7 @@ class _ShoppingPageState extends State<ShoppingPage> {
                                                 'Please fill in all fields.'),
                                           ),
                                         );
-                                      } 
-                                      else if (_locationController.text ==
+                                      } else if (_locationController.text ==
                                               'Unknown' ||
                                           _locationController.text.isEmpty) {
                                         // Handle location error
@@ -754,46 +773,41 @@ class _ShoppingPageState extends State<ShoppingPage> {
                                                 'Location error! Please restart your app.'),
                                           ),
                                         );
-                                      } 
-                                      else if (
-                                          appStateProvider.timedateController.text.isEmpty) {
+                                      } else if (appStateProvider
+                                          .timedateController.text.isEmpty) {
                                         // Handle location error
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
                                           const SnackBar(
-                                            content: Text(
-                                                'Error loading data'),
+                                            content: Text('Error loading data'),
                                           ),
                                         );
-                                      }
-                                      else{
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return AlertDialog(
-                                            title: Text('Confirm Attendance'),
-                                            content: Text(
-                                                'Are you sure you want to mark attendance?'),
-                                            actions: [
-                                              TextButton(
-                                                onPressed: () {
-                                                  Navigator.of(context)
-                                                      .pop(); // Close the dialog
-                                                },
-                                                child: Text('Cancel'),
-                                              ),
-                                              TextButton(
-                                                onPressed: () {
-                                                  shopProvider
-                                                      .markAttendance();
-                                                      addDetails();
-                                                      _clearShoppingFields(); // Mark attendance and update shift visibility
-                                                  Navigator.of(context)
-                                                      .pop();
-                                                      String employeeId =
-                                                        _idController.text;
+                                      } else {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              title: Text('Confirm Attendance'),
+                                              content: Text(
+                                                  'Are you sure you want to mark attendance?'),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () {
                                                     Navigator.of(context)
-                                                        .push(
+                                                        .pop(); // Close the dialog
+                                                  },
+                                                  child: Text('Cancel'),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    shopProvider
+                                                        .markAttendance();
+                                                    addDetails();
+                                                    _clearShoppingFields(); // Mark attendance and update shift visibility
+                                                    Navigator.of(context).pop();
+                                                    String employeeId =
+                                                        _idController.text;
+                                                    Navigator.of(context).push(
                                                       CupertinoPageRoute(
                                                         builder: (context) =>
                                                             AttendencePage(
@@ -802,15 +816,15 @@ class _ShoppingPageState extends State<ShoppingPage> {
                                                         ),
                                                       ),
                                                     ); // Close the dialog
-                                                },
-                                                child: Text('Mark'),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
+                                                  },
+                                                  child: Text('Mark'),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      }
                                     }
-                                  }
                                   : null,
                               child: Text(
                                 'Mark Attendance',

@@ -35,7 +35,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   void _populateFields(Map<String, dynamic> userData) {
     _nameController.text = userData['Employee Name'] ?? '';
-    _idController.text = userData['Emp/IC Code'] ?? '';
+    _idController.text = userData['EmpCode'] ?? '';
     _titleController.text = userData['Business Title'] ?? '';
     _emailController.text = userData['Mail ID'] ?? '';
     _dobController.text = userData['DOB'] ?? '';
@@ -43,7 +43,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     _mobileController.text = userData['Mobile Number'].toString();
     _categoryController.text = userData['Category'] ?? '';
     _typeController.text = userData['Location'] ?? '';
-    _stationController.text = userData['Station Code'] ?? '';
+    _stationController.text = userData['StationCode'] ?? '';
   }
 
   @override
@@ -168,8 +168,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       ),
                       const SizedBox(height: 10),
                       TextField(
+                        enabled: false,
                         controller: _idController,
                         decoration: InputDecoration(
+                          
                           labelText: 'ID',
                           labelStyle: TextStyle(color: Colors.grey.shade500),
                           contentPadding: const EdgeInsets.all(10),
@@ -369,7 +371,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             // Gather the updated data from the controllers
                             Map<String, dynamic> updatedData = {
                               'Employee Name': _nameController.text,
-                              'Emp/IC Code': _idController.text,
+                              'EmpCode': _idController.text,
                               'Business Title': _titleController.text,
                               'Mail ID': _emailController.text,
                               'DOB': _dobController.text,
@@ -377,7 +379,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               'Mobile Number': _mobileController.text,
                               'Category': _categoryController.text,
                               'Location': _typeController.text,
-                              'Station Code': _stationController.text,
+                              'StationCode': _stationController.text,
                             };
 
                             // Call the provider method to update the data

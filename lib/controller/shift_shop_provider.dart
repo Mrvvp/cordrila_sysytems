@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
@@ -126,7 +127,10 @@ class ShopProvider with ChangeNotifier {
     for (var shift in _shiftEnabled.keys) {
       _hiddenShifts[shift] = false; // Reset hidden shifts
     }
-    prefs.remove('selected_shift'); // Clear selected shift for the new day
+    prefs.remove('selected_shift');
+    prefs.remove('hidden_shifts'); 
+    prefs.remove('disabled_shifts');
+    // Clear selected shift for the new day
 
     // Optionally, keep disabled shifts but update state if needed
     // If you want to keep previously disabled shifts, don't remove 'disabled_shifts'

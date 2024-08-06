@@ -4,17 +4,16 @@ import 'package:intl/intl.dart';
 import 'package:ntp/ntp.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class SigninpageProvider with ChangeNotifier {
   String? _selectedDropdownValue;
   String? get selectedDropdownValue => _selectedDropdownValue;
 
   bool _obscurePassword = true;
   Map<String, dynamic>? _userData;
+  Map<String, dynamic>? _cachedUserData;
   bool _isLoading = false;
 
   bool get isLoading => _isLoading;
-
   bool get obscurePassword => _obscurePassword;
   Map<String, dynamic>? get userData => _userData;
 
@@ -29,6 +28,12 @@ class SigninpageProvider with ChangeNotifier {
   }
 
   Future<void> fetchUserData(String empCode) async {
+    if (_cachedUserData != null) {
+      _userData = _cachedUserData;
+      notifyListeners();
+      return;
+    }
+
     try {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('USERS')
@@ -37,6 +42,7 @@ class SigninpageProvider with ChangeNotifier {
 
       if (querySnapshot.docs.isNotEmpty) {
         _userData = querySnapshot.docs.first.data() as Map<String, dynamic>;
+        _cachedUserData = _userData; // Cache the fetched user data
         notifyListeners();
       } else {
         throw Exception('User not found');
@@ -49,6 +55,13 @@ class SigninpageProvider with ChangeNotifier {
 
   Future<bool> validatePassword(String empCode, String password) async {
     try {
+      if (_cachedUserData != null &&
+          _cachedUserData!['EmpCode'] == empCode &&
+          _cachedUserData!['Password'] == password) {
+        _userData = _cachedUserData;
+        return true;
+      }
+
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('USERS')
           .where('EmpCode', isEqualTo: empCode)
@@ -58,6 +71,7 @@ class SigninpageProvider with ChangeNotifier {
       if (querySnapshot.docs.isNotEmpty) {
         // User with matching empCode and password found
         _userData = querySnapshot.docs.first.data() as Map<String, dynamic>;
+        _cachedUserData = _userData; // Cache the fetched user data
         return true;
       } else {
         // User not found or password doesn't match
@@ -84,6 +98,7 @@ class SigninpageProvider with ChangeNotifier {
             .doc(docId)
             .update(updatedData);
         _userData = updatedData;
+        _cachedUserData = updatedData; // Update the cached user data
         notifyListeners();
       } else {
         throw Exception('User not found');
@@ -118,7 +133,7 @@ class SigninpageProvider with ChangeNotifier {
   Future<bool> loadUserData() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      String? empCode = prefs.getString('EmpCode');
+      String? empCode = prefs.getString('EmpCodee');
       String? password = prefs.getString('Password');
       if (empCode != null && password != null) {
         return validatePassword(empCode, password);
@@ -130,7 +145,7 @@ class SigninpageProvider with ChangeNotifier {
     }
   }
 
-   dynamic _lastLoggedInTime;
+  dynamic _lastLoggedInTime;
   dynamic get lastLoggedInTime => _lastLoggedInTime;
 
   Future<void> saveLastLoggedInTime() async {

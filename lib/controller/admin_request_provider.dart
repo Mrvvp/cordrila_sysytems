@@ -48,6 +48,18 @@ class AdminRequestProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+    Future<void> sendReply(String requestId, String reply) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('requests')
+          .doc(requestId)
+          .update({'reply': reply});
+      fetchRequests(); // Refresh data
+    } catch (e) {
+      print('Error sending reply: $e');
+    }
+  }
+
   // Method to delete a request
   Future<void> deleteRequest(String id) async {
     try {

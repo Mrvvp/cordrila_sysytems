@@ -60,7 +60,7 @@ class _AdminRequestPageState extends State<AdminRequestPage> {
                                 IconButton(
                                   iconSize: 35,
                                   color: Colors.black45,
-                                  icon: Icon(Icons.arrow_back),
+                                  icon: const Icon(Icons.arrow_back),
                                   onPressed: () {
                                     Navigator.pop(context);
                                   },
@@ -80,8 +80,8 @@ class _AdminRequestPageState extends State<AdminRequestPage> {
                             TextField(
                               controller: _searchController,
                               decoration: InputDecoration(
-                                constraints: BoxConstraints(maxHeight: 50),
-                                contentPadding: EdgeInsets.all(8),
+                                constraints: const BoxConstraints(maxHeight: 50),
+                                contentPadding: const EdgeInsets.all(8),
                                 prefixIcon: Icon(
                                   CupertinoIcons.search,
                                   color: Colors.grey.shade500,
@@ -116,6 +116,10 @@ class _AdminRequestPageState extends State<AdminRequestPage> {
                                 itemBuilder: (context, index) {
                                   final request =
                                       requestProvider.filteredRequests[index];
+                                  final TextEditingController replyController =
+                                      TextEditingController(
+                                          text: request['reply'] ?? '');
+
                                   return Container(
                                     margin: const EdgeInsets.symmetric(
                                         vertical: 8.0),
@@ -131,81 +135,129 @@ class _AdminRequestPageState extends State<AdminRequestPage> {
                                         ),
                                       ],
                                     ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text('ID: ${request['userId']}',
-                                                maxLines: 3,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: const TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.bold)),
-                                            if (request['timestamp'] != null)
-                                              Text(
-                                                  maxLines: 3,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  'Time: ${DateFormat('yyyy-MM-dd HH:mm').format((request['timestamp'] as Timestamp).toDate())}',
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  'Name: ${request['name']}',
                                                   style: const TextStyle(
-                                                    fontSize: 11,
-                                                  )),
-                                            SizedBox(
-                                              height: 5,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  'ID: ${request['userId']}',
+                                                  style: const TextStyle(
+                                                    fontSize: 13,
+                                                  ),
+                                                ),
+                                                if (request['timestamp'] != null)
+                                                  Text(
+                                                    'Time: ${DateFormat('yyyy-MM-dd HH:mm').format((request['timestamp'] as Timestamp).toDate())}',
+                                                    style: const TextStyle(
+                                                      fontSize: 11,
+                                                    ),
+                                                  ),
+                                              ],
                                             ),
-                                            SizedBox(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.6, // Adjust the width as needed
-                                                child: TextField(
-                                                  decoration: InputDecoration(
-                                                    contentPadding:
-                                                        const EdgeInsets.all(
-                                                            10),
-                                                    filled: true,
-                                                    fillColor:
-                                                        Colors.grey.shade200,
-                                                    focusedBorder:
-                                                        OutlineInputBorder(
-                                                      borderSide:
-                                                          const BorderSide(
-                                                              color: Colors
-                                                                  .transparent),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                    ),
-                                                    border: OutlineInputBorder(
-                                                      borderSide:
-                                                          BorderSide.none,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                    ),
-                                                  ),
-                                                  controller:
-                                                      TextEditingController(
-                                                    text:
-                                                        '${request['request']}',
-                                                  ),
-                                                  readOnly: true,
-                                                  maxLines: 3,
-                                                ))
+                                            IconButton(
+                                              icon: Icon(
+                                                Icons.delete,
+                                                color: Colors.red.shade300,
+                                              ),
+                                              onPressed: () {
+                                                requestProvider.deleteRequest(
+                                                    request['id']);
+                                              },
+                                            ),
                                           ],
                                         ),
-                                        IconButton(
-                                          icon: Icon(Icons.delete,
-                                              color: Colors.red.shade300),
-                                          onPressed: () {
-                                            requestProvider
-                                                .deleteRequest(request['id']);
-                                          },
+                                        const SizedBox(height: 5),
+                                        SizedBox(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.6, // Adjust the width as needed
+                                          child: TextField(
+                                            decoration: InputDecoration(
+                                              contentPadding:
+                                                  const EdgeInsets.all(10),
+                                              filled: true,
+                                              fillColor: Colors.grey.shade200,
+                                              focusedBorder: OutlineInputBorder(
+                                                borderSide: const BorderSide(
+                                                    color:
+                                                        Colors.transparent),
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                              border: OutlineInputBorder(
+                                                borderSide: BorderSide.none,
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                            ),
+                                            controller: TextEditingController(
+                                              text: '${request['request']}',
+                                            ),
+                                            readOnly: true,
+                                            maxLines: 3,
+                                          ),
                                         ),
+                                        const SizedBox(height: 10),
+                                        SizedBox(
+                                           width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.6, 
+                                          child: TextField(
+                                            controller: replyController,
+                                            decoration: InputDecoration(
+                                              contentPadding:
+                                                  const EdgeInsets.all(10),
+                                              filled: true,
+                                              fillColor: Colors.grey.shade200,
+                                              hintText: 'Enter reply',
+                                              focusedBorder: OutlineInputBorder(
+                                                borderSide: const BorderSide(
+                                                    color: Colors.transparent),
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                              border: OutlineInputBorder(
+                                                borderSide: BorderSide.none,
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                            ),
+                                            maxLines: 1,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 10),
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            requestProvider.sendReply(
+                                                request['id'],
+                                                replyController.text);
+                                          },
+                                          child: const Text('Send Reply'),
+                                        ),
+                                        if (request['reply'] != null)
+                                          Text(
+                                            'Reply: ${request['reply']}',
+                                            style: const TextStyle(
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
                                       ],
                                     ),
                                   );

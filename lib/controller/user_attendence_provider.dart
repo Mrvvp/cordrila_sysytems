@@ -46,66 +46,70 @@ class AteendenceProvider extends ChangeNotifier {
   bool _isLoading = false;
 
   DateTime? get selectedDate => _selectedDate;
-  List<UserDetail> get userDataList => _selectedDate == null ? _userDataList : _filteredUserDataList;
+  List<UserDetail> get userDataList => _filteredUserDataList.isEmpty ? _userDataList : _filteredUserDataList;
   bool get isLoading => _isLoading;
 
-  Future<void> fetchUserData(BuildContext context, {required String employeeId}) async {
-    _isLoading = true;
-    notifyListeners();
+ Future<void> fetchUserData(BuildContext context, {required String employeeId, DateTime? date}) async {
+  _isLoading = true;
+  notifyListeners();
 
-    try {
-      Query query = FirebaseFirestore.instance.collection('userdata').where('ID', isEqualTo: employeeId);
-      query = query.orderBy('Date', descending: true);
-      QuerySnapshot querySnapshot = await query.get();
+  try {
+    Query query = FirebaseFirestore.instance.collection('userdata').where('ID', isEqualTo: employeeId);
 
-      _userDataList = querySnapshot.docs.map((doc) {
-        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-        return UserDetail(
-          employeeId: data['ID'].toString(),
-          name: data['Name'].toString(),
-          date: (data['Date'] as Timestamp).toDate(),
-          orders: data['orders']?.toString(),
-          bags: data['bags']?.toString(),
-          mop: data['cash']?.toString(),
-          shipments: data['shipment']?.toString(),
-          pickups: data['pickup']?.toString(),
-          mfn: data['mfn']?.toString(),
-          time: data['Time']?.toString(),
-          shift: data['shift']?.toString(),
-          location: data['Location']?.toString(),
-          gsf: data['GSF']?.toString(),
-          helmet: data['Helmet Adherence']?.toString(),
-          lm: data['LM Read']?.toString(),
-          cash: data['Cash Submitted']?.toString(),
-        );
-      }).toList();
-
-      if (_userDataList.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('No data available')));
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error fetching user data: $e')));
-    } finally {
-      _isLoading = false;
-      notifyListeners();
+    if (date != null) {
+      // Filter data by the provided date
+      DateTime startDate = DateTime(date.year, date.month, date.day);
+      DateTime endDate = DateTime(date.year, date.month, date.day, 23, 59, 59);
+      query = query.where('Date', isGreaterThanOrEqualTo: startDate).where('Date', isLessThanOrEqualTo: endDate);
     }
-  }
 
-  void filterUserDataByDate(DateTime filterDate) {
-    _selectedDate = filterDate;
-    DateTime startDate = DateTime(filterDate.year, filterDate.month, filterDate.day);
-    DateTime endDate = DateTime(filterDate.year, filterDate.month, filterDate.day, 23, 59, 59);
+    query = query.orderBy('Date', descending: true);
+    QuerySnapshot querySnapshot = await query.get();
 
-    _filteredUserDataList = _userDataList.where((user) {
-      return user.date.isAfter(startDate) && user.date.isBefore(endDate);
+    _userDataList = querySnapshot.docs.map((doc) {
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      return UserDetail(
+        employeeId: data['ID'].toString(),
+        name: data['Name'].toString(),
+        date: (data['Date'] as Timestamp).toDate(),
+        orders: data['orders']?.toString(),
+        bags: data['bags']?.toString(),
+        mop: data['cash']?.toString(),
+        shipments: data['shipment']?.toString(),
+        pickups: data['pickup']?.toString(),
+        mfn: data['mfn']?.toString(),
+        time: data['Time']?.toString(),
+        shift: data['shift']?.toString(),
+        location: data['Location']?.toString(),
+        gsf: data['GSF']?.toString(),
+        helmet: data['Helmet Adherence']?.toString(),
+        lm: data['LM Read']?.toString(),
+        cash: data['Cash Submitted']?.toString(),
+      );
     }).toList();
 
+    if (_userDataList.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('No data available')));
+    }
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error fetching user data: $e')));
+  } finally {
+    _isLoading = false;
+    notifyListeners();
+  }
+}
+
+
+  void filterUserDataByDateRange(DateTime startDate, DateTime endDate) {
+    _filteredUserDataList = _userDataList.where((user) {
+      final userDate = DateTime(user.date.year, user.date.month, user.date.day);
+      return userDate.isAfter(startDate) && userDate.isBefore(endDate);
+    }).toList();
     notifyListeners();
   }
 
   void clearFilter() {
-    _selectedDate = null;
-    _filteredUserDataList.clear();
+    _filteredUserDataList = [];
     notifyListeners();
   }
 }

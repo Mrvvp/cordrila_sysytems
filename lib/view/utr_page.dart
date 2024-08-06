@@ -4,6 +4,7 @@ import 'package:cordrila_sysytems/view/attendence_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:cordrila_sysytems/controller/signinpage_provider.dart';
 import 'package:cordrila_sysytems/view/profilepage.dart';
@@ -30,11 +31,19 @@ class _UtrPageState extends State<UtrPage> {
   void initState() {
     _initializeLocation();
     _initializeLastLoggedInTime();
+    _timestamp();
     super.initState();
   }
+
   void _initializeLastLoggedInTime() async {
-    final signinProvider = Provider.of<SigninpageProvider>(context, listen: false);
+    final signinProvider =
+        Provider.of<SigninpageProvider>(context, listen: false);
     await signinProvider.loadLastLoggedInTime();
+  }
+
+  void _timestamp() async {
+    final timeProvider = Provider.of<UtrPageProvider>(context, listen: false);
+    await timeProvider.updateTimestamp();
   }
 
   void _initializeLocation() async {
@@ -109,21 +118,23 @@ class _UtrPageState extends State<UtrPage> {
       if (!isWithinWarehouse && !dialogShown) {
         // print('Showing dialog');
         utrStateProvider.showLocationAlert(context);
-      } else if (isWithinWarehouse && dialogShown) {
-        
-      }
+      } else if (isWithinWarehouse && dialogShown) {}
     });
 
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: RefreshIndicator(
-        onRefresh: _refreshData,
-        child: Consumer<UtrPageProvider>(
-        builder: (context, utrStateProvider, child) {
-          if (utrStateProvider.isFetchingData) {
-            return Center(child: CircularProgressIndicator(color: Colors.blue));
-          } else {
-            return SingleChildScrollView(
+        backgroundColor: Colors.white,
+        body: RefreshIndicator(
+          onRefresh: _refreshData,
+          child: Consumer<UtrPageProvider>(
+              builder: (context, utrStateProvider, child) {
+            if (utrStateProvider.isFetchingData) {
+              return Center(
+                  child: Lottie.asset(
+                'assets/animations/Animation - 1722594040196.json',
+                fit: BoxFit.contain,
+              ));
+            } else {
+              return SingleChildScrollView(
                 child: Form(
                   key: _formKey,
                   child: Padding(
@@ -134,34 +145,39 @@ class _UtrPageState extends State<UtrPage> {
                       children: [
                         Row(
                           children: [
-                            const Text(
-                              'Welcome',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.bold),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Welcome',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  'Login: ${signinpageProvider.lastLoggedInTime ?? 'No data available'}',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold, fontSize: 9),
+                                ),
+                              ],
                             ),
                             const Spacer(),
                             IconButton(
                                 onPressed: () {
-                                  Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const ProfilePage()));
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ProfilePage()));
                                 },
-                                icon: const Icon(
-                                    CupertinoIcons.profile_circled,
-                                    color: Colors.black,
-                                    size: 40)),
+                                icon: const Icon(CupertinoIcons.profile_circled,
+                                    color: Colors.black, size: 40)),
                             IconButton(
                                 onPressed: () {
                                   String employeeId = _idController.text;
-                                  Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              AttendencePage(
-                                                employeeId: employeeId,
-                                              )));
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => AttendencePage(
+                                            employeeId: employeeId,
+                                          )));
                                 },
                                 icon: const Icon(
                                   CupertinoIcons.calendar,
@@ -170,13 +186,6 @@ class _UtrPageState extends State<UtrPage> {
                                 )),
                           ],
                         ),
-                        Text(
-                                'Logged In: ${signinpageProvider.lastLoggedInTime ?? 'No data available'}',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.red,
-                                    fontSize: 10),
-                              ),
                         SizedBox(
                           height: 10,
                         ),
@@ -291,7 +300,7 @@ class _UtrPageState extends State<UtrPage> {
                                 ),
                               ),
                             ),
-                             const SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             const Text(
@@ -304,7 +313,7 @@ class _UtrPageState extends State<UtrPage> {
                             ),
                             TextFormField(
                               keyboardType: TextInputType.number,
-                              controller: _locationController,
+                              controller: _stationController,
                               cursorColor: Colors.black,
                               decoration: InputDecoration(
                                 contentPadding: const EdgeInsets.all(10),
@@ -341,7 +350,7 @@ class _UtrPageState extends State<UtrPage> {
                             ),
                             TextFormField(
                               keyboardType: TextInputType.number,
-                              controller: _stationController,
+                              controller: _locationController,
                               cursorColor: Colors.black,
                               decoration: InputDecoration(
                                 contentPadding: const EdgeInsets.all(10),
@@ -375,7 +384,6 @@ class _UtrPageState extends State<UtrPage> {
                                 ),
                               ),
                             ),
-                            
                             SizedBox(
                               width: MediaQuery.of(context).size.width,
                               height: 60,
@@ -387,11 +395,13 @@ class _UtrPageState extends State<UtrPage> {
                                   backgroundColor: Colors.blue.shade700,
                                   elevation: 5,
                                 ),
-                                onPressed: utrStateProvider.isAttendanceMarked ||
-                              !utrStateProvider.isWithinPredefinedLocation()
-                          ? null
+                                onPressed: utrStateProvider
+                                            .isAttendanceMarked ||
+                                        !utrStateProvider
+                                            .isWithinPredefinedLocation()
+                                    ? null
                                     : () {
-                                       if (_locationController.text ==
+                                        if (_locationController.text ==
                                                 'Unknown' ||
                                             _locationController.text.isEmpty) {
                                           // Handle location error
@@ -406,8 +416,11 @@ class _UtrPageState extends State<UtrPage> {
                                         showDialog(
                                           context: context,
                                           builder: (BuildContext context) {
-                                            return AlertDialog( shape: RoundedRectangleBorder(
-                                             borderRadius: BorderRadius.circular(10)),
+                                            return AlertDialog(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
                                               title: Text("Confirm Attendance"),
                                               content: Text(
                                                   "Are you sure you want to mark attendance?"),
@@ -457,12 +470,8 @@ class _UtrPageState extends State<UtrPage> {
                   ),
                 ),
               );
-          }
-        }
-      ),
-      )
-    );
+            }
+          }),
+        ));
   }
 }
-
-
