@@ -44,6 +44,7 @@ class _AttendencePageState extends State<AttendencePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Consumer<AteendenceProvider>(
         builder: (context, attendanceProvider, child) {
           return RefreshIndicator(
@@ -97,9 +98,18 @@ class _AttendencePageState extends State<AttendencePage> {
                               padding: const EdgeInsets.symmetric(
                                   vertical: 200, horizontal: 50),
                               child: Center(
-                                child: Lottie.asset(
-                                  'assets/animations/Animation - 1722593381652.json',
-                                  fit: BoxFit.contain,
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      'No attendence data available!',
+                                      style: TextStyle(fontFamily: 'Poppins'),
+                                    ),
+                                    Lottie.asset(
+                                      width: 200,
+                                      'assets/animations/Animation - 1722593381652.json',
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
@@ -125,6 +135,8 @@ class _AttendencePageState extends State<AttendencePage> {
                                                 vertical: 8.0),
                                             padding: const EdgeInsets.all(16.0),
                                             decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: Colors.black45),
                                               color: Colors.white,
                                               borderRadius:
                                                   BorderRadius.circular(10.0),
@@ -133,7 +145,8 @@ class _AttendencePageState extends State<AttendencePage> {
                                                   color: Colors.grey
                                                       .withOpacity(0.5),
                                                   blurRadius: 3,
-                                                  offset: const Offset(0, 3),
+                                                  spreadRadius: 3,
+                                                  offset: const Offset(3, 3),
                                                 ),
                                               ],
                                             ),
@@ -141,13 +154,21 @@ class _AttendencePageState extends State<AttendencePage> {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Text('Name: ${user.name}',
+                                                Text('${user.name}',
                                                     style: TextStyle(
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.bold,
                                                         color: Colors.black)),
-                                                Text(
-                                                    'Date: ${DateFormat('yyyy-MM-dd hh:mm a').format(user.date)}',
-                                                    style: TextStyle(
-                                                        color: Colors.black)),
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                        'Date: ${DateFormat('yyyy-MM-dd hh:mm a').format(user.date)}',
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.black)),
+                                                  ],
+                                                ),
                                                 Text(
                                                     'Location: ${user.location}',
                                                     style: TextStyle(

@@ -3,6 +3,7 @@ import 'package:cordrila_sysytems/view/sign_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
@@ -29,7 +30,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       _newPasswordController.clear();
       _confirmPasswordController.clear();
     }
-    
 
     final userData = Provider.of<SigninpageProvider>(context).userData;
     if (userData != null) {
@@ -45,6 +45,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             child: SafeArea(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Padding(
                     padding: EdgeInsets.only(left: 10),
@@ -58,22 +59,20 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   ),
                   const SizedBox(height: 20),
                   TextFormField(
+                    readOnly: true,
                     controller: _idController,
                     cursorColor: Colors.black,
                     decoration: InputDecoration(
-                      enabled: false,
                       prefixIcon: Icon(
                         CupertinoIcons.number,
                         color: Colors.grey.shade500,
                       ),
-                      filled: true,
-                      fillColor: Colors.grey.shade200,
                       focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.transparent),
+                        borderSide: const BorderSide(color: Colors.black),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       border: OutlineInputBorder(
-                        borderSide: BorderSide.none,
+                        borderSide: BorderSide(color: Colors.black),
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
@@ -90,14 +89,12 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       ),
                       hintText: 'Enter new password',
                       hintStyle: TextStyle(color: Colors.grey.shade500),
-                      filled: true,
-                      fillColor: Colors.grey.shade200,
                       focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.transparent),
+                        borderSide: const BorderSide(color: Colors.black),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       border: OutlineInputBorder(
-                        borderSide: BorderSide.none,
+                        borderSide: BorderSide(color: Colors.black),
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
@@ -120,14 +117,12 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       ),
                       hintText: 'Confirm password',
                       hintStyle: TextStyle(color: Colors.grey.shade500),
-                      filled: true,
-                      fillColor: Colors.grey.shade200,
                       focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.transparent),
+                        borderSide: const BorderSide(color: Colors.black),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       border: OutlineInputBorder(
-                        borderSide: BorderSide.none,
+                        borderSide: BorderSide(color: Colors.black),
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
@@ -181,20 +176,19 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                   textColor: Colors.white,
                                   fontSize: 16.0);
                               _clearForgotPasswordFields();
-                       
-                              Navigator.of(context).push(CupertinoPageRoute(builder: (context)=>SigninPage()));
-                              
-                              
-                                
+
+                              Navigator.of(context).push(CupertinoPageRoute(
+                                  builder: (context) => SigninPage()));
                             }
                           },
                           child: appStateProvider.isLoading
-                              ? const CircularProgressIndicator(
-                                  color: Colors.black)
+                              ? Lottie.asset(
+                                  'assets/animations/Animation - 1722594040196.json',
+                                  fit: BoxFit.contain,
+                                )
                               : const Text('Done',
                                   style: TextStyle(color: Colors.white)),
                         ),
-                        
                       ],
                     ),
                   ),

@@ -13,8 +13,10 @@ import 'package:cordrila_sysytems/controller/signinpage_provider.dart';
 import 'package:cordrila_sysytems/view/profilepage.dart';
 
 class FreshPage extends StatefulWidget {
-  const FreshPage({super.key ,required this.userId});
+  const FreshPage({Key? key, required this.userId, this.notificationCount = 0})
+      : super(key: key);
   final String userId;
+  final int notificationCount;
 
   @override
   _FreshPageState createState() => _FreshPageState();
@@ -110,7 +112,22 @@ class _FreshPageState extends State<FreshPage> {
   }
 
   Future<void> _refreshData() async {
-    Provider.of<FreshPageProvider>(context, listen: false).initializeData(widget.userId);
+    Provider.of<FreshPageProvider>(context, listen: false)
+        .initializeData(widget.userId);
+  }
+
+  void _navigateToRepliesPage(BuildContext context) {
+    Navigator.of(context).push(
+      CupertinoPageRoute(
+        builder: (context) => RepliesPage(userId: widget.userId),
+      ),
+    );
+  }
+
+  void _markNotificationsAsRead(List<QueryDocumentSnapshot> unreadDocs) async {
+    for (var doc in unreadDocs) {
+      await doc.reference.update({'read': true});
+    }
   }
 
   @override
@@ -206,49 +223,76 @@ class _FreshPageState extends State<FreshPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          const Text(
-                            'Welcome',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          const Spacer(),
-                          IconButton(
+                      Row(children: [
+                        const Text(
+                          'Welcome',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        const Spacer(),
+                        IconButton(
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const ProfilePage()));
+                            },
+                            icon: const Icon(CupertinoIcons.profile_circled,
+                                color: Colors.black, size: 35)),
+                        IconButton(
+                            onPressed: () {
+                              String employeeId = _idController.text;
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => AttendencePage(
+                                        employeeId: employeeId,
+                                      )));
+                            },
+                            icon: const Icon(
+                              CupertinoIcons.calendar,
+                              color: Colors.black,
+                              size: 35,
+                            )),
+                        StreamBuilder<QuerySnapshot>(
+                          stream: FirebaseFirestore.instance
+                              .collection('requests')
+                              .where('userId', isEqualTo: widget.userId)
+                              .where('read',
+                                  isEqualTo:
+                                      false) // Only fetch unread notifications
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData) {
+                              return IconButtonWithBadge(
+                                icon: Icons.notifications_outlined,
+                                badgeCount: 0,
+                                onPressed: () {
+                                  _navigateToRepliesPage(context);
+                                },
+                              );
+                            }
+
+                            // Filter documents to count only those with a non-empty 'reply' field
+                            final unreadDocs = snapshot.data!.docs.where((doc) {
+                              final data = doc.data() as Map<String, dynamic>;
+                              final reply = data['reply'];
+                              return reply != null &&
+                                  reply.toString().trim().isNotEmpty;
+                            }).toList();
+
+                            // Get the number of unread notifications
+                            int unreadCount = unreadDocs.length;
+
+                            return IconButtonWithBadge(
+                              icon: Icons.notifications_outlined,
+                              badgeCount: unreadCount,
                               onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => const ProfilePage()));
+                                _navigateToRepliesPage(context);
+                                _markNotificationsAsRead(unreadDocs);
                               },
-                              icon: const Icon(CupertinoIcons.profile_circled,
-                                  color: Colors.black, size: 40)),
-                          IconButton(
-                              onPressed: () {
-                                String employeeId = _idController.text;
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => AttendencePage(
-                                          employeeId: employeeId,
-                                        )));
-                              },
-                              icon: const Icon(
-                                CupertinoIcons.calendar,
-                                color: Colors.black,
-                                size: 40,
-                              )),
-                              IconButton(
-                              onPressed: () {
-                                Navigator.of(context).push(CupertinoPageRoute(
-                                    builder: (context) =>
-                                        RepliesPage(userId: widget.userId)));
-                              },
-                              icon: const Icon(
-                                Icons.notifications_outlined,
-                                color: Colors.black,
-                                size: 35,
-                              )),
-                        ],
-                      ),
+                            );
+                          },
+                        ),
+                      ]),
                       SizedBox(
                         height: 10,
                       ),
@@ -275,26 +319,24 @@ class _FreshPageState extends State<FreshPage> {
                             height: 10,
                           ),
                           TextFormField(
+                            readOnly: true,
                             keyboardType: TextInputType.number,
                             controller: _namecoraController,
                             cursorColor: Colors.black,
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.all(10),
                               constraints: const BoxConstraints(maxHeight: 70),
-                              enabled: false,
                               prefixIcon: Icon(
                                 CupertinoIcons.profile_circled,
                                 color: Colors.grey.shade500,
                               ),
-                              filled: true,
-                              fillColor: Colors.grey.shade200,
                               focusedBorder: OutlineInputBorder(
                                 borderSide:
-                                    const BorderSide(color: Colors.transparent),
+                                    const BorderSide(color: Colors.black),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
+                                borderSide: BorderSide(color: Colors.black),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
@@ -311,26 +353,24 @@ class _FreshPageState extends State<FreshPage> {
                             height: 10,
                           ),
                           TextFormField(
+                            readOnly: true,
                             keyboardType: TextInputType.number,
                             controller: _idController,
                             cursorColor: Colors.black,
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.all(10),
                               constraints: const BoxConstraints(maxHeight: 70),
-                              enabled: false,
                               prefixIcon: Icon(
                                 CupertinoIcons.number,
                                 color: Colors.grey.shade500,
                               ),
-                              filled: true,
-                              fillColor: Colors.grey.shade200,
                               focusedBorder: OutlineInputBorder(
                                 borderSide:
-                                    const BorderSide(color: Colors.transparent),
+                                    const BorderSide(color: Colors.black),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
+                                borderSide: BorderSide(color: Colors.black),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
@@ -347,26 +387,24 @@ class _FreshPageState extends State<FreshPage> {
                             height: 10,
                           ),
                           TextFormField(
+                            readOnly: true,
                             keyboardType: TextInputType.number,
                             controller: freshStateProvider.timedateController,
                             cursorColor: Colors.black,
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.all(10),
                               constraints: const BoxConstraints(maxHeight: 70),
-                              enabled: false,
                               prefixIcon: Icon(
                                 CupertinoIcons.calendar,
                                 color: Colors.grey.shade500,
                               ),
-                              filled: true,
-                              fillColor: Colors.grey.shade200,
                               focusedBorder: OutlineInputBorder(
                                 borderSide:
-                                    const BorderSide(color: Colors.transparent),
+                                    const BorderSide(color: Colors.black),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
+                                borderSide: BorderSide(color: Colors.black),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
@@ -383,25 +421,23 @@ class _FreshPageState extends State<FreshPage> {
                             height: 10,
                           ),
                           TextFormField(
+                            readOnly: true,
                             controller: _coralocationController,
                             cursorColor: Colors.black,
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.all(10),
                               constraints: const BoxConstraints(maxHeight: 70),
-                              enabled: false,
                               prefixIcon: Icon(
                                 CupertinoIcons.location,
                                 color: Colors.grey.shade500,
                               ),
-                              filled: true,
-                              fillColor: Colors.grey.shade200,
                               focusedBorder: OutlineInputBorder(
                                 borderSide:
-                                    const BorderSide(color: Colors.transparent),
+                                    const BorderSide(color: Colors.black),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
+                                borderSide: BorderSide(color: Colors.black),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
@@ -414,11 +450,13 @@ class _FreshPageState extends State<FreshPage> {
                             style: TextStyle(
                                 fontSize: 15, fontWeight: FontWeight.bold),
                           ),
+                          const SizedBox(
+                            height: 10,
+                          ),
                           Container(
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            height: 280,
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(color: Colors.black45)),
                             child: Column(
                               children: slots.map((shift) {
                                 final isEnabled =
@@ -459,6 +497,9 @@ class _FreshPageState extends State<FreshPage> {
                               }).toList(),
                             ),
                           ),
+                          const SizedBox(
+                            height: 10,
+                          ),
                           const Text(
                             'GSF :',
                             style: TextStyle(
@@ -470,8 +511,11 @@ class _FreshPageState extends State<FreshPage> {
                           DropdownButtonFormField<String>(
                             itemHeight: 60,
                             decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.grey.shade200,
+                              focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    const BorderSide(color: Colors.black),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
                               contentPadding: EdgeInsets.symmetric(
                                   horizontal: 16, vertical: 8),
                               labelStyle: TextStyle(
@@ -480,7 +524,7 @@ class _FreshPageState extends State<FreshPage> {
                               labelText: 'Select an option',
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide.none,
+                                borderSide: BorderSide(color: Colors.black),
                               ),
                             ),
                             value: freshStateProvider.selectedYesNoOption,
@@ -498,7 +542,7 @@ class _FreshPageState extends State<FreshPage> {
                             height: 10,
                           ),
                           const Text(
-                            'No.of.Orders :',
+                            'Orders :',
                             style: TextStyle(
                                 fontSize: 15, fontWeight: FontWeight.bold),
                           ),
@@ -506,28 +550,27 @@ class _FreshPageState extends State<FreshPage> {
                             height: 10,
                           ),
                           TextFormField(
+                            readOnly: true,
                             controller: _ordersController,
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black26),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
                               labelStyle: TextStyle(
                                   color: Colors.grey.shade500,
                                   fontWeight: FontWeight.w500),
-                              labelText: 'No of orders',
+                              labelText: 'Enter no.of.orders',
                               contentPadding: const EdgeInsets.all(10),
                               constraints: const BoxConstraints(maxHeight: 70),
                               prefixIcon: Icon(
                                 CupertinoIcons.cube_box,
                                 color: Colors.grey.shade500,
                               ),
-                              filled: true,
-                              fillColor: Colors.grey.shade200,
                               focusedBorder: OutlineInputBorder(
                                 borderSide:
-                                    const BorderSide(color: Colors.transparent),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
+                                    const BorderSide(color: Colors.black),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
@@ -545,7 +588,7 @@ class _FreshPageState extends State<FreshPage> {
                             height: 10,
                           ),
                           const Text(
-                            'No.of.Bags :',
+                            'Bags :',
                             style: TextStyle(
                                 fontSize: 15, fontWeight: FontWeight.bold),
                           ),
@@ -553,28 +596,27 @@ class _FreshPageState extends State<FreshPage> {
                             height: 10,
                           ),
                           TextFormField(
+                            readOnly: true,
                             controller: _bagscoraController,
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                               labelStyle: TextStyle(
                                   color: Colors.grey.shade500,
                                   fontWeight: FontWeight.w500),
-                              labelText: 'No of bags',
+                              labelText: 'Enter no.of.bags',
                               contentPadding: const EdgeInsets.all(10),
                               constraints: const BoxConstraints(maxHeight: 70),
                               prefixIcon: Icon(
                                 CupertinoIcons.cube,
                                 color: Colors.grey.shade500,
                               ),
-                              filled: true,
-                              fillColor: Colors.grey.shade200,
                               focusedBorder: OutlineInputBorder(
                                 borderSide:
-                                    const BorderSide(color: Colors.transparent),
+                                    const BorderSide(color: Colors.black),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
+                                borderSide: BorderSide(color: Colors.black),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
@@ -600,6 +642,7 @@ class _FreshPageState extends State<FreshPage> {
                             height: 10,
                           ),
                           TextFormField(
+                            readOnly: true,
                             controller: _cashController,
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
@@ -613,15 +656,13 @@ class _FreshPageState extends State<FreshPage> {
                                 CupertinoIcons.money_dollar,
                                 color: Colors.grey.shade500,
                               ),
-                              filled: true,
-                              fillColor: Colors.grey.shade200,
                               focusedBorder: OutlineInputBorder(
                                 borderSide:
-                                    const BorderSide(color: Colors.transparent),
+                                    const BorderSide(color: Colors.black),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
+                                borderSide: BorderSide(color: Colors.black),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),

@@ -92,6 +92,20 @@ class _ShoppingPageState extends State<ShoppingPage> {
         .initializeData(widget.userId);
   }
 
+  void _navigateToRepliesPage(BuildContext context) {
+    Navigator.of(context).push(
+      CupertinoPageRoute(
+        builder: (context) => RepliesPage(userId: widget.userId),
+      ),
+    );
+  }
+
+  void _markNotificationsAsRead(List<QueryDocumentSnapshot> unreadDocs) async {
+    for (var doc in unreadDocs) {
+      await doc.reference.update({'read': true});
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final appStateProvider = Provider.of<ShoppingPageProvider>(context);
@@ -154,15 +168,17 @@ class _ShoppingPageState extends State<ShoppingPage> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      
       body: RefreshIndicator(
         color: Colors.black,
         onRefresh: _refreshData,
         child: Consumer<ShoppingPageProvider>(
             builder: (context, freshStateProvider, child) {
           if (freshStateProvider.isFetchingData) {
-            return Center(child: Lottie.asset('assets/animations/Animation - 1722594040196.json',
-                                  fit: BoxFit.contain,));
+            return Center(
+                child: Lottie.asset(
+              'assets/animations/Animation - 1722594040196.json',
+              fit: BoxFit.contain,
+            ));
           } else {
             return SingleChildScrollView(
               child: Form(
@@ -232,17 +248,47 @@ class _ShoppingPageState extends State<ShoppingPage> {
                                 color: Colors.black,
                                 size: 35,
                               )),
-                          IconButton(
-                              onPressed: () {
-                                Navigator.of(context).push(CupertinoPageRoute(
-                                    builder: (context) =>
-                                        RepliesPage(userId: widget.userId)));
-                              },
-                              icon: const Icon(
-                                Icons.notifications_outlined,
-                                color: Colors.black,
-                                size: 35,
-                              )),
+                          StreamBuilder<QuerySnapshot>(
+                            stream: FirebaseFirestore.instance
+                                .collection('requests')
+                                .where('userId', isEqualTo: widget.userId)
+                                .where('read',
+                                    isEqualTo:
+                                        false) // Only fetch unread notifications
+                                .snapshots(),
+                            builder: (context, snapshot) {
+                              if (!snapshot.hasData) {
+                                return IconButtonWithBadge(
+                                  icon: Icons.notifications_outlined,
+                                  badgeCount: 0,
+                                  onPressed: () {
+                                    _navigateToRepliesPage(context);
+                                  },
+                                );
+                              }
+
+                              // Filter documents to count only those with a non-empty 'reply' field
+                              final unreadDocs =
+                                  snapshot.data!.docs.where((doc) {
+                                final data = doc.data() as Map<String, dynamic>;
+                                final reply = data['reply'];
+                                return reply != null &&
+                                    reply.toString().trim().isNotEmpty;
+                              }).toList();
+
+                              // Get the number of unread notifications
+                              int unreadCount = unreadDocs.length;
+
+                              return IconButtonWithBadge(
+                                icon: Icons.notifications_outlined,
+                                badgeCount: unreadCount,
+                                onPressed: () {
+                                  _navigateToRepliesPage(context);
+                                  _markNotificationsAsRead(unreadDocs);
+                                },
+                              );
+                            },
+                          ),
                         ],
                       ),
                       SizedBox(
@@ -271,26 +317,24 @@ class _ShoppingPageState extends State<ShoppingPage> {
                             height: 10,
                           ),
                           TextFormField(
+                            readOnly: true,
                             keyboardType: TextInputType.number,
                             controller: _nameController,
                             cursorColor: Colors.black,
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.all(10),
                               constraints: const BoxConstraints(maxHeight: 70),
-                              enabled: false,
                               prefixIcon: Icon(
                                 CupertinoIcons.profile_circled,
                                 color: Colors.grey.shade500,
                               ),
-                              filled: true,
-                              fillColor: Colors.grey.shade200,
                               focusedBorder: OutlineInputBorder(
                                 borderSide:
-                                    const BorderSide(color: Colors.transparent),
+                                    const BorderSide(color: Colors.black),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
+                                borderSide: BorderSide(color: Colors.black),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
@@ -307,26 +351,24 @@ class _ShoppingPageState extends State<ShoppingPage> {
                             height: 10,
                           ),
                           TextFormField(
+                            readOnly: true,
                             keyboardType: TextInputType.number,
                             controller: _idController,
                             cursorColor: Colors.black,
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.all(10),
                               constraints: const BoxConstraints(maxHeight: 70),
-                              enabled: false,
                               prefixIcon: Icon(
                                 CupertinoIcons.number,
                                 color: Colors.grey.shade500,
                               ),
-                              filled: true,
-                              fillColor: Colors.grey.shade200,
                               focusedBorder: OutlineInputBorder(
                                 borderSide:
-                                    const BorderSide(color: Colors.transparent),
+                                    const BorderSide(color: Colors.black),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
+                                borderSide: BorderSide(color: Colors.black),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
@@ -343,26 +385,24 @@ class _ShoppingPageState extends State<ShoppingPage> {
                             height: 10,
                           ),
                           TextFormField(
+                            readOnly: true,
                             keyboardType: TextInputType.number,
                             controller: appStateProvider.timedateController,
                             cursorColor: Colors.black,
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.all(10),
                               constraints: const BoxConstraints(maxHeight: 70),
-                              enabled: false,
                               prefixIcon: Icon(
                                 CupertinoIcons.calendar,
                                 color: Colors.grey.shade500,
                               ),
-                              filled: true,
-                              fillColor: Colors.grey.shade200,
                               focusedBorder: OutlineInputBorder(
                                 borderSide:
-                                    const BorderSide(color: Colors.transparent),
+                                    const BorderSide(color: Colors.black),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
+                                borderSide: BorderSide(color: Colors.black),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
@@ -379,26 +419,24 @@ class _ShoppingPageState extends State<ShoppingPage> {
                             height: 10,
                           ),
                           TextFormField(
+                            readOnly: true,
                             keyboardType: TextInputType.number,
                             controller: _stationController,
                             cursorColor: Colors.black,
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.all(10),
                               constraints: const BoxConstraints(maxHeight: 70),
-                              enabled: false,
                               prefixIcon: Icon(
                                 Icons.store_outlined,
                                 color: Colors.grey.shade500,
                               ),
-                              filled: true,
-                              fillColor: Colors.grey.shade200,
                               focusedBorder: OutlineInputBorder(
                                 borderSide:
-                                    const BorderSide(color: Colors.transparent),
+                                    const BorderSide(color: Colors.black),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
+                                borderSide: BorderSide(color: Colors.black),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
@@ -415,26 +453,24 @@ class _ShoppingPageState extends State<ShoppingPage> {
                             height: 10,
                           ),
                           TextFormField(
+                            readOnly: true,
                             keyboardType: TextInputType.number,
                             controller: _locationController,
                             cursorColor: Colors.black,
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.all(10),
                               constraints: const BoxConstraints(maxHeight: 70),
-                              enabled: false,
                               prefixIcon: Icon(
-                              Icons.location_on_outlined,
+                                Icons.location_on_outlined,
                                 color: Colors.grey.shade500,
                               ),
-                              filled: true,
-                              fillColor: Colors.grey.shade200,
                               focusedBorder: OutlineInputBorder(
                                 borderSide:
-                                    const BorderSide(color: Colors.transparent),
+                                    const BorderSide(color: Colors.black),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
+                                borderSide: BorderSide(color: Colors.black),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
@@ -452,9 +488,8 @@ class _ShoppingPageState extends State<ShoppingPage> {
                           ),
                           Container(
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.grey.shade200,
-                            ),
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(color: Colors.black45)),
                             child: Column(
                               children: shifts.map((shift) {
                                 final isEnabled =
@@ -509,8 +544,11 @@ class _ShoppingPageState extends State<ShoppingPage> {
                           DropdownButtonFormField<String>(
                             itemHeight: 60,
                             decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.grey.shade200,
+                              focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    const BorderSide(color: Colors.black),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
                               contentPadding: EdgeInsets.symmetric(
                                   horizontal: 16, vertical: 8),
                               labelStyle: TextStyle(
@@ -518,9 +556,8 @@ class _ShoppingPageState extends State<ShoppingPage> {
                                   fontWeight: FontWeight.w500),
                               labelText: 'Select an option',
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide.none,
-                              ),
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide(color: Colors.black)),
                             ),
                             value: appStateProvider.selectedYesNoOption,
                             onChanged: appStateProvider.setSelectedYesNoOption,
@@ -545,18 +582,20 @@ class _ShoppingPageState extends State<ShoppingPage> {
                           ),
                           DropdownButtonFormField<String>(
                             decoration: InputDecoration(
+                              focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    const BorderSide(color: Colors.black),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
                               labelStyle: TextStyle(
                                   color: Colors.grey.shade500,
                                   fontWeight: FontWeight.w500),
                               labelText: 'Select an option',
-                              filled: true,
-                              fillColor: Colors.grey.shade200,
                               contentPadding: EdgeInsets.symmetric(
                                   horizontal: 16, vertical: 8),
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide.none,
-                              ),
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide(color: Colors.black)),
                             ),
                             value: appStateProvider.selectedDoneNoOption,
                             onChanged: appStateProvider.setSelectedDoneNoOption,
@@ -592,15 +631,13 @@ class _ShoppingPageState extends State<ShoppingPage> {
                               ),
                               hintText: 'Enter no.of.Shipments',
                               hintStyle: TextStyle(color: Colors.grey.shade500),
-                              filled: true,
-                              fillColor: Colors.grey.shade200,
                               focusedBorder: OutlineInputBorder(
                                 borderSide:
-                                    const BorderSide(color: Colors.transparent),
+                                    const BorderSide(color: Colors.black),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
+                                borderSide: BorderSide(color: Colors.black),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
@@ -629,15 +666,13 @@ class _ShoppingPageState extends State<ShoppingPage> {
                               ),
                               hintText: 'Enter no.of.Pickup',
                               hintStyle: TextStyle(color: Colors.grey.shade500),
-                              filled: true,
-                              fillColor: Colors.grey.shade200,
                               focusedBorder: OutlineInputBorder(
                                 borderSide:
-                                    const BorderSide(color: Colors.transparent),
+                                    const BorderSide(color: Colors.black),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
+                                borderSide: BorderSide(color: Colors.black),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
@@ -666,15 +701,13 @@ class _ShoppingPageState extends State<ShoppingPage> {
                               ),
                               hintText: 'Enter no.of.MFN',
                               hintStyle: TextStyle(color: Colors.grey.shade500),
-                              filled: true,
-                              fillColor: Colors.grey.shade200,
                               focusedBorder: OutlineInputBorder(
                                 borderSide:
-                                    const BorderSide(color: Colors.transparent),
+                                    const BorderSide(color: Colors.black),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
+                                borderSide: BorderSide(color: Colors.black),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
@@ -692,8 +725,11 @@ class _ShoppingPageState extends State<ShoppingPage> {
                           ),
                           DropdownButtonFormField<String>(
                             decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.grey.shade200,
+                              focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    const BorderSide(color: Colors.black),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
                               labelStyle: TextStyle(
                                   color: Colors.grey.shade500,
                                   fontWeight: FontWeight.w500),
@@ -701,9 +737,8 @@ class _ShoppingPageState extends State<ShoppingPage> {
                               contentPadding: EdgeInsets.symmetric(
                                   horizontal: 16, vertical: 8),
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide.none,
-                              ),
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide(color: Colors.black)),
                             ),
                             value: appStateProvider.selectedTrueFalseOption,
                             onChanged:
@@ -731,10 +766,10 @@ class _ShoppingPageState extends State<ShoppingPage> {
                                 elevation: 5,
                               ),
                               onPressed: (freshStateProvider
-                                          .isWithinPredefinedLocation() ||
-                                      freshStateProvider
+                                              .isWithinPredefinedLocation() ||
+                                          freshStateProvider
                                               .isWithinAlternativeLocation()) &&
-                                          shopProvider.isNewShiftSelected()
+                                      shopProvider.isNewShiftSelected()
                                   ? () {
                                       if (_shipmentController.text.isEmpty ||
                                           _pickupController.text.isEmpty ||

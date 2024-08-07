@@ -16,9 +16,7 @@ class UtrPageProvider with ChangeNotifier {
 
   final TextEditingController timedateController = TextEditingController();
 
-  UtrPageProvider() {
-    initializeData();
-  }
+  UtrPageProvider();
 
   bool get isAttendanceMarked => _isAttendanceMarked;
   bool get isFetchingData => _isFetchingData;
@@ -31,7 +29,7 @@ class UtrPageProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> initializeData() async {
+  Future<void> initializeData(String empCode) async {
     try {
       await _loadAttendanceState();
       await getLocationName();

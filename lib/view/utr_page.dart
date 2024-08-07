@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cordrila_sysytems/controller/utr_provider.dart';
 import 'package:cordrila_sysytems/view/attendence_page.dart';
+import 'package:cordrila_sysytems/view/replies.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -10,7 +11,8 @@ import 'package:cordrila_sysytems/controller/signinpage_provider.dart';
 import 'package:cordrila_sysytems/view/profilepage.dart';
 
 class UtrPage extends StatefulWidget {
-  const UtrPage({super.key});
+  const UtrPage({super.key,required this.userId});
+  final String userId;
 
   @override
   _UtrPageState createState() => _UtrPageState();
@@ -48,9 +50,23 @@ class _UtrPageState extends State<UtrPage> {
 
   void _initializeLocation() async {
     final provider = Provider.of<UtrPageProvider>(context, listen: false);
-    await provider.initializeData();
+    await provider.initializeData(widget.userId);
     String locationName = await provider.getLocationName();
     _locationController.text = locationName;
+  }
+
+   void _navigateToRepliesPage(BuildContext context) {
+    Navigator.of(context).push(
+      CupertinoPageRoute(
+        builder: (context) => RepliesPage(userId: widget.userId),
+      ),
+    );
+  }
+
+  void _markNotificationsAsRead(List<QueryDocumentSnapshot> unreadDocs) async {
+    for (var doc in unreadDocs) {
+      await doc.reference.update({'read': true});
+    }
   }
 
   @override
@@ -65,7 +81,7 @@ class _UtrPageState extends State<UtrPage> {
   }
 
   Future<void> _refreshData() async {
-    Provider.of<UtrPageProvider>(context, listen: false).initializeData();
+    Provider.of<UtrPageProvider>(context, listen: false).initializeData(widget.userId);
   }
 
   @override
@@ -145,22 +161,12 @@ class _UtrPageState extends State<UtrPage> {
                       children: [
                         Row(
                           children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Welcome',
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  'Login: ${signinpageProvider.lastLoggedInTime ?? 'No data available'}',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold, fontSize: 9),
-                                ),
-                              ],
+                            const Text(
+                              'Welcome',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold),
                             ),
                             const Spacer(),
                             IconButton(
@@ -184,6 +190,46 @@ class _UtrPageState extends State<UtrPage> {
                                   color: Colors.black,
                                   size: 40,
                                 )),
+                                StreamBuilder<QuerySnapshot>(
+                          stream: FirebaseFirestore.instance
+                              .collection('requests')
+                              .where('userId', isEqualTo: widget.userId)
+                              .where('read',
+                                  isEqualTo:
+                                      false) // Only fetch unread notifications
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData) {
+                              return IconButtonWithBadge(
+                                icon: Icons.notifications_outlined,
+                                badgeCount: 0,
+                                onPressed: () {
+                                  _navigateToRepliesPage(context);
+                                },
+                              );
+                            }
+
+                            // Filter documents to count only those with a non-empty 'reply' field
+                            final unreadDocs = snapshot.data!.docs.where((doc) {
+                              final data = doc.data() as Map<String, dynamic>;
+                              final reply = data['reply'];
+                              return reply != null &&
+                                  reply.toString().trim().isNotEmpty;
+                            }).toList();
+
+                            // Get the number of unread notifications
+                            int unreadCount = unreadDocs.length;
+
+                            return IconButtonWithBadge(
+                              icon: Icons.notifications_outlined,
+                              badgeCount: unreadCount,
+                              onPressed: () {
+                                _navigateToRepliesPage(context);
+                                _markNotificationsAsRead(unreadDocs);
+                              },
+                            );
+                          },
+                        ),
                           ],
                         ),
                         SizedBox(
@@ -192,15 +238,26 @@ class _UtrPageState extends State<UtrPage> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              'Name :',
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.bold),
+                            Row(
+                              children: [
+                                const Text(
+                                  'Name :',
+                                  style: TextStyle(
+                                      fontSize: 15, fontWeight: FontWeight.bold),
+                                ),
+                                 Spacer(),
+                              Text(
+                                'LOGIN: ${signinpageProvider.lastLoggedInTime ?? 'No data available'}',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 8),
+                              ),
+                              ],
                             ),
                             const SizedBox(
                               height: 10,
                             ),
                             TextFormField(
+                              readOnly: true,
                               keyboardType: TextInputType.number,
                               controller: _nameController,
                               cursorColor: Colors.black,
@@ -208,20 +265,17 @@ class _UtrPageState extends State<UtrPage> {
                                 contentPadding: const EdgeInsets.all(10),
                                 constraints:
                                     const BoxConstraints(maxHeight: 70),
-                                enabled: false,
                                 prefixIcon: Icon(
                                   CupertinoIcons.profile_circled,
                                   color: Colors.grey.shade500,
                                 ),
-                                filled: true,
-                                fillColor: Colors.grey.shade200,
                                 focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                      color: Colors.transparent),
+                                  borderSide:
+                                      const BorderSide(color: Colors.black),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 border: OutlineInputBorder(
-                                  borderSide: BorderSide.none,
+                                  borderSide: BorderSide(color: Colors.black),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
@@ -238,6 +292,7 @@ class _UtrPageState extends State<UtrPage> {
                               height: 10,
                             ),
                             TextFormField(
+                              readOnly: true,
                               keyboardType: TextInputType.number,
                               controller: _idController,
                               cursorColor: Colors.black,
@@ -245,20 +300,17 @@ class _UtrPageState extends State<UtrPage> {
                                 contentPadding: const EdgeInsets.all(10),
                                 constraints:
                                     const BoxConstraints(maxHeight: 70),
-                                enabled: false,
                                 prefixIcon: Icon(
                                   CupertinoIcons.number,
                                   color: Colors.grey.shade500,
                                 ),
-                                filled: true,
-                                fillColor: Colors.grey.shade200,
                                 focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                      color: Colors.transparent),
+                                  borderSide:
+                                      const BorderSide(color: Colors.black),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 border: OutlineInputBorder(
-                                  borderSide: BorderSide.none,
+                                  borderSide: BorderSide(color: Colors.black),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
@@ -275,6 +327,7 @@ class _UtrPageState extends State<UtrPage> {
                               height: 10,
                             ),
                             TextFormField(
+                              readOnly: true,
                               keyboardType: TextInputType.number,
                               controller: utrStateProvider.timedateController,
                               cursorColor: Colors.black,
@@ -282,20 +335,17 @@ class _UtrPageState extends State<UtrPage> {
                                 contentPadding: const EdgeInsets.all(10),
                                 constraints:
                                     const BoxConstraints(maxHeight: 70),
-                                enabled: false,
                                 prefixIcon: Icon(
                                   CupertinoIcons.calendar,
                                   color: Colors.grey.shade500,
                                 ),
-                                filled: true,
-                                fillColor: Colors.grey.shade200,
                                 focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                      color: Colors.transparent),
+                                  borderSide:
+                                      const BorderSide(color: Colors.black),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 border: OutlineInputBorder(
-                                  borderSide: BorderSide.none,
+                                  borderSide: BorderSide(color: Colors.black),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
@@ -312,6 +362,7 @@ class _UtrPageState extends State<UtrPage> {
                               height: 10,
                             ),
                             TextFormField(
+                              readOnly: true,
                               keyboardType: TextInputType.number,
                               controller: _stationController,
                               cursorColor: Colors.black,
@@ -319,20 +370,17 @@ class _UtrPageState extends State<UtrPage> {
                                 contentPadding: const EdgeInsets.all(10),
                                 constraints:
                                     const BoxConstraints(maxHeight: 70),
-                                enabled: false,
                                 prefixIcon: Icon(
-                                  CupertinoIcons.location,
+                                  Icons.store_outlined,
                                   color: Colors.grey.shade500,
                                 ),
-                                filled: true,
-                                fillColor: Colors.grey.shade200,
                                 focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                      color: Colors.transparent),
+                                  borderSide:
+                                      const BorderSide(color: Colors.black),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 border: OutlineInputBorder(
-                                  borderSide: BorderSide.none,
+                                  borderSide: BorderSide(color: Colors.black),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
@@ -349,6 +397,7 @@ class _UtrPageState extends State<UtrPage> {
                               height: 10,
                             ),
                             TextFormField(
+                              readOnly: true,
                               keyboardType: TextInputType.number,
                               controller: _locationController,
                               cursorColor: Colors.black,
@@ -356,20 +405,17 @@ class _UtrPageState extends State<UtrPage> {
                                 contentPadding: const EdgeInsets.all(10),
                                 constraints:
                                     const BoxConstraints(maxHeight: 70),
-                                enabled: false,
                                 prefixIcon: Icon(
-                                  CupertinoIcons.location,
+                                  Icons.location_on_outlined,
                                   color: Colors.grey.shade500,
                                 ),
-                                filled: true,
-                                fillColor: Colors.grey.shade200,
                                 focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                      color: Colors.transparent),
+                                  borderSide:
+                                      const BorderSide(color: Colors.black),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 border: OutlineInputBorder(
-                                  borderSide: BorderSide.none,
+                                  borderSide: BorderSide(color: Colors.black),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                               ),

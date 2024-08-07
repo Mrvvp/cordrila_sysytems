@@ -96,12 +96,13 @@ class _ProfilePageState extends State<ProfilePage> {
                   final updateRequest = _updateRequestController.text;
                   final userId = _idController.text;
                   final name = _nameController.text;
+                  final read = false;
 
                   try {
                     await Provider.of<ProfilepageProvider>(context,
                             listen: false)
-                        .sendUpdateRequest(userId, updateRequest, name);
-
+                        .sendUpdateRequest(userId, updateRequest, name,read);
+ 
                     Fluttertoast.showToast(
                         msg: "Request sent successfully",
                         toastLength: Toast.LENGTH_LONG,
@@ -193,23 +194,24 @@ class _ProfilePageState extends State<ProfilePage> {
                                 'Name :',
                                 style: TextStyle(fontSize: 15),
                               ),
-                              TextField(
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              TextField(readOnly: true,
                                 cursorColor: Colors.black,
-                                enabled: false,
                                 controller: _nameController,
                                 decoration: InputDecoration(
                                   contentPadding: const EdgeInsets.all(10),
                                   constraints:
                                       const BoxConstraints(maxHeight: 50),
-                                  filled: true,
-                                  fillColor: Colors.grey.shade200,
+                                  
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: const BorderSide(
-                                        color: Colors.transparent),
+                                        color: Colors.black),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   border: OutlineInputBorder(
-                                    borderSide: BorderSide.none,
+                                    borderSide: BorderSide(color: Colors.black),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                 ),
@@ -219,23 +221,22 @@ class _ProfilePageState extends State<ProfilePage> {
                                 'ID :',
                                 style: TextStyle(fontSize: 15),
                               ),
-                              TextField(
-                                cursorColor: Colors.black,
-                                enabled: false,
+                              const SizedBox(height: 5),
+                              TextField(readOnly: true,
                                 controller: _idController,
                                 decoration: InputDecoration(
                                   contentPadding: const EdgeInsets.all(10),
                                   constraints:
                                       const BoxConstraints(maxHeight: 50),
-                                  filled: true,
-                                  fillColor: Colors.grey.shade200,
+                                  
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: const BorderSide(
-                                        color: Colors.transparent),
+                                        color: Colors.black),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   border: OutlineInputBorder(
-                                    borderSide: BorderSide.none,
+                                    borderSide: const BorderSide(
+                                        color: Colors.black),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                 ),
@@ -245,23 +246,22 @@ class _ProfilePageState extends State<ProfilePage> {
                                 'Category :',
                                 style: TextStyle(fontSize: 15),
                               ),
-                              TextField(
-                                cursorColor: Colors.black,
-                                enabled: false,
+                              const SizedBox(height: 5),
+                              TextField(readOnly: true,
                                 controller: _categoryController,
                                 decoration: InputDecoration(
                                   contentPadding: const EdgeInsets.all(10),
                                   constraints:
                                       const BoxConstraints(maxHeight: 50),
-                                  filled: true,
-                                  fillColor: Colors.grey.shade200,
+                                  
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: const BorderSide(
-                                        color: Colors.transparent),
+                                        color: Colors.black),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   border: OutlineInputBorder(
-                                    borderSide: BorderSide.none,
+                                   borderSide: const BorderSide(
+                                        color: Colors.black),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                 ),
@@ -271,23 +271,22 @@ class _ProfilePageState extends State<ProfilePage> {
                                 'Type :',
                                 style: TextStyle(fontSize: 15),
                               ),
-                              TextField(
-                                cursorColor: Colors.black,
-                                enabled: false,
+                              const SizedBox(height: 5),
+                              TextField(readOnly: true,
                                 controller: _typeController,
                                 decoration: InputDecoration(
                                   contentPadding: const EdgeInsets.all(10),
                                   constraints:
                                       const BoxConstraints(maxHeight: 50),
-                                  filled: true,
-                                  fillColor: Colors.grey.shade200,
+                                  
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: const BorderSide(
-                                        color: Colors.transparent),
+                                        color: Colors.black),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   border: OutlineInputBorder(
-                                    borderSide: BorderSide.none,
+                                    borderSide: const BorderSide(
+                                        color: Colors.black),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                 ),
@@ -297,23 +296,22 @@ class _ProfilePageState extends State<ProfilePage> {
                                 'Station Code :',
                                 style: TextStyle(fontSize: 15),
                               ),
-                              TextField(
-                                cursorColor: Colors.black,
-                                enabled: false,
+                              const SizedBox(height: 5),
+                              TextField(readOnly: true,
                                 controller: _stationController,
                                 decoration: InputDecoration(
                                   contentPadding: const EdgeInsets.all(10),
                                   constraints:
                                       const BoxConstraints(maxHeight: 50),
-                                  filled: true,
-                                  fillColor: Colors.grey.shade200,
+                                  
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: const BorderSide(
-                                        color: Colors.transparent),
+                                        color: Colors.black),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   border: OutlineInputBorder(
-                                    borderSide: BorderSide.none,
+                                    borderSide: const BorderSide(
+                                        color: Colors.black),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                 ),
@@ -323,23 +321,22 @@ class _ProfilePageState extends State<ProfilePage> {
                                 'Email :',
                                 style: TextStyle(fontSize: 15),
                               ),
-                              TextFormField(
-                                enabled: false,
-                                cursorColor: Colors.black,
+                              const SizedBox(height: 5),
+                              TextFormField(readOnly: true,
                                 controller: _emailController,
                                 decoration: InputDecoration(
                                   contentPadding: const EdgeInsets.all(10),
                                   constraints:
                                       const BoxConstraints(maxHeight: 50),
-                                  filled: true,
-                                  fillColor: Colors.grey.shade200,
+                                  
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: const BorderSide(
-                                        color: Colors.transparent),
+                                        color: Colors.black),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   border: OutlineInputBorder(
-                                    borderSide: BorderSide.none,
+                                   borderSide: const BorderSide(
+                                        color: Colors.black),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                 ),
@@ -349,23 +346,22 @@ class _ProfilePageState extends State<ProfilePage> {
                                 'DOB :',
                                 style: TextStyle(fontSize: 15),
                               ),
-                              TextField(
-                                cursorColor: Colors.black,
-                                enabled: false,
+                              const SizedBox(height: 5),
+                              TextField(readOnly: true,
                                 controller: _dobController,
                                 decoration: InputDecoration(
                                   contentPadding: const EdgeInsets.all(10),
                                   constraints:
                                       const BoxConstraints(maxHeight: 50),
-                                  filled: true,
-                                  fillColor: Colors.grey.shade200,
+                                  
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: const BorderSide(
-                                        color: Colors.transparent),
+                                        color: Colors.black),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   border: OutlineInputBorder(
-                                    borderSide: BorderSide.none,
+                                    borderSide: const BorderSide(
+                                        color: Colors.black),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                 ),
@@ -375,23 +371,22 @@ class _ProfilePageState extends State<ProfilePage> {
                                 'PAN Card :',
                                 style: TextStyle(fontSize: 15),
                               ),
-                              TextField(
-                                cursorColor: Colors.black,
-                                enabled: false,
+                              const SizedBox(height: 5),
+                              TextField(readOnly: true,
                                 controller: _panController,
                                 decoration: InputDecoration(
                                   contentPadding: const EdgeInsets.all(10),
                                   constraints:
                                       const BoxConstraints(maxHeight: 50),
-                                  filled: true,
-                                  fillColor: Colors.grey.shade200,
+                                  
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: const BorderSide(
-                                        color: Colors.transparent),
+                                        color: Colors.black),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   border: OutlineInputBorder(
-                                    borderSide: BorderSide.none,
+                                    borderSide: const BorderSide(
+                                        color: Colors.black),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                 ),
@@ -401,23 +396,23 @@ class _ProfilePageState extends State<ProfilePage> {
                                 'Mobile Number :',
                                 style: TextStyle(fontSize: 15),
                               ),
-                              TextFormField(
-                                enabled: false,
+                              const SizedBox(height: 5),
+                              TextFormField(readOnly: true,
                                 cursorColor: Colors.black,
                                 controller: _mobileController,
                                 decoration: InputDecoration(
                                   contentPadding: const EdgeInsets.all(10),
                                   constraints:
                                       const BoxConstraints(maxHeight: 50),
-                                  filled: true,
-                                  fillColor: Colors.grey.shade200,
+                                 
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: const BorderSide(
-                                        color: Colors.transparent),
+                                        color: Colors.black),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   border: OutlineInputBorder(
-                                    borderSide: BorderSide.none,
+                                    borderSide: const BorderSide(
+                                        color: Colors.black),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                 ),

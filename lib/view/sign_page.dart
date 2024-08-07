@@ -85,15 +85,12 @@ class _SigninPageState extends State<SigninPage> {
                         ),
                         hintText: 'Enter your ID',
                         hintStyle: TextStyle(color: Colors.grey.shade500),
-                        filled: true,
-                        fillColor: Colors.grey.shade200,
                         focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              const BorderSide(color: Colors.transparent),
+                          borderSide: const BorderSide(color: Colors.black),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
+                          borderSide: BorderSide(color: Colors.black),
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
@@ -109,15 +106,12 @@ class _SigninPageState extends State<SigninPage> {
                         ),
                         hintText: 'Password',
                         hintStyle: TextStyle(color: Colors.grey.shade500),
-                        filled: true,
-                        fillColor: Colors.grey.shade200,
                         focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              const BorderSide(color: Colors.transparent),
+                          borderSide: const BorderSide(color: Colors.black),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
+                          borderSide: BorderSide(color: Colors.black),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         suffixIcon: IconButton(
@@ -168,7 +162,7 @@ class _SigninPageState extends State<SigninPage> {
                                         .fetchRequests();
 
                                     navigateToHomePage(
-                                        context, appStateProvider,userId);
+                                        context, appStateProvider, userId);
                                   } else {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(

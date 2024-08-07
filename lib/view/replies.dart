@@ -10,6 +10,7 @@ class RepliesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text(
           'Notification',
@@ -43,10 +44,16 @@ class RepliesPage extends StatelessWidget {
 
             if (requests == null || requests.isEmpty) {
               return Center(
-                child: Lottie.asset(
-                  width: 250,
-                  'assets/animations/Animation - 1722593381652.json',
-                  fit: BoxFit.contain,
+                child: Column(mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('No notification',style: TextStyle(fontFamily: 'Poppins'),),
+                    Lottie.asset(
+                      width: 200,
+                      'assets/animations/Animation - 1722593381652.json',
+                      fit: BoxFit.contain,
+                    ),
+                    
+                  ],
                 ),
               );
             }
@@ -68,7 +75,8 @@ class RepliesPage extends StatelessWidget {
                         BoxShadow(
                           color: Colors.grey.withOpacity(0.5),
                           blurRadius: 3,
-                          offset: const Offset(0, 3),
+                          spreadRadius: 3,
+                          offset: const Offset(3, 3),
                         ),
                       ],
                       borderRadius: BorderRadius.circular(10),
@@ -79,12 +87,18 @@ class RepliesPage extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            '$reply',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
+                          Row(
+                            children: [
+                              Icon(Icons.notifications_active,color: Colors.yellow.shade700,),
+                              SizedBox(width: 10,),
+                              Text(
+                                '$reply',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -96,6 +110,61 @@ class RepliesPage extends StatelessWidget {
           },
         ),
       ),
+    );
+  }
+}
+
+class IconButtonWithBadge extends StatelessWidget {
+  final IconData icon;
+  final int badgeCount;
+  final VoidCallback onPressed;
+
+  const IconButtonWithBadge({
+    Key? key,
+    required this.icon,
+    required this.badgeCount,
+    required this.onPressed,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      clipBehavior: Clip.none, // Allows the badge to overflow
+      children: [
+        IconButton(
+          icon: Icon(
+            icon,
+            size: 40,
+            color: Colors.black,
+          ),
+          onPressed: onPressed,
+        ),
+        if (badgeCount > 0) // Only show badge if there's a count
+          Positioned(
+            right: 4,
+            top: 4,
+            child: Container(
+              padding: const EdgeInsets.all(2.0),
+              decoration: BoxDecoration(
+                color: Colors.red,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              constraints: const BoxConstraints(
+                minWidth: 20,
+                minHeight: 20,
+              ),
+              child: Text(
+                '$badgeCount',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+      ],
     );
   }
 }
