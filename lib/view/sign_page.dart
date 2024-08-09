@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cordrila_sysytems/controller/signinpage_provider.dart';
-import 'package:cordrila_sysytems/controller/admin_request_provider.dart';
 import 'package:cordrila_sysytems/view/navigate_to_home.dart';
 
 class SigninPage extends StatefulWidget {
@@ -157,9 +156,7 @@ class _SigninPageState extends State<SigninPage> {
                                         .saveLastLoggedInTime();
                                     await appStateProvider.saveUserData(
                                         userId, password);
-                                    Provider.of<AdminRequestProvider>(context,
-                                            listen: false)
-                                        .fetchRequests();
+                                   
 
                                     navigateToHomePage(
                                         context, appStateProvider, userId);

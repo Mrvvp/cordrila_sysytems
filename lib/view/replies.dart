@@ -44,15 +44,18 @@ class RepliesPage extends StatelessWidget {
 
             if (requests == null || requests.isEmpty) {
               return Center(
-                child: Column(mainAxisAlignment: MainAxisAlignment.center,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('No notification',style: TextStyle(fontFamily: 'Poppins'),),
+                    const Text(
+                      'No notification',
+                      style: TextStyle(fontFamily: 'Poppins'),
+                    ),
                     Lottie.asset(
                       width: 200,
                       'assets/animations/Animation - 1722593381652.json',
                       fit: BoxFit.contain,
                     ),
-                    
                   ],
                 ),
               );
@@ -70,6 +73,7 @@ class RepliesPage extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
                   child: Container(
                     decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black45),
                       color: Colors.white,
                       boxShadow: [
                         BoxShadow(
@@ -89,13 +93,20 @@ class RepliesPage extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              Icon(Icons.notifications_active,color: Colors.yellow.shade700,),
-                              SizedBox(width: 10,),
-                              Text(
-                                '$reply',
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
+                              Icon(
+                                Icons.notifications_active,
+                                color: Colors.yellow.shade700,
+                              ),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Text(
+                                  '$reply',
+                                  maxLines: 2, // Limit the number of lines
+                                  overflow: TextOverflow.ellipsis, // Ellipsis for overflow
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
                                 ),
                               ),
                             ],
@@ -115,13 +126,13 @@ class RepliesPage extends StatelessWidget {
 }
 
 class IconButtonWithBadge extends StatelessWidget {
-  final IconData icon;
+   final ImageProvider image;
   final int badgeCount;
   final VoidCallback onPressed;
 
   const IconButtonWithBadge({
     Key? key,
-    required this.icon,
+    required this.image,
     required this.badgeCount,
     required this.onPressed,
   }) : super(key: key);
@@ -132,10 +143,9 @@ class IconButtonWithBadge extends StatelessWidget {
       clipBehavior: Clip.none, // Allows the badge to overflow
       children: [
         IconButton(
-          icon: Icon(
-            icon,
-            size: 40,
-            color: Colors.black,
+          icon: Image(
+            image: image,
+            width: 38,
           ),
           onPressed: onPressed,
         ),

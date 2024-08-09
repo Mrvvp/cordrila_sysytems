@@ -66,11 +66,10 @@ class _AttendencePageState extends State<AttendencePage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const SizedBox(height: 20),
                           Row(
                             children: [
                               IconButton(
-                                  iconSize: 35,
+                                  iconSize: 30,
                                   color: Colors.black,
                                   icon: Icon(Icons.arrow_back),
                                   onPressed: () {
@@ -81,14 +80,17 @@ class _AttendencePageState extends State<AttendencePage> {
                                 'Attendance',
                                 style: TextStyle(
                                     color: Colors.black,
-                                    fontSize: 30,
+                                    fontSize: 25,
                                     fontWeight: FontWeight.bold),
                               ),
                               Spacer(),
                               IconButton(
                                 iconSize: 35,
                                 color: Colors.black,
-                                icon: const Icon(CupertinoIcons.calendar),
+                                icon: Image.asset(
+                                  'assets/images/calendar.png',
+                                  width: 40,
+                                ),
                                 onPressed: () => _selectDate(context),
                               ),
                             ],

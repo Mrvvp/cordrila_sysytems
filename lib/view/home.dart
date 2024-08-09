@@ -26,7 +26,8 @@ class _HomeState extends State<Home> {
 
   Future<void> _initialize() async {
     bool permissionsGranted = await _requestPermissions();
-    if (permissionsGranted) {
+     bool permissionsGranted2 = await _requestPermissions2();
+    if (permissionsGranted || permissionsGranted2) {
       await _checkUpdateRequired();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -38,16 +39,47 @@ class _HomeState extends State<Home> {
     }
   }
 
-  Future<bool> _requestPermissions() async {
-    Map<Permission, PermissionStatus> statuses = await [
-      Permission.storage,
-      if (Platform.isAndroid) Permission.requestInstallPackages,
-    ].request();
+ Future<bool> _requestPermissions() async {
+  Map<Permission, PermissionStatus> statuses = await [
+    Permission.storage,
+    if (Platform.isAndroid) Permission.requestInstallPackages,
+  ].request();
 
-    return statuses[Permission.storage]!.isGranted &&
-        (Platform.isIOS ||
-            statuses[Permission.requestInstallPackages]!.isGranted);
+  bool storageGranted = statuses[Permission.storage]?.isGranted ?? false;
+  bool installGranted = Platform.isAndroid ? (statuses[Permission.requestInstallPackages]?.isGranted ?? false) : true;
+
+  if (!storageGranted) {
+    print('Storage permission denied');
   }
+
+  if (Platform.isAndroid && !installGranted) {
+    print('Install packages permission denied');
+  }
+
+  return storageGranted && (Platform.isIOS || installGranted);
+}
+
+Future<bool> _requestPermissions2() async {
+  // Request necessary permissions
+  Map<Permission, PermissionStatus> statuses = await [
+    Permission.manageExternalStorage,
+    Permission.requestInstallPackages,
+  ].request();
+
+  bool storageGranted = statuses[Permission.manageExternalStorage]?.isGranted ?? false;
+  bool installGranted = statuses[Permission.requestInstallPackages]?.isGranted ?? false;
+
+  if (!storageGranted) {
+    print('Storage permission denied');
+  }
+
+  if (!installGranted) {
+    print('Install packages permission denied');
+  }
+
+  return storageGranted && installGranted;
+}
+
 
   Future<void> _checkUpdateRequired() async {
     try {
@@ -75,49 +107,58 @@ class _HomeState extends State<Home> {
     }
   }
 
-  Future<void> _downloadFile(String url) async {
-    final dio = Dio();
-    final downloadProvider =
-        Provider.of<DownloadProvider>(context, listen: false);
+ Future<void> _downloadFile(String url) async {
+  final dio = Dio();
+  final downloadProvider = Provider.of<DownloadProvider>(context, listen: false);
 
-    final downloadDirectory = await getExternalStorageDirectory();
-    final filePath = '${downloadDirectory!.path}/Cordrila.apk';
+  // Get the app-specific storage directory
+  final downloadDirectory = await getExternalStorageDirectory();
+  final filePath = '${downloadDirectory!.path}/Cordrila.apk';
 
-    try {
-      downloadProvider.setDownloading(true);
+  try {
+    downloadProvider.setDownloading(true);
 
-      await dio.download(
-        url,
-        filePath,
-        onReceiveProgress: (received, total) {
-          if (total != -1) {
-            double progress = received / total;
-            downloadProvider.setProgress(progress);
-          }
-        },
-      );
+    await dio.download(
+      url,
+      filePath,
+      onReceiveProgress: (received, total) {
+        if (total != -1) {
+          double progress = received / total;
+          downloadProvider.setProgress(progress);
+        }
+      },
+    );
 
-      downloadProvider.setDownloading(false);
-      downloadProvider.setDownloaded(true);
-      setState(() {
-        downloadedFilePath = filePath;
-      });
+    downloadProvider.setDownloading(false);
+    downloadProvider.setDownloaded(true);
+    setState(() {
+      downloadedFilePath = filePath;
+    });
 
-      // Open the APK file using open_file package
-      final result = await OpenFile.open(filePath);
-      if (result.type != ResultType.done) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to open file: ${result.message}')),
-        );
+    if (Platform.isAndroid) {
+      final hasInstallPermission = await Permission.requestInstallPackages.isGranted;
+      if (!hasInstallPermission) {
+        openAppSettings();
+      } else {
+        final result = await OpenFile.open(filePath);
+        if (result.type != ResultType.done) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Failed to open file: ${result.message}')),
+          );
+        }
       }
-    } catch (e) {
-      print('Download failed: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Download failed: $e')),
-      );
-      downloadProvider.setDownloading(false);
+    } else {
+      // Handle iOS case if needed
     }
+  } catch (e) {
+    print('Download failed: $e');
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Download failed: $e')),
+    );
+    downloadProvider.setDownloading(false);
   }
+}
+
 
   void _navigateToSplashScreen() {
     Navigator.pushReplacement(
@@ -136,16 +177,19 @@ class _HomeState extends State<Home> {
             return Center(
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
-                child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text('New Version Available', style: TextStyle(fontSize: 15, fontFamily: 'Poppins'),),
-                    SizedBox(height: 10,),
+                    Text('New Version Available', style: TextStyle(fontSize: 15, fontFamily: 'Poppins')),
+                    SizedBox(height: 10),
                     Container(
-                        height: MediaQuery.of(context).size.height * 0.02,
-                        child: LinearProgressIndicator(
-                            color: Colors.green,
-                            value: downloadProvider.progress)),
+                      height: MediaQuery.of(context).size.height * 0.02,
+                      child: LinearProgressIndicator(
+                        color: Colors.green,
+                        value: downloadProvider.progress,
+                      ),
+                    ),
                     Align(
                       alignment: Alignment.centerRight,
                       child: Text(

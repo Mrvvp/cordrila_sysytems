@@ -11,7 +11,7 @@ import 'package:cordrila_sysytems/controller/signinpage_provider.dart';
 import 'package:cordrila_sysytems/view/profilepage.dart';
 
 class UtrPage extends StatefulWidget {
-  const UtrPage({super.key,required this.userId});
+  const UtrPage({super.key, required this.userId});
   final String userId;
 
   @override
@@ -55,7 +55,7 @@ class _UtrPageState extends State<UtrPage> {
     _locationController.text = locationName;
   }
 
-   void _navigateToRepliesPage(BuildContext context) {
+  void _navigateToRepliesPage(BuildContext context) {
     Navigator.of(context).push(
       CupertinoPageRoute(
         builder: (context) => RepliesPage(userId: widget.userId),
@@ -81,7 +81,8 @@ class _UtrPageState extends State<UtrPage> {
   }
 
   Future<void> _refreshData() async {
-    Provider.of<UtrPageProvider>(context, listen: false).initializeData(widget.userId);
+    Provider.of<UtrPageProvider>(context, listen: false)
+        .initializeData(widget.userId);
   }
 
   @override
@@ -170,66 +171,71 @@ class _UtrPageState extends State<UtrPage> {
                             ),
                             const Spacer(),
                             IconButton(
-                                onPressed: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ProfilePage()));
-                                },
-                                icon: const Icon(CupertinoIcons.profile_circled,
-                                    color: Colors.black, size: 40)),
-                            IconButton(
-                                onPressed: () {
-                                  String employeeId = _idController.text;
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => AttendencePage(
-                                            employeeId: employeeId,
-                                          )));
-                                },
-                                icon: const Icon(
-                                  CupertinoIcons.calendar,
-                                  color: Colors.black,
-                                  size: 40,
-                                )),
-                                StreamBuilder<QuerySnapshot>(
-                          stream: FirebaseFirestore.instance
-                              .collection('requests')
-                              .where('userId', isEqualTo: widget.userId)
-                              .where('read',
-                                  isEqualTo:
-                                      false) // Only fetch unread notifications
-                              .snapshots(),
-                          builder: (context, snapshot) {
-                            if (!snapshot.hasData) {
-                              return IconButtonWithBadge(
-                                icon: Icons.notifications_outlined,
-                                badgeCount: 0,
-                                onPressed: () {
-                                  _navigateToRepliesPage(context);
-                                },
-                              );
-                            }
-
-                            // Filter documents to count only those with a non-empty 'reply' field
-                            final unreadDocs = snapshot.data!.docs.where((doc) {
-                              final data = doc.data() as Map<String, dynamic>;
-                              final reply = data['reply'];
-                              return reply != null &&
-                                  reply.toString().trim().isNotEmpty;
-                            }).toList();
-
-                            // Get the number of unread notifications
-                            int unreadCount = unreadDocs.length;
-
-                            return IconButtonWithBadge(
-                              icon: Icons.notifications_outlined,
-                              badgeCount: unreadCount,
                               onPressed: () {
-                                _navigateToRepliesPage(context);
-                                _markNotificationsAsRead(unreadDocs);
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => const ProfilePage()));
                               },
-                            );
-                          },
-                        ),
+                              icon: Image.asset(
+                                'assets/images/user (1).png',
+                                width: 40,
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                String employeeId = _idController.text;
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => AttendencePage(
+                                          employeeId: employeeId,
+                                        )));
+                              },
+                              icon: Image.asset(
+                                'assets/images/calendar.png',
+                                width: 40,
+                              ),
+                            ),
+                            StreamBuilder<QuerySnapshot>(
+                              stream: FirebaseFirestore.instance
+                                  .collection('requests')
+                                  .where('userId', isEqualTo: widget.userId)
+                                  .where('read',
+                                      isEqualTo:
+                                          false) // Only fetch unread notifications
+                                  .snapshots(),
+                              builder: (context, snapshot) {
+                                if (!snapshot.hasData) {
+                                  return IconButtonWithBadge(
+                                    image: AssetImage('assets/images/bell.png'),
+                                    badgeCount: 0,
+                                    onPressed: () {
+                                      _navigateToRepliesPage(context);
+                                    },
+                                  );
+                                }
+
+                                // Filter documents to count only those with a non-empty 'reply' field
+                                final unreadDocs =
+                                    snapshot.data!.docs.where((doc) {
+                                  final data =
+                                      doc.data() as Map<String, dynamic>;
+                                  final reply = data['reply'];
+                                  return reply != null &&
+                                      reply.toString().trim().isNotEmpty;
+                                }).toList();
+
+                                // Get the number of unread notifications
+                                int unreadCount = unreadDocs.length;
+
+                                return IconButtonWithBadge(
+                                  image:
+                                      AssetImage('assets/images/bell.png'),
+                                  badgeCount: unreadCount,
+                                  onPressed: () {
+                                    _navigateToRepliesPage(context);
+                                    _markNotificationsAsRead(unreadDocs);
+                                  },
+                                );
+                              },
+                            ),
                           ],
                         ),
                         SizedBox(
@@ -243,14 +249,15 @@ class _UtrPageState extends State<UtrPage> {
                                 const Text(
                                   'Name :',
                                   style: TextStyle(
-                                      fontSize: 15, fontWeight: FontWeight.bold),
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
                                 ),
-                                 Spacer(),
-                              Text(
-                                'LOGIN: ${signinpageProvider.lastLoggedInTime ?? 'No data available'}',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 8),
-                              ),
+                                Spacer(),
+                                Text(
+                                  'LOGIN: ${signinpageProvider.lastLoggedInTime ?? 'No data available'}',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold, fontSize: 8),
+                                ),
                               ],
                             ),
                             const SizedBox(

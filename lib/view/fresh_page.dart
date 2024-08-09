@@ -237,8 +237,7 @@ class _FreshPageState extends State<FreshPage> {
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => const ProfilePage()));
                             },
-                            icon: const Icon(CupertinoIcons.profile_circled,
-                                color: Colors.black, size: 35)),
+                            icon: Image.asset('assets/images/user (1).png',width: 40,),),
                         IconButton(
                             onPressed: () {
                               String employeeId = _idController.text;
@@ -247,11 +246,7 @@ class _FreshPageState extends State<FreshPage> {
                                         employeeId: employeeId,
                                       )));
                             },
-                            icon: const Icon(
-                              CupertinoIcons.calendar,
-                              color: Colors.black,
-                              size: 35,
-                            )),
+                            icon: Image.asset('assets/images/calendar.png',width: 40,),),
                         StreamBuilder<QuerySnapshot>(
                           stream: FirebaseFirestore.instance
                               .collection('requests')
@@ -263,7 +258,7 @@ class _FreshPageState extends State<FreshPage> {
                           builder: (context, snapshot) {
                             if (!snapshot.hasData) {
                               return IconButtonWithBadge(
-                                icon: Icons.notifications_outlined,
+                               image: AssetImage('assets/images/bell.png'),
                                 badgeCount: 0,
                                 onPressed: () {
                                   _navigateToRepliesPage(context);
@@ -283,7 +278,7 @@ class _FreshPageState extends State<FreshPage> {
                             int unreadCount = unreadDocs.length;
 
                             return IconButtonWithBadge(
-                              icon: Icons.notifications_outlined,
+                              image: AssetImage('assets/images/bell.png'),
                               badgeCount: unreadCount,
                               onPressed: () {
                                 _navigateToRepliesPage(context);
@@ -550,7 +545,6 @@ class _FreshPageState extends State<FreshPage> {
                             height: 10,
                           ),
                           TextFormField(
-                            readOnly: true,
                             controller: _ordersController,
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
@@ -596,7 +590,6 @@ class _FreshPageState extends State<FreshPage> {
                             height: 10,
                           ),
                           TextFormField(
-                            readOnly: true,
                             controller: _bagscoraController,
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
@@ -642,7 +635,6 @@ class _FreshPageState extends State<FreshPage> {
                             height: 10,
                           ),
                           TextFormField(
-                            readOnly: true,
                             controller: _cashController,
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(

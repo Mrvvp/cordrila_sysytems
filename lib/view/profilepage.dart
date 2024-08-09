@@ -138,8 +138,8 @@ class _ProfilePageState extends State<ProfilePage> {
           ? SafeArea(
               child: Padding(
                 padding: const EdgeInsets.only(
-                  left: 20,
-                  right: 20,
+                  left: 10,
+                  right: 10,
                 ),
                 child: SingleChildScrollView(
                   child: Form(
@@ -147,15 +147,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(
-                          height: 20,
-                        ),
+                        
                         Row(
-                          children: [
-                            const Icon(
-                              CupertinoIcons.profile_circled,
-                              color: Colors.black,
-                              size: 40,
+                          children: [IconButton( onPressed: () {
+                            Navigator.pop(context);
+                            }, icon: Icon(Icons.arrow_back,color: Colors.black,
+                              size: 30,),
+                              
                             ),
                             const SizedBox(
                               width: 10,
@@ -164,7 +162,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               'Profile',
                               style: TextStyle(
                                   color: Colors.black,
-                                  fontSize: 30,
+                                  fontSize: 25,
                                   fontWeight: FontWeight.bold),
                             ),
                             Spacer(),
@@ -183,7 +181,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ],
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(top: 10, bottom: 20),
+                          padding: const EdgeInsets.only(bottom: 20,left: 10,right: 10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [

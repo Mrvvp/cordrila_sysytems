@@ -1,4 +1,3 @@
-import 'package:cordrila_sysytems/controller/admin_request_provider.dart';
 import 'package:cordrila_sysytems/controller/download_proivder.dart';
 import 'package:cordrila_sysytems/controller/fresh_page_provider.dart';
 import 'package:cordrila_sysytems/controller/notification_provider.dart';
@@ -9,7 +8,7 @@ import 'package:cordrila_sysytems/controller/shopping_page_provider.dart';
 import 'package:cordrila_sysytems/controller/utr_provider.dart';
 import 'package:cordrila_sysytems/controller/signinpage_provider.dart';
 import 'package:cordrila_sysytems/controller/user_attendence_provider.dart';
-import 'package:cordrila_sysytems/view/home.dart';
+import 'package:cordrila_sysytems/view/home.dart'; 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
@@ -23,10 +22,10 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider<SigninpageProvider>(
+        ChangeNotifierProvider<SigninpageProvider> (
           create: (context) => SigninpageProvider(),
         ),
-        ChangeNotifierProvider<FreshPageProvider>(
+        ChangeNotifierProvider<FreshPageProvider> (
           create: (context) => FreshPageProvider(),
         ),
         ChangeNotifierProvider<ShiftProvider>(
@@ -61,9 +60,6 @@ void main() async {
         ChangeNotifierProvider<ProfilepageProvider>(
           create: (context) => ProfilepageProvider(),
         ),
-        ChangeNotifierProvider<AdminRequestProvider>(
-          create: (context) => AdminRequestProvider(),
-        ),
       ],
       child: MyApp(),
     ),
@@ -73,9 +69,9 @@ void main() async {
 
 
 class MyApp extends StatefulWidget {
-
-
-  MyApp({Key? key,}) : super(key: key);
+  MyApp({
+    Key? key,
+  }) : super(key: key);
 
   @override
   _MyAppState createState() => _MyAppState();
@@ -113,7 +109,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             .initializeData(empCode),
         Provider.of<FreshPageProvider>(context, listen: false)
             .initializeData(empCode),
-        Provider.of<UtrPageProvider>(context, listen: false).initializeData(empCode),
+        Provider.of<UtrPageProvider>(context, listen: false)
+            .initializeData(empCode),
       ]);
     }
   }
