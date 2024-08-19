@@ -226,8 +226,7 @@ class _UtrPageState extends State<UtrPage> {
                                 int unreadCount = unreadDocs.length;
 
                                 return IconButtonWithBadge(
-                                  image:
-                                      AssetImage('assets/images/bell.png'),
+                                  image: AssetImage('assets/images/bell.png'),
                                   badgeCount: unreadCount,
                                   onPressed: () {
                                     _navigateToRepliesPage(context);
@@ -453,7 +452,21 @@ class _UtrPageState extends State<UtrPage> {
                                         !utrStateProvider
                                             .isWithinPredefinedLocation()
                                     ? null
-                                    : () {
+                                    : () async {
+                                        final empCode = _idController.text;
+                                        final isActive = await utrStateProvider
+                                            .isUserActive(empCode);
+
+                                        if (!isActive) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                              content: Text('User is inactive'),
+                                            ),
+                                          );
+                                          return;
+                                        }
+
                                         if (_locationController.text ==
                                                 'Unknown' ||
                                             _locationController.text.isEmpty) {
@@ -465,49 +478,75 @@ class _UtrPageState extends State<UtrPage> {
                                                   'Location error! Please restart your app.'),
                                             ),
                                           );
-                                        }
-                                        showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return AlertDialog(
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10)),
-                                              title: Text("Confirm Attendance"),
+                                          return;
+                                        } else if (_locationController.text ==
+                                                'Out of station' ||
+                                            _locationController.text.isEmpty) {
+                                          // Handle location error
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
                                               content: Text(
-                                                  "Are you sure you want to mark attendance?"),
-                                              actions: [
-                                                TextButton(
-                                                  child: Text("Cancel"),
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                ),
-                                                TextButton(
-                                                  child: Text("Confirm"),
-                                                  onPressed: () {
-                                                    Navigator.of(context)
-                                                        .pop(); // Close the dialog
-                                                    utrStateProvider
-                                                        .markAttendance();
-                                                    addDetails();
-                                                    String employeeId =
-                                                        _idController.text;
-                                                    Navigator.of(context).push(
-                                                      CupertinoPageRoute(
-                                                        builder: (context) =>
-                                                            AttendencePage(
-                                                                employeeId:
-                                                                    employeeId),
-                                                      ),
-                                                    );
-                                                  },
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        );
+                                                  'Location error! Please restart your app.'),
+                                            ),
+                                          );
+                                        } else if (utrStateProvider
+                                            .timedateController.text.isEmpty) {
+                                          // Handle location error
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                              content:
+                                                  Text('Error loading data'),
+                                            ),
+                                          );
+                                        } else {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10)),
+                                                title:
+                                                    Text("Confirm Attendance"),
+                                                content: Text(
+                                                    "Are you sure you want to mark attendance?"),
+                                                actions: [
+                                                  TextButton(
+                                                    child: Text("Cancel"),
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                  ),
+                                                  TextButton(
+                                                    child: Text("Confirm"),
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop(); // Close the dialog
+                                                      utrStateProvider
+                                                          .markAttendance();
+                                                      addDetails();
+                                                      String employeeId =
+                                                          _idController.text;
+                                                      Navigator.of(context)
+                                                          .push(
+                                                        CupertinoPageRoute(
+                                                          builder: (context) =>
+                                                              AttendencePage(
+                                                                  employeeId:
+                                                                      employeeId),
+                                                        ),
+                                                      );
+                                                    },
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        }
                                       },
                                 child: Text(
                                   'Mark Attendance',
@@ -515,7 +554,7 @@ class _UtrPageState extends State<UtrPage> {
                                       color: Colors.white, fontSize: 20),
                                 ),
                               ),
-                            ),
+                            )
                           ],
                         ),
                       ],

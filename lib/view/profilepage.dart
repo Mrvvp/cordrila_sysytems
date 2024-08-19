@@ -51,27 +51,26 @@ class _ProfilePageState extends State<ProfilePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Colors.grey.shade200,
+          backgroundColor: Colors.grey.shade300,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           title: Text(
             'Request',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          content: TextField(
-            maxLines: 3,
+          content: TextField(maxLines: 5,
             controller: _updateRequestController,
             decoration: InputDecoration(
-              hintText: 'Eg: New mail id - "abcd@gmail.com"',
-              hintStyle: TextStyle(fontSize: 12, color: Colors.grey),
+              hintText: 'Change my phone no - "xxxxxxxxx"',
+              hintStyle: TextStyle(fontSize: 13, color: Colors.grey),
               filled: true,
               fillColor: Colors.white30,
               focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.transparent),
+                borderSide:  BorderSide(color: Colors.grey),
                 borderRadius: BorderRadius.circular(10),
               ),
               border: OutlineInputBorder(
-                borderSide: BorderSide.none,
+                borderSide: BorderSide(color: Colors.white30),
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
@@ -84,6 +83,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               onPressed: () {
                 Navigator.of(context).pop();
+                 _updateRequestController.clear();
               },
             ),
             TextButton(
@@ -127,6 +127,7 @@ class _ProfilePageState extends State<ProfilePage> {
       },
     );
   }
+
 
   @override
   Widget build(BuildContext context) {

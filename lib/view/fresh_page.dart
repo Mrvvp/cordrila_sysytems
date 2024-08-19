@@ -93,7 +93,7 @@ class _FreshPageState extends State<FreshPage> {
 
       // Update the controller with the location name or coordinates
       _coralocationController.text =
-          locationName != 'Unknown' ? locationName : 'Location not found';
+          locationName != 'Out of station' ? locationName : 'Out of station';
     } catch (e) {
       // Handle any errors in fetching location
       print('Error fetching location: $e');
@@ -423,7 +423,7 @@ class _FreshPageState extends State<FreshPage> {
                               contentPadding: const EdgeInsets.all(10),
                               constraints: const BoxConstraints(maxHeight: 70),
                               prefixIcon: Icon(
-                                CupertinoIcons.location,
+                                Icons.location_on_outlined,
                                 color: Colors.grey.shade500,
                               ),
                               focusedBorder: OutlineInputBorder(
@@ -685,10 +685,24 @@ class _FreshPageState extends State<FreshPage> {
                               onPressed: freshStateProvider
                                           .isWithinPredefinedLocation() &&
                                       shiftProvider.isNewShiftSelected()
-                                  ? () {
+                                  ? () async {
+                                      final empCode = _idController
+                                          .text; // Replace with your employee code logic
+                                      final isActive = await freshStateProvider
+                                          .isUserActive(empCode);
+
+                                      if (!isActive) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content: Text('User is inactive'),
+                                          ),
+                                        );
+                                        return; 
+                                      }
                                       if (_formKey.currentState!.validate()) {
                                         if (_coralocationController.text ==
-                                                'Unknown' ||
+                                                'Out of station' ||
                                             _coralocationController
                                                 .text.isEmpty ||
                                             _coralocationController.text ==

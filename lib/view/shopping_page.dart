@@ -172,8 +172,8 @@ class _ShoppingPageState extends State<ShoppingPage> {
         color: Colors.black,
         onRefresh: _refreshData,
         child: Consumer<ShoppingPageProvider>(
-            builder: (context, freshStateProvider, child) {
-          if (freshStateProvider.isFetchingData) {
+            builder: (context, appStateProvider, child) {
+          if (appStateProvider.isFetchingData) {
             return Center(
                 child: Lottie.asset(
               'assets/animations/Animation - 1722594040196.json',
@@ -200,8 +200,10 @@ class _ShoppingPageState extends State<ShoppingPage> {
                           ),
                           const Spacer(),
                           IconButton(
-                            icon: Image.asset('assets/images/home (1).png',width: 40,),
-                                
+                            icon: Image.asset(
+                              'assets/images/home (1).png',
+                              width: 40,
+                            ),
                             onPressed: () {
                               if (!appStateProvider.isHomeLocationSet) {
                                 final signinpageprovider =
@@ -229,20 +231,28 @@ class _ShoppingPageState extends State<ShoppingPage> {
                             },
                           ),
                           IconButton(
-                              onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => const ProfilePage()));
-                              },
-                              icon: Image.asset('assets/images/user (1).png',width: 40,),),
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const ProfilePage()));
+                            },
+                            icon: Image.asset(
+                              'assets/images/user (1).png',
+                              width: 40,
+                            ),
+                          ),
                           IconButton(
-                              onPressed: () {
-                                String employeeId = _idController.text;
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => AttendencePage(
-                                          employeeId: employeeId,
-                                        )));
-                              },
-                             icon: Image.asset('assets/images/calendar.png',width: 40,),),
+                            onPressed: () {
+                              String employeeId = _idController.text;
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => AttendencePage(
+                                        employeeId: employeeId,
+                                      )));
+                            },
+                            icon: Image.asset(
+                              'assets/images/calendar.png',
+                              width: 40,
+                            ),
+                          ),
                           StreamBuilder<QuerySnapshot>(
                             stream: FirebaseFirestore.instance
                                 .collection('requests')
@@ -760,12 +770,27 @@ class _ShoppingPageState extends State<ShoppingPage> {
                                 backgroundColor: Colors.blue.shade700,
                                 elevation: 5,
                               ),
-                              onPressed: (freshStateProvider
+                              onPressed: (appStateProvider
                                               .isWithinPredefinedLocation() ||
-                                          freshStateProvider
+                                          appStateProvider
                                               .isWithinAlternativeLocation()) &&
                                       shopProvider.isNewShiftSelected()
-                                  ? () {
+                                  ? () async {
+                                      final empCode = _idController
+                                          .text; // Replace with your employee code logic
+                                      final isActive = await appStateProvider
+                                          .isUserActive(empCode);
+
+                                      if (!isActive) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content: Text('User is inactive'),
+                                          ),
+                                        );
+                                        return; 
+                                      }
+
                                       if (_shipmentController.text.isEmpty ||
                                           _pickupController.text.isEmpty ||
                                           _mfnController.text.isEmpty) {
@@ -793,7 +818,7 @@ class _ShoppingPageState extends State<ShoppingPage> {
                                           ),
                                         );
                                       } else if (_locationController.text ==
-                                              'Unknown' ||
+                                              'Out of station' ||
                                           _locationController.text.isEmpty) {
                                         // Handle location error
                                         ScaffoldMessenger.of(context)
@@ -817,6 +842,10 @@ class _ShoppingPageState extends State<ShoppingPage> {
                                           context: context,
                                           builder: (context) {
                                             return AlertDialog(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
                                               title: Text('Confirm Attendance'),
                                               content: Text(
                                                   'Are you sure you want to mark attendance?'),

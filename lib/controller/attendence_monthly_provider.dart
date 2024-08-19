@@ -1,55 +1,18 @@
-import 'package:flutter/material.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cordrila_sysytems/controller/user_attendence_provider.dart';
+import 'package:flutter/material.dart';
 
-class UserDetail {
-  final String employeeId;
-  final String name;
-  final DateTime date;
-  final String? orders;
-  final String? bags;
-  final String? mop;
-  final String? shipments;
-  final String? pickups;
-  final String? mfn;
-  final String? time;
-  final String? shift;
-  final String? location;
-  final String? gsf;
-  final String? helmet;
-  final String? lm;
-  final String? cash;
-
-  UserDetail({
-    required this.employeeId,
-    required this.name,
-    required this.date,
-    this.orders,
-    this.bags,
-    this.mop,
-    this.shipments,
-    this.pickups,
-    this.mfn,
-    this.time,
-    this.shift,
-    this.location,
-    this.gsf,
-    this.helmet,
-    this.lm,
-    this.cash,
-  });
-}
-
-class AteendenceProvider extends ChangeNotifier {
+class AttendanceMonthlyProvider extends ChangeNotifier {
   List<UserDetail> _userDataList = [];
   List<UserDetail> _filteredUserDataList = [];
-  DateTime? _selectedDate;
-  bool _isLoading = false;
   DateTime? _startDate;
   DateTime? _endDate;
+  bool _isLoading = false;
+  
 
   DateTime? get startDate => _startDate;
   DateTime? get endDate => _endDate;
-
   DateTimeRange? get dateRange {
     if (_startDate != null && _endDate != null) {
       return DateTimeRange(start: _startDate!, end: _endDate!);
@@ -57,14 +20,16 @@ class AteendenceProvider extends ChangeNotifier {
     return null;
   }
 
-  bool get isLoading => _isLoading;
-
-  DateTime? get selectedDate => _selectedDate;
   List<UserDetail> get userDataList =>
       _filteredUserDataList.isEmpty ? _userDataList : _filteredUserDataList;
+  bool get isLoading => _isLoading;
 
-  Future<void> fetchUserData(BuildContext context,
-      {required String employeeId, DateTime? date}) async {
+  Future<void> fetchUserData(
+    BuildContext context, {
+    required String employeeId,
+    DateTime? startDate,
+    DateTime? endDate, required DateTime date,
+  }) async {
     _isLoading = true;
     notifyListeners();
 
@@ -73,13 +38,13 @@ class AteendenceProvider extends ChangeNotifier {
           .collection('userdata')
           .where('ID', isEqualTo: employeeId);
 
-      if (date != null) {
-        DateTime startDate = DateTime(date.year, date.month, date.day);
-        DateTime endDate =
-            DateTime(date.year, date.month, date.day, 23, 59, 59);
+      if (startDate != null && endDate != null) {
+        DateTime endOfDay =
+            DateTime(endDate.year, endDate.month, endDate.day, 23, 59, 59);
+
         query = query
             .where('Date', isGreaterThanOrEqualTo: startDate)
-            .where('Date', isLessThanOrEqualTo: endDate);
+            .where('Date', isLessThanOrEqualTo: endOfDay);
       }
 
       query = query.orderBy('Date', descending: true);
@@ -107,9 +72,10 @@ class AteendenceProvider extends ChangeNotifier {
         );
       }).toList();
 
-      if (_userDataList.isEmpty) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('No data available')));
+      // Update filtered list and notify listeners after fetching
+      filterUserDataByDateRange();
+      if (_filteredUserDataList.isEmpty) {
+       
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -120,9 +86,31 @@ class AteendenceProvider extends ChangeNotifier {
     }
   }
 
-  void clearFilter() {
-    _filteredUserDataList = [];
+  void setDateRange(DateTime start, DateTime end) {
+    _startDate = start;
+    _endDate = end;
+    filterUserDataByDateRange();
     notifyListeners();
   }
-}
 
+  void filterUserDataByDateRange() {
+    if (_startDate == null || _endDate == null) {
+      _filteredUserDataList = [];
+    } else {
+      _filteredUserDataList = _userDataList.where((user) {
+        final userDate = DateTime(user.date.year, user.date.month, user.date.day);
+        return userDate.isAfter(_startDate!.subtract(Duration(days: 1))) &&
+            userDate.isBefore(_endDate!.add(Duration(days: 1)));
+      }).toList();
+    }
+    notifyListeners();
+  }
+
+  void clearFilter() {
+    _filteredUserDataList = [];
+    _startDate = null;
+    _endDate = null;
+    notifyListeners();
+  }
+   
+   }

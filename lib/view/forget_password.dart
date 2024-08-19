@@ -37,9 +37,16 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     }
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Update Password',
+          style: TextStyle(
+              fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+        ),
+      ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.only(left: 20, right: 20),
           child: Form(
             key: _forgotPasswordFormKey,
             child: SafeArea(
@@ -47,16 +54,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.only(left: 10),
-                    child: Text(
-                      'Update Password',
-                      style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black45),
-                    ),
-                  ),
                   const SizedBox(height: 20),
                   TextFormField(
                     readOnly: true,

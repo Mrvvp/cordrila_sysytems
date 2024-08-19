@@ -9,12 +9,15 @@ void navigateToHomePage(
     BuildContext context, SigninpageProvider appStateProvider, String userId) {
   final userType = appStateProvider.userData?['Location'] ?? '';
 //
+
   if (userType == 'SHOPPING') {
     Navigator.of(context).pushReplacement(
         CupertinoPageRoute(builder: (context) => ShoppingPage(userId: userId)));
   } else if (userType == 'UTR') {
-    Navigator.of(context).pushReplacement(
-        CupertinoPageRoute(builder: (context) =>UtrPage(userId: userId,)));
+    Navigator.of(context).pushReplacement(CupertinoPageRoute(
+        builder: (context) => UtrPage(
+              userId: userId,
+            )));
   } else if (userType == 'FRESH') {
     Navigator.of(context).pushReplacement(CupertinoPageRoute(
         builder: (context) => FreshPage(

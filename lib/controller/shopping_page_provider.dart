@@ -335,7 +335,7 @@ class ShoppingPageProvider with ChangeNotifier {
         }
       }
     }
-    return locationName ?? 'Unknown';
+    return locationName ?? 'Out of station';
   }
 
   void resetAlertShown() {
@@ -358,6 +358,34 @@ class ShoppingPageProvider with ChangeNotifier {
       timedateController.text = formattedDateTime; // Update text controller
     } catch (e) {
       print('Error fetching NTP time: $e');
+    }
+  }
+
+ Future<bool> isUserActive(String empCode) async {
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('USERS')
+          .where('EmpCode', isEqualTo: empCode)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        final docData =
+            querySnapshot.docs.first.data() as Map<String, dynamic>?;
+
+        if (docData != null) {
+          // Check if the status field exists and its value
+          final status = docData['status'] as String?;
+          if (status == null || status == "active") {
+            return true; // User is active if there's no status field or status is 'active'
+          } else if (status == "inactive") {
+            return false; // User is inactive if status is 'inactive'
+          }
+        }
+      }
+      return true; // Consider user active if no document or status field is missing
+    } catch (e) {
+      print('Failed to check user status: $e');
+      return false;
     }
   }
 }

@@ -184,12 +184,6 @@ class FreshPageProvider with ChangeNotifier {
       'longitude': 76.283371,
       'radius': 0.25
     },
-    {
-      'name': 'KALA',
-      'latitude': 10.0645644,
-      'longitude': 76.3221503,
-      'radius': 0.25
-    },
   ];
 
   bool get isFetchingData => _isFetchingData;
@@ -254,7 +248,7 @@ class FreshPageProvider with ChangeNotifier {
         }
       }
     }
-    return locationName ?? 'Unknown'; // Return 'Unknown' if the user is not within any predefined location
+    return locationName ?? 'Out of station'; // Return 'Unknown' if the user is not within any predefined location
   }
 
   void resetAlertShown() {
@@ -317,9 +311,31 @@ class FreshPageProvider with ChangeNotifier {
     }
   }
 
-  // Additional methods
+ Future<bool> isUserActive(String empCode) async {
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('USERS')
+          .where('EmpCode', isEqualTo: empCode)
+          .get();
 
-  
-  
+      if (querySnapshot.docs.isNotEmpty) {
+        final docData =
+            querySnapshot.docs.first.data() as Map<String, dynamic>?;
 
+        if (docData != null) {
+          // Check if the status field exists and its value
+          final status = docData['status'] as String?;
+          if (status == null || status == "active") {
+            return true; // User is active if there's no status field or status is 'active'
+          } else if (status == "inactive") {
+            return false; // User is inactive if status is 'inactive'
+          }
+        }
+      }
+      return true; // Consider user active if no document or status field is missing
+    } catch (e) {
+      print('Failed to check user status: $e');
+      return false;
+    }
+  }
 }

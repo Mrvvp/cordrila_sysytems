@@ -68,6 +68,7 @@ class RepliesPage extends StatelessWidget {
                 final requestData = request.data() as Map<String, dynamic>;
 
                 final reply = requestData['reply'];
+                final request1 = requestData['request'];
 
                 return Padding(
                   padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
@@ -93,20 +94,41 @@ class RepliesPage extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              Icon(
-                                Icons.notifications_active,
-                                color: Colors.yellow.shade700,
-                              ),
                               const SizedBox(width: 10),
                               Expanded(
-                                child: Text(
-                                  '$reply',
-                                  maxLines: 2, // Limit the number of lines
-                                  overflow: TextOverflow.ellipsis, // Ellipsis for overflow
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      decoration: BoxDecoration(
+                                          color: Colors.grey.shade200,
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          'Request: $request1',
+                                          // Limit the number of lines
+                                          // Ellipsis for overflow
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(
+                                      'Reply: $reply',
+                                      // Ellipsis for overflow
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
@@ -126,7 +148,7 @@ class RepliesPage extends StatelessWidget {
 }
 
 class IconButtonWithBadge extends StatelessWidget {
-   final ImageProvider image;
+  final ImageProvider image;
   final int badgeCount;
   final VoidCallback onPressed;
 

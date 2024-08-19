@@ -89,9 +89,8 @@ Future<bool> _requestPermissions2() async {
           .get();
 
       if (snapshot.exists) {
-        bool updateRequired = snapshot.get('update');
+        bool updateRequired = snapshot.get('updatev1');
         if (updateRequired) {
-          // Directly download the update without showing a dialog
           await _downloadFile(
               'https://firebasestorage.googleapis.com/v0/b/cordrila.appspot.com/o/Cordrila(H).apk?alt=media&token=430513c9-9d5c-475b-9efb-37fa10ef5636');
         } else {
