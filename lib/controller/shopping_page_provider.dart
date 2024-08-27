@@ -361,7 +361,7 @@ class ShoppingPageProvider with ChangeNotifier {
     }
   }
 
- Future<bool> isUserActive(String empCode) async {
+  Future<bool> isUserActive(String empCode) async {
     try {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('USERS')

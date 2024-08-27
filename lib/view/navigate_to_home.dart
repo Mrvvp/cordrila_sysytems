@@ -1,4 +1,5 @@
 import 'package:cordrila_sysytems/controller/signinpage_provider.dart';
+import 'package:cordrila_sysytems/view/fresh1.dart';
 import 'package:cordrila_sysytems/view/fresh_page.dart';
 import 'package:cordrila_sysytems/view/shopping_page.dart';
 import 'package:cordrila_sysytems/view/utr_page.dart';
@@ -23,7 +24,13 @@ void navigateToHomePage(
         builder: (context) => FreshPage(
               userId: userId,
             )));
-  } else {
+  } else if (userType == 'FRESH1') {
+    Navigator.of(context).pushReplacement(CupertinoPageRoute(
+        builder: (context) => Fresh1Page(
+              userId: userId,
+            )));
+  }
+  else {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Unknown user type')),
     );

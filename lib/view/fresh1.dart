@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cordrila_sysytems/controller/fresh_page_provider.dart';
+import 'package:cordrila_sysytems/controller/fresh1_controller.dart';
+import 'package:cordrila_sysytems/controller/fresh1_shift.dart';
 import 'package:cordrila_sysytems/controller/profile_update_provider.dart';
-import 'package:cordrila_sysytems/controller/shift_Controller.dart';
 import 'package:cordrila_sysytems/view/attendence_page.dart';
 import 'package:cordrila_sysytems/view/loading.dart';
 import 'package:cordrila_sysytems/view/replies.dart';
@@ -15,8 +15,8 @@ import 'package:provider/provider.dart';
 import 'package:cordrila_sysytems/controller/signinpage_provider.dart';
 import 'package:cordrila_sysytems/view/profilepage.dart';
 
-class FreshPage extends StatefulWidget {
-  const FreshPage({Key? key, required this.userId, this.notificationCount = 0})
+class Fresh1Page extends StatefulWidget {
+  const Fresh1Page({Key? key, required this.userId, this.notificationCount = 0})
       : super(key: key);
   final String userId;
   final int notificationCount;
@@ -25,13 +25,12 @@ class FreshPage extends StatefulWidget {
   _FreshPageState createState() => _FreshPageState();
 }
 
-class _FreshPageState extends State<FreshPage> {
+class _FreshPageState extends State<Fresh1Page> {
   final List<String> slots = [
-    '1.  7 AM - 10 AM',
-    '2.  10 AM - 1 PM',
-    '3.  1 PM - 4 PM',
-    '4.  4 PM - 7 PM',
-    '5.  7 PM - 10 PM',
+    '1.  9 AM - 12 PM',
+    '2.  12 PM - 3 PM',
+    '3.  3 PM - 6 PM',
+    '4.  6 PM - 9 PM',
   ];
   final CollectionReference users =
       FirebaseFirestore.instance.collection('userdata');
@@ -59,12 +58,13 @@ class _FreshPageState extends State<FreshPage> {
   }
 
   void _timestamp() async {
-    final timeProvider = Provider.of<FreshPageProvider>(context, listen: false);
+    final timeProvider =
+        Provider.of<Fresh1PageProvider>(context, listen: false);
     await timeProvider.updateTimestamp();
   }
 
   void _initialize() async {
-    final provider = Provider.of<ShiftProvider>(context, listen: false);
+    final provider = Provider.of<Fresh1ShiftProvider>(context, listen: false);
     provider.initialize();
   }
 
@@ -83,7 +83,7 @@ class _FreshPageState extends State<FreshPage> {
   }
 
   void _initializeLocation() async {
-    final provider = Provider.of<FreshPageProvider>(context, listen: false);
+    final provider = Provider.of<Fresh1PageProvider>(context, listen: false);
     try {
       // Initialize data
       await provider.initializeData(widget.userId);
@@ -115,7 +115,7 @@ class _FreshPageState extends State<FreshPage> {
   }
 
   Future<void> _refreshData() async {
-    Provider.of<FreshPageProvider>(context, listen: false)
+    Provider.of<Fresh1PageProvider>(context, listen: false)
         .initializeData(widget.userId);
   }
 
@@ -135,9 +135,9 @@ class _FreshPageState extends State<FreshPage> {
 
   @override
   Widget build(BuildContext context) {
-    final freshStateProvider = Provider.of<FreshPageProvider>(context);
+    final fresh1StateProvider = Provider.of<Fresh1PageProvider>(context);
     final signinpageProvider = Provider.of<SigninpageProvider>(context);
-    final shiftProvider = Provider.of<ShiftProvider>(context);
+    final shift1Provider = Provider.of<Fresh1ShiftProvider>(context);
     final profileUpdateProvider = Provider.of<ProfileUpdateProvider>(context);
 
     void addDetails() async {
@@ -148,19 +148,19 @@ class _FreshPageState extends State<FreshPage> {
         // Extract text values from the TextEditingController instances
         final data = {
           'Time':
-              shiftProvider.selectedShift, // Use default empty string if null
+              shift1Provider.selectedShift, // Use default empty string if null
           'bags': _bagscoraController.text, // Provide default value if empty
           'orders': _ordersController.text,
           'cash': _cashController.text,
 
           'ID': _idController.text, // Provide default value if empty
           'Name': _namecoraController.text, // Provide default value if empty
-          'Date': freshStateProvider.timestamp, // Provide default value if null
+          'Date': fresh1StateProvider.timestamp, // Provide default value if null
           'Location':
               _coralocationController.text, // Provide default value if empty
           'Login': signinpageProvider.lastLoggedInTime ??
               '', // Provide default value if null
-          'GSF': freshStateProvider.selectedYesNoOption ??
+          'GSF': fresh1StateProvider.selectedYesNoOption ??
               '', // Provide default value if null
         };
 
@@ -196,12 +196,12 @@ class _FreshPageState extends State<FreshPage> {
     }
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      bool isWithinWarehouse = freshStateProvider.isWithinPredefinedLocation();
-      bool dialogShown = freshStateProvider.alertShown;
+      bool isWithinWarehouse = fresh1StateProvider.isWithinPredefinedLocation1();
+      bool dialogShown = fresh1StateProvider.alertShown;
 
       if (!isWithinWarehouse && !dialogShown) {
         print('Showing dialog');
-        freshStateProvider.showLocationAlert(context);
+        fresh1StateProvider.showLocationAlert(context);
       } else if (isWithinWarehouse && dialogShown) {}
     });
 
@@ -209,7 +209,7 @@ class _FreshPageState extends State<FreshPage> {
       backgroundColor: Colors.white,
       body: RefreshIndicator(
         onRefresh: _refreshData,
-        child: Consumer<FreshPageProvider>(
+        child: Consumer<Fresh1PageProvider>(
             builder: (context, freshStateProvider, child) {
           if (freshStateProvider.isFetchingData) {
             return Center(
@@ -236,7 +236,7 @@ class _FreshPageState extends State<FreshPage> {
                               fontWeight: FontWeight.bold),
                         ),
                         const Spacer(),
-                        FutureBuilder<String?>(
+                       FutureBuilder<String?>(
                               future: profileUpdateProvider.getProfileImageUrl(
                                 signinpageProvider.userData?['EmpCode'] ?? '',
                               ),
@@ -529,11 +529,11 @@ class _FreshPageState extends State<FreshPage> {
                             child: Column(
                               children: slots.map((shift) {
                                 final isEnabled =
-                                    shiftProvider.isShiftEnabled(shift);
-                                final isHidden = shiftProvider
+                                    shift1Provider.isShiftEnabled(shift);
+                                final isHidden = shift1Provider
                                     .isShiftHidden(shift); // Use isShiftHidden
                                 final isChecked =
-                                    shiftProvider.tempSelectedShift ==
+                                    shift1Provider.tempSelectedShift ==
                                         shift; // Use tempSelectedShift
 
                                 return ListTile(
@@ -553,7 +553,7 @@ class _FreshPageState extends State<FreshPage> {
                                   onTap: isEnabled && !isHidden
                                       ? () {
                                           if (!isChecked) {
-                                            shiftProvider
+                                            shift1Provider
                                                 .setSelectedShift(shift);
                                           }
                                         }
@@ -648,9 +648,7 @@ class _FreshPageState extends State<FreshPage> {
                               }
                               return null;
                             },
-                            onSaved: (value) {
-                              freshStateProvider.setOrders(value!.trim());
-                            },
+                            
                           ),
                           const SizedBox(
                             height: 10,
@@ -693,9 +691,7 @@ class _FreshPageState extends State<FreshPage> {
                               }
                               return null;
                             },
-                            onSaved: (value) {
-                              freshStateProvider.setBags(value!.trim());
-                            },
+                            
                           ),
                           const SizedBox(
                             height: 10,
@@ -738,9 +734,7 @@ class _FreshPageState extends State<FreshPage> {
                               }
                               return null;
                             },
-                            onSaved: (value) {
-                              freshStateProvider.setCash(value!.trim());
-                            },
+                           
                           ),
                           const SizedBox(
                             height: 30,
@@ -757,8 +751,8 @@ class _FreshPageState extends State<FreshPage> {
                                 elevation: 5,
                               ),
                               onPressed: freshStateProvider
-                                          .isWithinPredefinedLocation() &&
-                                      shiftProvider.isNewShiftSelected()
+                                          .isWithinPredefinedLocation1() &&
+                                      shift1Provider.isNewShiftSelected()
                                   ? () async {
                                       final empCode = _idController
                                           .text; // Replace with your employee code logic
@@ -1123,7 +1117,7 @@ class _FreshPageState extends State<FreshPage> {
                                                   ),
                                                   TextButton(
                                                     onPressed: () {
-                                                      shiftProvider
+                                                      shift1Provider
                                                           .markAttendance(); // Mark attendance and update shift visibility
 
                                                       addDetails();

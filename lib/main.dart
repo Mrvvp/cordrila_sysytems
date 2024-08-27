@@ -1,8 +1,11 @@
 import 'package:cordrila_sysytems/controller/attendence_monthly_provider.dart';
 import 'package:cordrila_sysytems/controller/download_proivder.dart';
+import 'package:cordrila_sysytems/controller/fresh1_controller.dart';
+import 'package:cordrila_sysytems/controller/fresh1_shift.dart';
 import 'package:cordrila_sysytems/controller/fresh_page_provider.dart';
 import 'package:cordrila_sysytems/controller/notification_provider.dart';
 import 'package:cordrila_sysytems/controller/profile_provider.dart';
+import 'package:cordrila_sysytems/controller/profile_update_provider.dart';
 import 'package:cordrila_sysytems/controller/shift_Controller.dart';
 import 'package:cordrila_sysytems/controller/shift_shop_provider.dart';
 import 'package:cordrila_sysytems/controller/shopping_page_provider.dart';
@@ -29,7 +32,10 @@ void main() async {
         ChangeNotifierProvider<FreshPageProvider>(
           create: (context) => FreshPageProvider(),
         ),
-        ChangeNotifierProvider<ShiftProvider> (
+        ChangeNotifierProvider<Fresh1PageProvider>(
+          create: (context) => Fresh1PageProvider(),
+        ),
+        ChangeNotifierProvider<ShiftProvider>(
           create: (context) => ShiftProvider([
             '1.  7 AM - 10 AM',
             '2.  10 AM - 1 PM',
@@ -38,6 +44,13 @@ void main() async {
             '5.  7 PM - 10 PM',
           ]),
         ),
+        ChangeNotifierProvider<Fresh1ShiftProvider>(
+            create: (context) => Fresh1ShiftProvider([
+                  '1.  9 AM - 12 PM',
+                  '2.  12 PM - 3 PM',
+                  '3.  3 PM - 6 PM',
+                  '4.  6 PM - 9 PM',
+                ])),
         ChangeNotifierProvider<ShopProvider>(
           create: (context) => ShopProvider(
               ['Morning (before 12 PM)', 'Evening (after 12 PM )']),
@@ -62,6 +75,9 @@ void main() async {
         ),
         ChangeNotifierProvider<ProfilepageProvider>(
           create: (context) => ProfilepageProvider(),
+        ),
+        ChangeNotifierProvider<ProfileUpdateProvider>(
+          create: (context) => ProfileUpdateProvider(),
         ),
       ],
       child: MyApp(),

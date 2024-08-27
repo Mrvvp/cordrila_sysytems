@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cordrila_sysytems/controller/profile_update_provider.dart';
 import 'package:cordrila_sysytems/controller/shift_shop_provider.dart';
 import 'package:cordrila_sysytems/controller/shopping_page_provider.dart';
 import 'package:cordrila_sysytems/view/attendence_page.dart';
+import 'package:cordrila_sysytems/view/loading.dart';
 import 'package:cordrila_sysytems/view/replies.dart';
+import 'package:cordrila_sysytems/view/uppercase.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -40,7 +43,7 @@ class _ShoppingPageState extends State<ShoppingPage> {
     _initializeLocation();
     _initializeLastLoggedInTime();
     _initialize();
-
+    _checkProfileCompletion();
     super.initState();
   }
 
@@ -106,11 +109,17 @@ class _ShoppingPageState extends State<ShoppingPage> {
     }
   }
 
+  void _checkProfileCompletion() async {
+    Provider.of<ProfileUpdateProvider>(context, listen: false)
+        .isProfileComplete(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     final appStateProvider = Provider.of<ShoppingPageProvider>(context);
     final signinpageProvider = Provider.of<SigninpageProvider>(context);
     final shopProvider = Provider.of<ShopProvider>(context);
+    final profileUpdateProvider = Provider.of<ProfileUpdateProvider>(context);
 
     void addDetails() async {
       try {
@@ -199,6 +208,78 @@ class _ShoppingPageState extends State<ShoppingPage> {
                                 fontWeight: FontWeight.bold),
                           ),
                           const Spacer(),
+                         FutureBuilder<String?>(
+                              future: profileUpdateProvider.getProfileImageUrl(
+                                signinpageProvider.userData?['EmpCode'] ?? '',
+                              ),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return IconButton(
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                        builder: (context) =>
+                                            const ProfilePage(),
+                                      ));
+                                    },
+                                    icon: ClipOval(
+                                      child: Lottie.asset(
+                                        'assets/animations/Animation - 1722594040196.json',
+                                        width: 40,
+                                        height: 40,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  );
+                                }
+
+                                if (snapshot.hasError || !snapshot.hasData) {
+                                  return IconButton(
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                        builder: (context) =>
+                                            const ProfilePage(),
+                                      ));
+                                    },
+                                    icon: ClipOval(
+                                      child: Image.asset(
+                                        'assets/images/user (1).png',
+                                        width: 40,
+                                        height: 40,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  );
+                                }
+
+                                final imageUrl = snapshot.data;
+                                return IconButton(
+                                  onPressed: () {
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                      builder: (context) => const ProfilePage(),
+                                    ));
+                                  },
+                                  icon: ClipOval(
+                                    child: imageUrl != null
+                                        ? Image.network(
+                                            imageUrl,
+                                            width: 40,
+                                            height: 40,
+                                            fit: BoxFit.cover,
+                                          )
+                                        : Image.asset(
+                                            'assets/images/user (1).png',
+                                            width: 40,
+                                            height: 40,
+                                            fit: BoxFit.cover,
+                                          ),
+                                  ),
+                                );
+                              },
+                            ),
                           IconButton(
                             icon: Image.asset(
                               'assets/images/home (1).png',
@@ -214,13 +295,11 @@ class _ShoppingPageState extends State<ShoppingPage> {
                                         listen: false);
                                 final empCode =
                                     signinpageprovider.userData?['EmpCode'];
-                                // Ensure you pass the context and userId parameters
                                 appStateProvider.setHomeLocation(
                                     context, empCode);
                                 appStateProvider
                                     .loadHomeLocationFromFirestore(empCode);
                               } else {
-                                // Handle action when already at home
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text(
@@ -229,16 +308,6 @@ class _ShoppingPageState extends State<ShoppingPage> {
                                 );
                               }
                             },
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => const ProfilePage()));
-                            },
-                            icon: Image.asset(
-                              'assets/images/user (1).png',
-                              width: 40,
-                            ),
                           ),
                           IconButton(
                             onPressed: () {
@@ -776,8 +845,7 @@ class _ShoppingPageState extends State<ShoppingPage> {
                                               .isWithinAlternativeLocation()) &&
                                       shopProvider.isNewShiftSelected()
                                   ? () async {
-                                      final empCode = _idController
-                                          .text; // Replace with your employee code logic
+                                      final empCode = _idController.text;
                                       final isActive = await appStateProvider
                                           .isUserActive(empCode);
 
@@ -788,7 +856,7 @@ class _ShoppingPageState extends State<ShoppingPage> {
                                             content: Text('User is inactive'),
                                           ),
                                         );
-                                        return; 
+                                        return;
                                       }
 
                                       if (_shipmentController.text.isEmpty ||
@@ -801,7 +869,10 @@ class _ShoppingPageState extends State<ShoppingPage> {
                                                 'Please fill in all fields'),
                                           ),
                                         );
-                                      } else if (appStateProvider
+                                        return;
+                                      }
+
+                                      if (appStateProvider
                                                   .selectedYesNoOption ==
                                               null ||
                                           appStateProvider
@@ -817,10 +888,12 @@ class _ShoppingPageState extends State<ShoppingPage> {
                                                 'Please fill in all fields.'),
                                           ),
                                         );
-                                      } else if (_locationController.text ==
+                                        return;
+                                      }
+
+                                      if (_locationController.text ==
                                               'Out of station' ||
                                           _locationController.text.isEmpty) {
-                                        // Handle location error
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
                                           const SnackBar(
@@ -828,14 +901,307 @@ class _ShoppingPageState extends State<ShoppingPage> {
                                                 'Location error! Please restart your app.'),
                                           ),
                                         );
-                                      } else if (appStateProvider
+                                        return;
+                                      }
+
+                                      if (appStateProvider
                                           .timedateController.text.isEmpty) {
-                                        // Handle location error
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
                                           const SnackBar(
                                             content: Text('Error loading data'),
                                           ),
+                                        );
+                                        return;
+                                      }
+
+                                      final profileUpdateProvider =
+                                          Provider.of<ProfileUpdateProvider>(
+                                              context,
+                                              listen: false);
+
+                                      if (!await profileUpdateProvider
+                                          .isProfileComplete(context)) {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                              title: Text('Update Profile'),
+                                              content: SingleChildScrollView(
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    Consumer<
+                                                        ProfileUpdateProvider>(
+                                                      builder: (context,
+                                                          profileUpdateProvider,
+                                                          child) {
+                                                        return GestureDetector(
+                                                          onTap: () async {
+                                                            await profileUpdateProvider
+                                                                .setProfileImage(
+                                                                    context);
+                                                          },
+                                                          child: CircleAvatar(
+                                                            backgroundImage: profileUpdateProvider
+                                                                        .profileImage ==
+                                                                    null
+                                                                ? AssetImage(
+                                                                        'assets/images/man.png')
+                                                                    as ImageProvider
+                                                                : FileImage(
+                                                                    profileUpdateProvider
+                                                                        .profileImage!),
+                                                            radius: 50.0,
+                                                            child: profileUpdateProvider
+                                                                        .profileImage ==
+                                                                    null
+                                                                ? Icon(
+                                                                    Icons
+                                                                        .camera_alt,
+                                                                    color: Colors
+                                                                        .white)
+                                                                : null,
+                                                          ),
+                                                        );
+                                                      },
+                                                    ),
+                                                    SizedBox(height: 16),
+                                                    TextField(
+                                                      controller:
+                                                          profileUpdateProvider
+                                                              .bloodGroupController,
+                                                      inputFormatters: [
+                                                        UpperCaseTextFormatter(),
+                                                      ],
+                                                      decoration:
+                                                          InputDecoration(
+                                                        contentPadding:
+                                                            const EdgeInsets
+                                                                .all(10),
+                                                        constraints:
+                                                            const BoxConstraints(
+                                                                maxHeight: 70),
+                                                        prefixIcon: Icon(
+                                                            Icons.bloodtype,
+                                                            color: Colors.red),
+                                                        labelText:
+                                                            'Enter blood group',
+                                                        labelStyle: TextStyle(
+                                                            color:
+                                                                Colors.black45),
+                                                        hintText: 'eg: A +ve',
+                                                        hintStyle: TextStyle(
+                                                            fontSize: 15,
+                                                            color:
+                                                                Colors.black45),
+                                                        focusedBorder:
+                                                            OutlineInputBorder(
+                                                          borderSide:
+                                                              const BorderSide(
+                                                                  color: Colors
+                                                                      .black),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                        ),
+                                                        border:
+                                                            OutlineInputBorder(
+                                                          borderSide:
+                                                              BorderSide(
+                                                                  color: Colors
+                                                                      .black),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                        ),
+                                                        errorText:
+                                                            profileUpdateProvider
+                                                                    .bloodGroupController
+                                                                    .text
+                                                                    .isEmpty
+                                                                ? 'Required *'
+                                                                : null,
+                                                      ),
+                                                    ),
+                                                    SizedBox(height: 16),
+                                                    TextField(
+                                                      controller:
+                                                          profileUpdateProvider
+                                                              .emergencyPersonController,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        contentPadding:
+                                                            const EdgeInsets
+                                                                .all(10),
+                                                        constraints:
+                                                            const BoxConstraints(
+                                                                maxHeight: 70),
+                                                        prefixIcon:
+                                                            Icon(Icons.man),
+                                                        labelText:
+                                                            'Emergency Person',
+                                                        labelStyle: TextStyle(
+                                                            color:
+                                                                Colors.black45),
+                                                        hintText:
+                                                            'eg: Full name',
+                                                        hintStyle: TextStyle(
+                                                            fontSize: 15,
+                                                            color:
+                                                                Colors.black45),
+                                                        focusedBorder:
+                                                            OutlineInputBorder(
+                                                          borderSide:
+                                                              const BorderSide(
+                                                                  color: Colors
+                                                                      .black),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                        ),
+                                                        border:
+                                                            OutlineInputBorder(
+                                                          borderSide:
+                                                              BorderSide(
+                                                                  color: Colors
+                                                                      .black),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                        ),
+                                                        errorText:
+                                                            profileUpdateProvider
+                                                                    .emergencyPersonController
+                                                                    .text
+                                                                    .isEmpty
+                                                                ? 'Required *'
+                                                                : null,
+                                                      ),
+                                                    ),
+                                                    SizedBox(height: 16),
+                                                    TextField(
+                                                      controller:
+                                                          profileUpdateProvider
+                                                              .emergencyContactController,
+                                                      decoration:
+                                                          InputDecoration(
+                                                        contentPadding:
+                                                            const EdgeInsets
+                                                                .all(10),
+                                                        constraints:
+                                                            const BoxConstraints(
+                                                                maxHeight: 70),
+                                                        prefixIcon:
+                                                            Icon(Icons.phone),
+                                                        labelText:
+                                                            'Emergency Number',
+                                                        labelStyle: TextStyle(
+                                                            color:
+                                                                Colors.black45),
+                                                        hintText:
+                                                            'eg: +91 xxxxxxxxxx',
+                                                        hintStyle: TextStyle(
+                                                            fontSize: 15,
+                                                            color:
+                                                                Colors.black45),
+                                                        focusedBorder:
+                                                            OutlineInputBorder(
+                                                          borderSide:
+                                                              const BorderSide(
+                                                                  color: Colors
+                                                                      .black),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                        ),
+                                                        border:
+                                                            OutlineInputBorder(
+                                                          borderSide:
+                                                              BorderSide(
+                                                                  color: Colors
+                                                                      .black),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                        ),
+                                                        errorText:
+                                                            profileUpdateProvider
+                                                                    .emergencyContactController
+                                                                    .text
+                                                                    .isEmpty
+                                                                ? 'Required *'
+                                                                : null,
+                                                      ),
+                                                      keyboardType:
+                                                          TextInputType.phone,
+                                                    ),
+                                                    SizedBox(height: 20),
+                                                    Align(
+                                                      alignment:
+                                                          Alignment.centerRight,
+                                                      child: TextButton(
+                                                        onPressed: () async {
+                                                          // Validate inputs
+                                                          if (profileUpdateProvider.bloodGroupController.text.isEmpty ||
+                                                              profileUpdateProvider
+                                                                  .emergencyPersonController
+                                                                  .text
+                                                                  .isEmpty ||
+                                                              profileUpdateProvider
+                                                                  .emergencyContactController
+                                                                  .text
+                                                                  .isEmpty ||
+                                                              profileUpdateProvider
+                                                                      .profileImage ==
+                                                                  null) {
+                                                            ScaffoldMessenger
+                                                                    .of(context)
+                                                                .showSnackBar(
+                                                              const SnackBar(
+                                                                content: Text(
+                                                                    'Please fill in all fields'),
+                                                              ),
+                                                            );
+                                                            return;
+                                                          }
+                                                          showDialog(
+                                                            context: context,
+                                                            barrierDismissible:
+                                                                false,
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                              return const LoadingDialog();
+                                                            },
+                                                          );
+                                                          await profileUpdateProvider
+                                                              .saveProfile(
+                                                                  context);
+                                                          Navigator.of(context)
+                                                              .pop();
+
+                                                          Navigator.pop(
+                                                              context);
+                                                          await profileUpdateProvider
+                                                              .saveProfile(
+                                                                  context);
+                                                          profileUpdateProvider
+                                                              .clearProfile();
+                                                        },
+                                                        child: Text('Submit'),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          },
                                         );
                                       } else {
                                         showDialog(
@@ -843,9 +1209,9 @@ class _ShoppingPageState extends State<ShoppingPage> {
                                           builder: (context) {
                                             return AlertDialog(
                                               shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10)),
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
                                               title: Text('Confirm Attendance'),
                                               content: Text(
                                                   'Are you sure you want to mark attendance?'),
@@ -862,7 +1228,7 @@ class _ShoppingPageState extends State<ShoppingPage> {
                                                     shopProvider
                                                         .markAttendance();
                                                     addDetails();
-                                                    _clearShoppingFields(); // Mark attendance and update shift visibility
+                                                    _clearShoppingFields();
                                                     Navigator.of(context).pop();
                                                     String employeeId =
                                                         _idController.text;
@@ -870,9 +1236,8 @@ class _ShoppingPageState extends State<ShoppingPage> {
                                                       CupertinoPageRoute(
                                                         builder: (context) =>
                                                             AttendencePage(
-                                                          employeeId:
-                                                              employeeId,
-                                                        ),
+                                                                employeeId:
+                                                                    employeeId),
                                                       ),
                                                     ); // Close the dialog
                                                   },
@@ -891,7 +1256,7 @@ class _ShoppingPageState extends State<ShoppingPage> {
                                     fontSize: 18, color: Colors.white),
                               ),
                             ),
-                          ),
+                          )
                         ],
                       ),
                     ],

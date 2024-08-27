@@ -1,15 +1,12 @@
-
-
 import 'dart:async';
 import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:ntp/ntp.dart';
 
-class FreshPageProvider with ChangeNotifier {
+class Fresh1PageProvider with ChangeNotifier {
   Timestamp _timestamp = Timestamp.now();
   Timestamp get timestamp => _timestamp;
   final TextEditingController timedateController = TextEditingController();
@@ -19,44 +16,14 @@ class FreshPageProvider with ChangeNotifier {
   String? get selectedYesNoOption => _selectedYesNoOption;
   List<String> get yesNoOptions => _yesNoOptions;
 
- String _bags = '';
-  String _orders = '';
-  String _cash = '';
-
-  String get bags => _bags;
-  String get orders => _orders;
-  String get cash => _cash;
-
-  void clearFields() {
-    _bags = '';
-    _orders = '';
-    _cash = '';
-    notifyListeners();
-  }
-
-  void setBags(String value) {
-    _bags = value;
-    notifyListeners();
-  }
-
-  void setOrders(String value) {
-    _orders = value;
-    notifyListeners();
-  }
-
-  void setCash(String value) {
-    _cash = value;
-    notifyListeners();
-  }
-
-  FreshPageProvider();
+  Fresh1PageProvider();
 
   Future<void> initializeData(String empCode) async {
     try {
-      await _getCurrentUserLocation();
+      await _getCurrentUserLocation1();
       await getLocationName(); 
       
-      bool atWarehouse = isWithinPredefinedLocation();
+      bool atWarehouse = isWithinPredefinedLocation1();
       if (atWarehouse) {
         // Handle logic if within predefined location
       }
@@ -184,8 +151,13 @@ class FreshPageProvider with ChangeNotifier {
       'longitude': 76.283371,
       'radius': 0.25
     },
-    
-  ];
+    {
+      'name': 'KALA',
+      'latitude': 10.064555,
+      'longitude': 76.322242,
+      'radius': 0.25
+    },
+    ];
 
   bool get isFetchingData => _isFetchingData;
   bool get alertShown => _alertShown;
@@ -194,7 +166,7 @@ class FreshPageProvider with ChangeNotifier {
 
  
 
-  Future<void> _getCurrentUserLocation() async {
+  Future<void> _getCurrentUserLocation1() async {
     try {
       Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
@@ -217,7 +189,7 @@ class FreshPageProvider with ChangeNotifier {
   }
  
 
-  bool isWithinPredefinedLocation() {
+  bool isWithinPredefinedLocation1() {
     if (_currentUserPosition != null) {
       for (var location in predefinedLocations) {
         double distance = _calculateDistance(
@@ -258,7 +230,7 @@ class FreshPageProvider with ChangeNotifier {
   }
 
   void showLocationAlert(BuildContext context) {
-    bool atPredefinedLocation = isWithinPredefinedLocation();
+    bool atPredefinedLocation = isWithinPredefinedLocation1();
 
     if (!_alertShown && !atPredefinedLocation && _currentUserPosition != null) {
       _alertShown = true;
